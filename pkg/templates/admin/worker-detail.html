@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ worker.first_name }} {{ worker.last_name }} | Shiift Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-dark: #0A4144;
+    --primary-mid: #0F6E68;
+    --accent-mint: #6FD490;
+    --accent-hover: #58C27E;
+    --bg: #F7FBF8;
+    --text-primary: #10302E;
+    --text-muted: #56716D;
+    --border: #E1F0E4;
+    --badge-bg: #D7F2DD;
+    --badge-border: #A7E3AF;
+    --danger: #C64B4B;
+    --danger-bg: #FBEAEA;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, .brand {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  .navbar {
+    background: var(--primary-dark);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+
+  .brand .admin-tag {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--accent-mint);
+    letter-spacing: 1px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .nav-links a {
+    color: #CFE8E4;
+    text-decoration: none;
+    font-size: 0.92rem;
+    margin-right: 24px;
+  }
+  .nav-links a:hover { color: #FFFFFF; }
+
+  .nav-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--accent-mint); color: var(--primary-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.85rem;
+  }
+
+  .page-wrap { max-width: 1100px; margin: 0 auto; padding: 32px 24px 60px; }
+
+  .breadcrumb { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; }
+  .breadcrumb a { color: var(--primary-mid); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+
+  .profile-header {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #FFFFFF; border: 1px solid var(--border); border-radius: 14px;
+    padding: 24px 28px; margin-bottom: 24px;
+  }
+
+  .profile-identity { display: flex; align-items: center; gap: 18px; }
+
+  .profile-avatar {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--badge-bg); color: var(--primary-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1.4rem; font-family: 'Baloo 2', sans-serif;
+  }
+
+  .profile-name { font-size: 1.4rem; font-weight: 700; margin-bottom: 2px; }
+  .profile-sub { color: var(--text-muted); font-size: 0.92rem; }
+
+  .status-badge {
+    display: inline-block; padding: 4px 12px; border-radius: 20px;
+    font-size: 0.78rem; font-weight: 600;
+  }
+  .status-pending { background: #FFF3D9; border: 1px solid #F0DBA0; color: #8A6A1B; }
+  .status-active { background: var(--badge-bg); border: 1px solid var(--badge-border); color: var(--primary-dark); }
+  .status-inactive { background: #EDEDED; border: 1px solid #D8D8D8; color: var(--text-muted); }
+  .status-suspended { background: var(--danger-bg); border: 1px solid #F0C2C2; color: var(--danger); }
+
+  .profile-actions { display: flex; gap: 10px; }
+
+  .action-btn {
+    padding: 8px 18px; border-radius: 8px; border: 1px solid var(--border);
+    background: #FFFFFF; color: var(--text-primary); font-size: 0.85rem; font-weight: 600;
+    cursor: pointer; text-decoration: none; display: inline-block;
+  }
+  .action-btn.approve { border-color: var(--badge-border); color: var(--primary-dark); background: var(--badge-bg); }
+  .action-btn.danger { border-color: #F0C2C2; color: var(--danger); background: var(--danger-bg); }
+
+  .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+  @media (max-width: 800px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  .card {
+    background: #FFFFFF; border: 1px solid var(--border); border-radius: 14px;
+    padding: 24px 28px; margin-bottom: 24px;
+  }
+
+  .card-title {
+    font-size: 1.05rem; font-weight: 700; margin-bottom: 18px;
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 24px; }
+  .info-item label { display: block; font-size: 0.76rem; color: var(--text-muted); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.4px; }
+  .info-item .value { font-size: 0.95rem; font-weight: 500; }
+
+  .doc-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  .doc-chip {
+    padding: 7px 14px; border-radius: 8px; background: var(--bg); border: 1px solid var(--border);
+    font-size: 0.85rem; color: var(--primary-mid); text-decoration: none; font-weight: 500;
+  }
+  .doc-chip:hover { border-color: var(--primary-mid); }
+  .doc-missing { color: var(--text-muted); font-size: 0.85rem; font-style: italic; }
+
+  .stat-row { display: flex; gap: 16px; margin-bottom: 4px; }
+  .stat-box { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+  .stat-box .stat-value { font-size: 1.5rem; font-weight: 700; font-family: 'Baloo 2', sans-serif; color: var(--primary-dark); }
+  .stat-box .stat-label { font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; }
+
+  table.history-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  table.history-table th {
+    text-align: left; padding: 10px 8px; color: var(--text-muted);
+    font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.4px;
+    border-bottom: 1px solid var(--border);
+  }
+  table.history-table td { padding: 12px 8px; border-bottom: 1px solid var(--border); }
+  table.history-table tr:last-child td { border-bottom: none; }
+
+  .empty-note { color: var(--text-muted); font-size: 0.88rem; padding: 16px 0; text-align: center; }
+</style>
+</head>
+<body>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div style="max-width: 1200px; margin: 16px auto 0; padding: 0 16px;">
+  {% for category, message in messages %}
+  <div style="padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem; {{ 'background:#FDECEC; color:#B42318; border:1px solid #F5C2C2;' if category == 'errormsg' else 'background:#E8F5E9; color:#1B5E20; border:1px solid #B7DFB9;' }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+<nav class="navbar">
+  <a href="{{ url_for('admin_dashboard') }}" class="brand">Shiift<span class="admin-tag">ADMIN</span></a>
+  <div class="nav-links">
+    <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('admin_workers') }}">Workers</a>
+    <a href="{{ url_for('admin_facilities') }}">Facilities</a>
+    <a href="{{ url_for('admin_shifts') }}">Shifts</a>
+    <a href="{{ url_for('admin_bookings') }}">Bookings</a>
+    <a href="{{ url_for('admin_payments') }}">Payments</a>
+  </div>
+  <div class="nav-avatar">AD</div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="breadcrumb">
+    <a href="{{ url_for('admin_workers') }}">Workers</a> / {{ worker.first_name }} {{ worker.last_name }}
+  </div>
+
+  <div class="profile-header">
+    <div class="profile-identity">
+      <div class="profile-avatar">{{ worker.first_name[0] }}{{ worker.last_name[0] }}</div>
+      <div>
+        <div class="profile-name">{{ worker.first_name }} {{ worker.last_name }}</div>
+        <div class="profile-sub">{{ worker.profession.profession_name }} &middot; {{ worker.state.state_name }}</div>
+        <span class="status-badge status-{{ worker.status }}" style="margin-top:6px; display:inline-block;">{{ worker.status|capitalize }}</span>
+      </div>
+    </div>
+    <div class="profile-actions">
+      <form id="statusForm" method="post" action="">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="status" id="statusFormValue">
+        <input type="hidden" name="next" value="detail">
+      </form>
+      {% if worker.status == 'pending' %}
+      <button class="action-btn approve" onclick="setStatus('active')">Verify &amp; Activate</button>
+      <button class="action-btn danger" onclick="setStatus('suspended')">Reject</button>
+      {% elif worker.status == 'active' %}
+      <button class="action-btn danger" onclick="setStatus('suspended')">Suspend</button>
+      {% elif worker.status == 'suspended' %}
+      <button class="action-btn approve" onclick="setStatus('active')">Reactivate</button>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <div class="card-title">Contact &amp; Professional Details</div>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Email</label>
+            <div class="value">{{ worker.email_address }}</div>
+          </div>
+          <div class="info-item">
+            <label>Phone</label>
+            <div class="value">{{ worker.phone_number }}</div>
+          </div>
+          <div class="info-item">
+            <label>Profession</label>
+            <div class="value">{{ worker.profession.profession_name }}</div>
+          </div>
+          <div class="info-item">
+            <label>Licence Number</label>
+            <div class="value">{{ worker.licence_number or 'Not provided' }}</div>
+          </div>
+          <div class="info-item">
+            <label>State</label>
+            <div class="value">{{ worker.state.state_name }}</div>
+          </div>
+          <div class="info-item">
+            <label>Member Since</label>
+            <div class="value">{{ worker.created_at.strftime('%B %d, %Y') }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Verification Documents</div>
+        <div class="doc-list">
+          {% if worker.licence_document %}<a href="/static/uploads/{{ worker.licence_document }}" target="_blank" class="doc-chip">Licence Certificate</a>{% endif %}
+          {% if worker.qualification_document %}<a href="/static/uploads/{{ worker.qualification_document }}" target="_blank" class="doc-chip">Qualification Certificate</a>{% endif %}
+          {% if worker.id_document %}<a href="/static/uploads/{{ worker.id_document }}" target="_blank" class="doc-chip">Valid ID</a>{% endif %}
+          {% if worker.passport_photo %}<a href="/static/uploads/{{ worker.passport_photo }}" target="_blank" class="doc-chip">Passport Photo</a>{% endif %}
+          {% if not worker.licence_document and not worker.qualification_document and not worker.id_document and not worker.passport_photo %}
+          <span class="doc-missing">No documents uploaded.</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Booking History</div>
+        {% if bookings %}
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Shift</th>
+              <th>Facility</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for booking in bookings %}
+            <tr>
+              <td>{{ booking.shift.role_needed }}</td>
+              <td>{{ booking.shift.facility.facility_name }}</td>
+              <td>{{ booking.shift.shift_date.strftime('%b %d, %Y') }}</td>
+              <td><span class="status-badge status-{{ 'active' if booking.booking_status == 'completed' else ('suspended' if booking.booking_status == 'cancelled' else 'pending') }}">{{ booking.booking_status|capitalize }}</span></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="empty-note">No bookings yet.</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-title">Activity</div>
+        <div class="stat-row" style="margin-bottom: 12px;">
+          <div class="stat-box">
+            <div class="stat-value">{{ shifts_done }}</div>
+            <div class="stat-label">Shifts Done</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value">{{ upcoming_count }}</div>
+            <div class="stat-label">Upcoming</div>
+          </div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">&#8358;{{ '{:,.0f}'.format(total_earned) }}</div>
+          <div class="stat-label">Total Earned (Released)</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Payout Bank Details</div>
+        {% if worker.bank_name %}
+        <div class="info-item" style="margin-bottom: 12px;">
+          <label>Bank</label>
+          <div class="value">{{ worker.bank_name }}</div>
+        </div>
+        <div class="info-item" style="margin-bottom: 12px;">
+          <label>Account Number</label>
+          <div class="value">{{ worker.bank_account_number }}</div>
+        </div>
+        <div class="info-item">
+          <label>Account Name</label>
+          <div class="value">{{ worker.bank_account_name }}</div>
+        </div>
+        {% else %}
+        <div class="empty-note">No bank details on file yet.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function setStatus(status) {
+    const form = document.getElementById('statusForm');
+    form.action = '/admin/worker/{{ worker.worker_id }}/status/';
+    document.getElementById('statusFormValue').value = status;
+    form.submit();
+  }
+</script>
+
+</body>
+</html>

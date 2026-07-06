@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shift Applicants | Shiift</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-dark: #0A4144;
+    --primary-mid: #0F6E68;
+    --accent-mint: #6FD490;
+    --accent-hover: #58C27E;
+    --bg: #F7FBF8;
+    --text-primary: #10302E;
+    --text-muted: #56716D;
+    --border: #E1F0E4;
+    --badge-bg: #D7F2DD;
+    --badge-border: #A7E3AF;
+    --danger: #C64B4B;
+    --danger-bg: #FBEAEA;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, .brand {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  /* Navbar */
+  .navbar {
+    background: var(--primary-dark);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+  }
+
+  .nav-links a {
+    color: #CFE6E2;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.92rem;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav-links a:hover { color: #FFFFFF; }
+
+  .nav-links a.active {
+    color: var(--accent-mint);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .nav-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  /* Page container */
+  .page-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  .breadcrumb {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+
+  .breadcrumb a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover { color: var(--primary-mid); }
+
+  /* Shift summary card */
+  .card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 24px;
+    margin-bottom: 22px;
+  }
+
+  .shift-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .shift-summary h1 {
+    font-size: 1.4rem;
+    color: var(--primary-dark);
+  }
+
+  .shift-summary .facility-name {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .status-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 5px 13px;
+    border-radius: 100px;
+    background: var(--badge-bg);
+    border: 1px solid var(--badge-border);
+    color: var(--primary-dark);
+  }
+
+  .shift-meta-row {
+    display: flex;
+    gap: 28px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .shift-meta-item label {
+    display: block;
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 3px;
+  }
+
+  .shift-meta-item .value {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  /* Section title */
+  .section-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+  }
+
+  .applicant-count {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  /* Applicant cards */
+  .applicant-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .applicant-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 20px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .applicant-card.approved {
+    border-color: var(--badge-border);
+    background: #FBFEFC;
+  }
+
+  .applicant-card.rejected {
+    opacity: 0.6;
+  }
+
+  .applicant-avatar {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1rem;
+  }
+
+  .applicant-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .applicant-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .applicant-name {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--primary-dark);
+  }
+
+  .applicant-profession {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .applicant-rating {
+    color: var(--accent-mint);
+    font-size: 0.88rem;
+    white-space: nowrap;
+  }
+
+  .applicant-rating .num {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-left: 4px;
+  }
+
+  .applicant-stats {
+    display: flex;
+    gap: 22px;
+    margin-top: 12px;
+  }
+
+  .applicant-stat {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .applicant-stat strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .applicant-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .btn-approve {
+    background: var(--accent-mint);
+    color: var(--primary-dark);
+    border: none;
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .btn-approve:hover { background: var(--accent-hover); }
+
+  .btn-reject {
+    background: #FFFFFF;
+    color: var(--danger);
+    border: 1px solid #EFC7C7;
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .btn-reject:hover { background: var(--danger-bg); }
+
+  .btn-view-profile {
+    background: none;
+    color: var(--primary-mid);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+
+  .btn-view-profile:hover { border-color: var(--primary-mid); }
+
+  .status-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-top: 14px;
+  }
+
+  .status-tag.approved-tag {
+    background: var(--badge-bg);
+    border: 1px solid var(--badge-border);
+    color: var(--primary-dark);
+  }
+
+  .status-tag.rejected-tag {
+    background: var(--danger-bg);
+    border: 1px solid #EFC7C7;
+    color: var(--danger);
+  }
+
+  /* Empty state */
+  .empty-state {
+    display: none;
+    text-align: center;
+    padding: 50px 20px;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+
+  .empty-state h3 {
+    font-size: 1.05rem;
+    color: var(--primary-dark);
+    margin-bottom: 6px;
+  }
+
+  .empty-state p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+  }
+
+  /* Modal */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 65, 68, 0.35);
+    align-items: center;
+    justify-content: center;
+    z-index: 998;
+  }
+
+  .modal-backdrop.show { display: flex; }
+
+  .modal-box {
+    background: #FFFFFF;
+    border-radius: 14px;
+    padding: 28px;
+    max-width: 380px;
+    width: 90%;
+    box-shadow: 0 12px 32px rgba(10, 65, 68, 0.2);
+  }
+
+  .modal-box h3 {
+    color: var(--primary-dark);
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+
+  .modal-box p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .modal-actions button {
+    flex: 1;
+    border-radius: 10px;
+    padding: 11px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-confirm-approve {
+    background: var(--accent-mint);
+    color: var(--primary-dark);
+  }
+
+  .btn-confirm-approve:hover { background: var(--accent-hover); }
+
+  .btn-confirm-danger {
+    background: var(--danger);
+    color: #FFFFFF;
+  }
+
+  .btn-confirm-danger:hover { background: #B23F3F; }
+
+  .btn-cancel-modal {
+    background: var(--bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border) !important;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--primary-dark);
+    color: #FFFFFF;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(10, 65, 68, 0.25);
+    transform: translateY(20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    z-index: 999;
+  }
+
+  .toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  @media (max-width: 700px) {
+    .nav-links { display: none; }
+    .shift-summary { flex-direction: column; gap: 10px; }
+    .applicant-card { flex-direction: column; }
+    .applicant-actions { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="{{ url_for('facility_dashboard') }}" class="brand">Shiift</a>
+  <div class="nav-links">
+    <a href="{{ url_for('facility_dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('post_shift') }}">Post Shift</a>
+    <a href="{{ url_for('manage_shifts') }}" class="active">Manage Shifts</a>
+    <a href="#">Bookings</a>
+    <a href="#">Reviews</a>
+    <a href="#">Profile</a>
+  </div>
+  <div class="nav-avatar">SC</div>
+</nav>
+
+<div class="page-wrap">
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div style="max-width: 1200px; margin: 16px auto 0; padding: 0 16px;">
+  {% for category, message in messages %}
+  <div style="padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem; {{ 'background:#FDECEC; color:#B42318; border:1px solid #F5C2C2;' if category == 'errormsg' else 'background:#E8F5E9; color:#1B5E20; border:1px solid #B7DFB9;' }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+
+  <div class="breadcrumb">
+    <a href="{{ url_for('manage_shifts') }}">Manage Shifts</a> / Applicants
+  </div>
+
+  <div class="card">
+    <div class="shift-summary">
+      <div>
+        <h1>{{ shift.role_needed }}</h1>
+        <div class="facility-name">Shift #SH-{{ shift.shift_id }} &middot; {{ shift.facility.facility_name }}</div>
+      </div>
+      <span class="status-badge">{{ shift.status|capitalize }}</span>
+    </div>
+    <div class="shift-meta-row">
+      <div class="shift-meta-item">
+        <label>Date</label>
+        <div class="value">{{ shift.shift_date.strftime('%b %d, %Y') }}</div>
+      </div>
+      <div class="shift-meta-item">
+        <label>Time</label>
+        <div class="value">{{ shift.start_time.strftime('%I:%M %p') }} – {{ shift.end_time.strftime('%I:%M %p') }}</div>
+      </div>
+      <div class="shift-meta-item">
+        <label>Pay Rate</label>
+        <div class="value">&#8358;{{ '{:,.0f}'.format(shift.pay_rate) }}</div>
+      </div>
+      <div class="shift-meta-item">
+        <label>Location</label>
+        <div class="value">{{ shift.facility.city }}, {{ shift.facility.state.state_name }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title-row">
+    <div class="section-title">Applicants</div>
+    <div class="applicant-count" id="applicantCount">{{ applicants|length }} worker{{ 's' if applicants|length != 1 }} applied</div>
+  </div>
+
+  <div class="applicant-list" id="applicantList">
+    {% for booking in applicants %}
+    <div class="applicant-card" data-status="pending" id="applicant-{{ booking.booking_id }}">
+      <div class="applicant-avatar">{{ booking.worker.first_name[0] }}{{ booking.worker.last_name[0] }}</div>
+      <div class="applicant-body">
+        <div class="applicant-top">
+          <div>
+            <div class="applicant-name">{{ booking.worker.first_name }} {{ booking.worker.last_name }}</div>
+            <div class="applicant-profession">{{ booking.worker.profession.profession_name }} &middot; {{ booking.worker.state.state_name }}</div>
+          </div>
+        </div>
+        <div class="applicant-stats">
+          <div class="applicant-stat">Applied <strong>{{ booking.booked_at.strftime('%b %d, %I:%M %p') }}</strong></div>
+        </div>
+        <div class="applicant-actions">
+          <form method="post" action="{{ url_for('approve_booking', booking_id=booking.booking_id) }}" style="display:inline;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="button" class="btn-approve" onclick="openApproveModal({{ booking.booking_id }}, '{{ booking.worker.first_name }} {{ booking.worker.last_name }}', this)">Approve</button>
+          </form>
+          <form method="post" action="{{ url_for('reject_booking', booking_id=booking.booking_id) }}" style="display:inline;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="button" class="btn-reject" onclick="openRejectModal({{ booking.booking_id }}, '{{ booking.worker.first_name }} {{ booking.worker.last_name }}', this)">Reject</button>
+          </form>
+          <button class="btn-view-profile" disabled style="opacity:0.5; cursor:default;" title="Coming soon">View Profile</button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="empty-state" id="emptyState" style="{{ 'display:block;' if not applicants else 'display:none;' }}">
+    <h3>No applicants remaining</h3>
+    <p>All applicants for this shift have been reviewed.</p>
+  </div>
+
+</div>
+
+<div class="modal-backdrop" id="approveModal">
+  <div class="modal-box">
+    <h3>Approve this applicant?</h3>
+    <p id="approveModalText"></p>
+    <div class="modal-actions">
+      <button class="btn-cancel-modal" onclick="closeApproveModal()">Cancel</button>
+      <button class="btn-confirm-approve" onclick="confirmApprove()">Yes, Approve</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="rejectModal">
+  <div class="modal-box">
+    <h3>Reject this applicant?</h3>
+    <p id="rejectModalText"></p>
+    <div class="modal-actions">
+      <button class="btn-cancel-modal" onclick="closeRejectModal()">Cancel</button>
+      <button class="btn-confirm-danger" onclick="confirmReject()">Yes, Reject</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/static/js/jquery-4.0.0.min.js"></script>
+<script>
+  // Real applicants now come from the server via Jinja (see shift_applicants route in facility_route.py).
+  // Approving one applicant auto-rejects the rest for this shift (see approve_booking route in facility_route.py).
+
+  let pendingAction = null; // { name, form }
+
+  function openApproveModal(id, name, btn) {
+    pendingAction = { name, form: btn.closest('form') };
+    document.getElementById('approveModalText').textContent =
+      `${name} will be booked for this shift. Other pending applicants will be automatically notified that the position has been filled.`;
+    document.getElementById('approveModal').classList.add('show');
+  }
+
+  function closeApproveModal() {
+    document.getElementById('approveModal').classList.remove('show');
+    pendingAction = null;
+  }
+
+  function confirmApprove() {
+    const { form } = pendingAction;
+    closeApproveModal();
+    form.submit();
+  }
+
+  function openRejectModal(id, name, btn) {
+    pendingAction = { name, form: btn.closest('form') };
+    document.getElementById('rejectModalText').textContent =
+      `${name} will be notified that their application was not successful for this shift. This cannot be undone.`;
+    document.getElementById('rejectModal').classList.add('show');
+  }
+
+  function closeRejectModal() {
+    document.getElementById('rejectModal').classList.remove('show');
+    pendingAction = null;
+  }
+
+  function confirmReject() {
+    const { form } = pendingAction;
+    closeRejectModal();
+    form.submit();
+  }
+</script>
+
+</body>
+</html>

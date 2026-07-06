@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shift Details | Shiift</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-dark: #0A4144;
+    --primary-mid: #0F6E68;
+    --accent-mint: #6FD490;
+    --accent-hover: #58C27E;
+    --bg: #F7FBF8;
+    --text-primary: #10302E;
+    --text-muted: #56716D;
+    --border: #E1F0E4;
+    --badge-bg: #D7F2DD;
+    --badge-border: #A7E3AF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, .brand {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  /* Navbar */
+  .navbar {
+    background: var(--primary-dark);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .nav-links a {
+    color: #CFE6E2;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.92rem;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav-links a:hover { color: #FFFFFF; }
+
+  .nav-links a.active {
+    color: var(--accent-mint);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .nav-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  /* Page container */
+  .page-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  .breadcrumb {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+
+  .breadcrumb a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    color: var(--primary-mid);
+  }
+
+  /* Layout */
+  .detail-layout {
+    display: grid;
+    grid-template-columns: 1.7fr 1fr;
+    gap: 22px;
+  }
+
+  .card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 24px;
+  }
+
+  /* Main card */
+  .shift-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .shift-header h1 {
+    font-size: 1.4rem;
+    color: var(--primary-dark);
+  }
+
+  .shift-header .facility-name {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 5px 13px;
+    border-radius: 100px;
+    background: var(--badge-bg);
+    border: 1px solid var(--badge-border);
+    color: var(--primary-dark);
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+
+  .info-item label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .info-item .value {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .section-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+  }
+
+  .description {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin-bottom: 22px;
+  }
+
+  .requirements-list {
+    list-style: none;
+    margin-bottom: 8px;
+  }
+
+  .requirements-list li {
+    font-size: 0.88rem;
+    color: var(--text-primary);
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .requirements-list li:last-child { border-bottom: none; }
+
+  .requirements-list .req-status {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--primary-mid);
+  }
+
+  /* Sidebar */
+  .sidebar-card {
+    position: sticky;
+    top: 24px;
+    text-align: center;
+  }
+
+  .pay-amount {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: 1.9rem;
+    color: var(--primary-mid);
+  }
+
+  .pay-unit {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+
+  .btn-book {
+    width: 100%;
+    background: var(--accent-mint);
+    color: var(--primary-dark);
+    border: none;
+    border-radius: 10px;
+    padding: 13px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.98rem;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    margin-bottom: 10px;
+  }
+
+  .btn-book:hover { background: var(--accent-hover); }
+
+  .btn-book:disabled {
+    background: var(--border);
+    color: var(--text-muted);
+    cursor: not-allowed;
+  }
+
+  .btn-save {
+    width: 100%;
+    background: #FFFFFF;
+    color: var(--primary-dark);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+
+  .btn-save:hover { border-color: var(--primary-mid); }
+
+  .btn-save.saved {
+    color: var(--primary-mid);
+    border-color: var(--primary-mid);
+  }
+
+  .sidebar-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 18px 0;
+  }
+
+  .facility-block {
+    text-align: left;
+  }
+
+  .facility-block .section-title {
+    text-align: left;
+  }
+
+  .facility-meta-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    padding: 7px 0;
+  }
+
+  .facility-meta-row label {
+    color: var(--text-muted);
+  }
+
+  .facility-meta-row .value {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .location-line {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+    text-align: left;
+  }
+
+  /* Confirm modal */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 65, 68, 0.35);
+    align-items: center;
+    justify-content: center;
+    z-index: 998;
+  }
+
+  .modal-backdrop.show { display: flex; }
+
+  .modal-box {
+    background: #FFFFFF;
+    border-radius: 14px;
+    padding: 28px;
+    max-width: 380px;
+    width: 90%;
+    box-shadow: 0 12px 32px rgba(10, 65, 68, 0.2);
+  }
+
+  .modal-box h3 {
+    color: var(--primary-dark);
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+
+  .modal-box p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .modal-actions button {
+    flex: 1;
+    border-radius: 10px;
+    padding: 11px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-confirm {
+    background: var(--accent-mint);
+    color: var(--primary-dark);
+  }
+
+  .btn-confirm:hover { background: var(--accent-hover); }
+
+  .btn-cancel {
+    background: var(--bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border) !important;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--primary-dark);
+    color: #FFFFFF;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(10, 65, 68, 0.25);
+    transform: translateY(20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    z-index: 999;
+  }
+
+  .toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .flash-message {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+  }
+
+  .flash-message.error {
+    background: #FDECEC;
+    color: #B42318;
+    border: 1px solid #F5C2C2;
+  }
+
+  .flash-message.success {
+    background: #E8F5E9;
+    color: #1B5E20;
+    border: 1px solid #B7DFB9;
+  }
+
+  @media (max-width: 800px) {
+    .detail-layout { grid-template-columns: 1fr; }
+    .info-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .sidebar-card { position: static; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="{{ url_for('worker_dashboard') }}" class="brand">Shiift</a>
+  <div class="nav-links">
+    <a href="{{ url_for('worker_dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('browse_shifts') }}" class="active">Browse Shifts</a>
+    <a href="{{ url_for('my_bookings') }}">My Bookings</a>
+    <a href="{{ url_for('worker_profile') }}">Profile</a>
+  </div>
+  <div class="nav-avatar">KA</div>
+</nav>
+
+<div class="page-wrap">
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div style="max-width: 1200px; margin: 16px auto 0; padding: 0 16px;">
+  {% for category, message in messages %}
+  <div class="flash-message {{ 'error' if category == 'errormsg' else 'success' }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+
+  <div class="breadcrumb">
+    <a href="{{ url_for('browse_shifts') }}">Browse Shifts</a> / Shift Details
+  </div>
+
+  <div class="detail-layout">
+
+    <!-- Main details -->
+    <div class="card">
+      <div class="shift-header">
+        <div>
+          <h1>{{ shift.role_needed }}</h1>
+          <div class="facility-name">{{ shift.facility.facility_name }}</div>
+        </div>
+        <span class="badge">{{ shift.shift_type_label }}</span>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <label>Date</label>
+          <div class="value">{{ shift.shift_date.strftime('%A, %B %d, %Y') }}</div>
+        </div>
+        <div class="info-item">
+          <label>Time</label>
+          <div class="value">{{ shift.start_time.strftime('%I:%M %p') }} – {{ shift.end_time.strftime('%I:%M %p') }}</div>
+        </div>
+        <div class="info-item">
+          <label>Duration</label>
+          <div class="value">{{ shift.duration_display }}</div>
+        </div>
+        <div class="info-item">
+          <label>Location</label>
+          <div class="value">{{ shift.facility.city }}, {{ shift.facility.state.state_name }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div>
+      <div class="card sidebar-card">
+        <div class="pay-amount">&#8358;{{ '{:,.0f}'.format(shift.total_pay) }}</div>
+        <div class="pay-unit">for this shift (&#8358;{{ '{:,.0f}'.format(shift.pay_rate) }}/hr)</div>
+
+        <form id="bookForm" method="post" action="{{ url_for('book_shift', shift_id=shift.shift_id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="button" class="btn-book" id="btnBook" onclick="openConfirm()">Book This Shift</button>
+        </form>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="facility-block">
+          <div class="section-title">About the Facility</div>
+          <div class="facility-meta-row">
+            <label>Facility</label>
+            <span class="value">{{ shift.facility.facility_name }}</span>
+          </div>
+          <div class="facility-meta-row">
+            <label>Plan</label>
+            <span class="value">{{ shift.facility.plan|capitalize }}</span>
+          </div>
+          <div class="location-line">{{ shift.facility.facility_address }}</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Confirm booking modal -->
+<div class="modal-backdrop" id="confirmModal">
+  <div class="modal-box">
+    <h3>Confirm booking</h3>
+    <p>You're about to book the {{ shift.role_needed }} shift at {{ shift.facility.facility_name }} on {{ shift.shift_date.strftime('%A, %B %d') }}, {{ shift.start_time.strftime('%I:%M %p') }} – {{ shift.end_time.strftime('%I:%M %p') }}. This shift will be removed from your available list once confirmed.</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeConfirm()">Cancel</button>
+      <button class="btn-confirm" onclick="confirmBooking()">Confirm Booking</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/static/js/jquery-4.0.0.min.js"></script>
+<script>
+  // Booking now posts to /worker/shift/<id>/book/ (see book_shift route in worker_route.py).
+
+  function openConfirm() {
+    document.getElementById('confirmModal').classList.add('show');
+  }
+
+  function closeConfirm() {
+    document.getElementById('confirmModal').classList.remove('show');
+  }
+
+  function confirmBooking() {
+    closeConfirm();
+    const btn = document.getElementById('btnBook');
+    btn.disabled = true;
+    btn.textContent = 'Booking...';
+    document.getElementById('bookForm').submit();
+  }
+</script>
+
+</body>
+</html>

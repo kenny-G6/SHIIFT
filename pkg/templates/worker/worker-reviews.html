@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviews | Shiift</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-dark: #0A4144;
+    --primary-mid: #0F6E68;
+    --accent-mint: #6FD490;
+    --accent-hover: #58C27E;
+    --bg: #F7FBF8;
+    --text-primary: #10302E;
+    --text-muted: #56716D;
+    --border: #E1F0E4;
+    --badge-bg: #D7F2DD;
+    --badge-border: #A7E3AF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, .brand {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  /* Navbar */
+  .navbar {
+    background: var(--primary-dark);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .nav-links a {
+    color: #CFE6E2;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.92rem;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav-links a:hover { color: #FFFFFF; }
+
+  .nav-links a.active {
+    color: var(--accent-mint);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .nav-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  /* Page container */
+  .page-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 36px 24px 64px;
+  }
+
+  .page-header h1 {
+    font-size: 1.6rem;
+    color: var(--primary-dark);
+  }
+
+  .page-header p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin-top: 4px;
+    margin-bottom: 24px;
+  }
+
+  /* Rating summary card */
+  .rating-summary {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 24px;
+    margin-bottom: 22px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+
+  .rating-big {
+    text-align: center;
+  }
+
+  .rating-big .num {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: 2.6rem;
+    color: var(--primary-dark);
+    line-height: 1;
+  }
+
+  .rating-big .stars {
+    color: var(--accent-mint);
+    font-size: 1.1rem;
+    margin: 6px 0 4px;
+    letter-spacing: 2px;
+  }
+
+  .rating-big .count {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .rating-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .rating-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .rating-bar-row .star-label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    width: 40px;
+    flex-shrink: 0;
+  }
+
+  .rating-bar-track {
+    flex: 1;
+    height: 8px;
+    background: var(--bg);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .rating-bar-fill {
+    height: 100%;
+    background: var(--accent-mint);
+    border-radius: 100px;
+  }
+
+  .rating-bar-row .bar-count {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    width: 24px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* Filter tabs */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .tab {
+    background: none;
+    border: none;
+    padding: 10px 16px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .tab:hover { color: var(--primary-dark); }
+
+  .tab.active {
+    color: var(--primary-dark);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  /* Review cards */
+  .review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .review-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 20px;
+  }
+
+  .review-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+
+  .review-facility {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.98rem;
+    color: var(--primary-dark);
+  }
+
+  .review-meta {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .review-stars {
+    color: var(--accent-mint);
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  .review-comment {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    line-height: 1.6;
+  }
+
+  .review-shift-tag {
+    display: inline-block;
+    margin-top: 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    padding: 4px 12px;
+    border-radius: 100px;
+  }
+
+  /* Empty state */
+  .empty-state {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+
+  .empty-state h3 {
+    font-size: 1.1rem;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+  }
+
+  .empty-state p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 700px) {
+    .nav-links { display: none; }
+    .rating-summary { grid-template-columns: 1fr; text-align: center; }
+    .rating-bars { max-width: 320px; margin: 0 auto; width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/worker/dashboard" class="brand">Shiift</a>
+  <div class="nav-links">
+    <a href="/worker/dashboard">Dashboard</a>
+    <a href="/worker/browse-shifts">Browse Shifts</a>
+    <a href="/worker/my-bookings">My Bookings</a>
+    <a href="/worker/earnings">Earnings</a>
+    <a href="/worker/reviews" class="active">Reviews</a>
+    <a href="/worker/profile">Profile</a>
+  </div>
+  <div class="nav-avatar">KA</div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <h1>Reviews</h1>
+    <p>What facilities are saying about your shifts.</p>
+  </div>
+
+  <div class="rating-summary">
+    <div class="rating-big">
+      <div class="num">4.8</div>
+      <div class="stars">★★★★★</div>
+      <div class="count">24 reviews</div>
+    </div>
+    <div class="rating-bars">
+      <div class="rating-bar-row">
+        <span class="star-label">5 stars</span>
+        <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 79%;"></div></div>
+        <span class="bar-count">19</span>
+      </div>
+      <div class="rating-bar-row">
+        <span class="star-label">4 stars</span>
+        <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 17%;"></div></div>
+        <span class="bar-count">4</span>
+      </div>
+      <div class="rating-bar-row">
+        <span class="star-label">3 stars</span>
+        <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 4%;"></div></div>
+        <span class="bar-count">1</span>
+      </div>
+      <div class="rating-bar-row">
+        <span class="star-label">2 stars</span>
+        <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 0%;"></div></div>
+        <span class="bar-count">0</span>
+      </div>
+      <div class="rating-bar-row">
+        <span class="star-label">1 star</span>
+        <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 0%;"></div></div>
+        <span class="bar-count">0</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="all" onclick="filterReviews('all')">All</button>
+    <button class="tab" data-tab="5" onclick="filterReviews('5')">5 Stars</button>
+    <button class="tab" data-tab="4" onclick="filterReviews('4')">4 Stars</button>
+    <button class="tab" data-tab="3" onclick="filterReviews('3')">3 Stars & Below</button>
+  </div>
+
+  <div class="review-list" id="reviewList">
+
+    <div class="review-card" data-rating="5">
+      <div class="review-top">
+        <div>
+          <div class="review-facility">St. Claire General Hospital</div>
+          <div class="review-meta">Jun 28, 2026</div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+      </div>
+      <p class="review-comment">Punctual, professional, and great with patients. Would book again without hesitation.</p>
+      <span class="review-shift-tag">Registered Nurse · Day Shift</span>
+    </div>
+
+    <div class="review-card" data-rating="5">
+      <div class="review-top">
+        <div>
+          <div class="review-facility">Havenwell Care Home</div>
+          <div class="review-meta">Jun 21, 2026</div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+      </div>
+      <p class="review-comment">Handled a difficult overnight shift with a calm, steady approach. Communicated clearly with the morning team during handover.</p>
+      <span class="review-shift-tag">Registered Nurse · Night Shift</span>
+    </div>
+
+    <div class="review-card" data-rating="4">
+      <div class="review-top">
+        <div>
+          <div class="review-facility">Grace Medical Centre</div>
+          <div class="review-meta">Jun 14, 2026</div>
+        </div>
+        <div class="review-stars">★★★★☆</div>
+      </div>
+      <p class="review-comment">Solid clinical skills, arrived a few minutes late but communicated ahead of time. Would work with again.</p>
+      <span class="review-shift-tag">Registered Nurse · Day Shift</span>
+    </div>
+
+    <div class="review-card" data-rating="5">
+      <div class="review-top">
+        <div>
+          <div class="review-facility">Sunrise Specialist Hospital</div>
+          <div class="review-meta">Jun 7, 2026</div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+      </div>
+      <p class="review-comment">Excellent bedside manner and very thorough documentation. One of the best agency nurses we've had this quarter.</p>
+      <span class="review-shift-tag">Registered Nurse · Evening Shift</span>
+    </div>
+
+    <div class="review-card" data-rating="3">
+      <div class="review-top">
+        <div>
+          <div class="review-facility">MedPlus Community Clinic</div>
+          <div class="review-meta">May 30, 2026</div>
+        </div>
+        <div class="review-stars">★★★☆☆</div>
+      </div>
+      <p class="review-comment">Competent overall, though took some time to settle into our workflow. Better fit for a longer placement.</p>
+      <span class="review-shift-tag">Registered Nurse · Day Shift</span>
+    </div>
+
+  </div>
+
+  <div class="empty-state" id="emptyState">
+    <h3>No reviews in this range</h3>
+    <p>Try a different filter to see more of your reviews.</p>
+  </div>
+
+</div>
+
+<script src="/static/js/jquery-4.0.0.min.js"></script>
+<script>
+  // In production: GET /worker/api/reviews?rating=all|5|4|3
+  // Rating summary and distribution bars would be computed server-side
+  // from the reviews table (rating, comment, reviewed_at).
+
+  function filterReviews(range) {
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.tab === range);
+    });
+
+    const cards = document.querySelectorAll('.review-card');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+      const rating = parseInt(card.dataset.rating, 10);
+      let isVisible = false;
+
+      if (range === 'all') isVisible = true;
+      else if (range === '3') isVisible = rating <= 3;
+      else isVisible = rating === parseInt(range, 10);
+
+      card.style.display = isVisible ? 'block' : 'none';
+      if (isVisible) visibleCount++;
+    });
+
+    document.getElementById('emptyState').style.display = visibleCount === 0 ? 'block' : 'none';
+    document.getElementById('reviewList').style.display = visibleCount === 0 ? 'none' : 'flex';
+  }
+</script>
+
+</body>
+</html>

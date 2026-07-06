@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shiift - Facility Dashboard</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #F7FBF8;
+            color: #10302E;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Baloo 2', 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Navbar */
+        .navbar-shiift {
+            background-color: #0A4144;
+        }
+
+        .navbar-brand-shiift {
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 800;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            color: #F7FBF8 !important;
+        }
+
+        .navbar-facility-label {
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 700;
+            color: #6FD490;
+            font-size: 0.95rem;
+        }
+
+        .navbar-plan-badge {
+            background-color: #6FD490;
+            color: #0A4144;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.3em 0.8em;
+            border-radius: 100px;
+        }
+
+        /* Section eyebrow */
+        .section-eyebrow {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #0F6E68;
+            margin-bottom: 0.85rem;
+        }
+
+        /* Cards */
+        .shiift-card {
+            background-color: #FFFFFF;
+            border: 1px solid #E1F0E4;
+            border-radius: 14px;
+            box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+            overflow: hidden;
+        }
+
+        .shiift-card-header {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #E1F0E4;
+            padding: 1rem 1.25rem;
+        }
+
+        .shiift-card-header-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #0F6E68;
+            margin: 0;
+        }
+
+        /* Form */
+        .shiift-card .form-label {
+            color: #0F6E68;
+            font-size: 0.78rem;
+            letter-spacing: 0.6px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .shiift-card .form-control,
+        .shiift-card .form-select {
+            border: 1.5px solid #E1F0E4;
+            border-radius: 10px;
+            background-color: #F7FBF8;
+            color: #10302E;
+            font-size: 0.88rem;
+        }
+
+        .shiift-card .form-control:focus,
+        .shiift-card .form-select:focus {
+            border-color: #6FD490;
+            box-shadow: 0 0 0 3px rgba(111, 212, 144, 0.25);
+            background-color: #FFFFFF;
+        }
+
+        /* Publish button */
+        .btn-shiift-primary {
+            background-color: #6FD490;
+            border: none;
+            color: #0A4144;
+            border-radius: 10px;
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            width: 100%;
+            padding: 0.55rem;
+        }
+
+        .btn-shiift-primary:hover {
+            background-color: #58C27E;
+            color: #0A4144;
+        }
+
+        /* Table */
+        .shiift-table thead th {
+            background-color: #F7FBF8;
+            color: #56716D;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            border-bottom: 1px solid #E1F0E4;
+            padding: 0.85rem 1rem;
+        }
+
+        .shiift-table tbody td {
+            font-size: 0.88rem;
+            color: #10302E;
+            border-bottom: 1px solid #F0F7F1;
+            padding: 0.85rem 1rem;
+            vertical-align: middle;
+        }
+
+        .shiift-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .shiift-table tbody tr:hover td {
+            background-color: #F7FBF8;
+        }
+
+        /* Badges */
+        .badge-open {
+            background-color: #FEF3C7;
+            color: #92400E;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.35em 0.75em;
+            border-radius: 100px;
+        }
+
+        .badge-filled {
+            background-color: #D7F2DD;
+            color: #0A4144;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.35em 0.75em;
+            border-radius: 100px;
+        }
+
+        .badge-cancelled {
+            background-color: #FEE2E2;
+            color: #991B1B;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.35em 0.75em;
+            border-radius: 100px;
+        }
+
+        /* Action buttons */
+        .btn-shiift-cancel {
+            background-color: transparent;
+            border: 1.5px solid #E1F0E4;
+            color: #56716D;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.78rem;
+            padding: 0.25rem 0.75rem;
+        }
+
+        .btn-shiift-cancel:hover {
+            border-color: #991B1B;
+            color: #991B1B;
+        }
+
+        .btn-shiift-disabled {
+            background-color: #F0F7F1;
+            border: none;
+            color: #9FC4BC;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.78rem;
+            padding: 0.25rem 0.75rem;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-shiift">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-shiift" href="{{ url_for('facility_dashboard') }}">SHIIFT</a>
+            <div class="ms-auto d-flex align-items-center gap-3">
+                <a href="{{ url_for('facility_dashboard') }}" class="navbar-link">Dashboard</a>
+                <a href="{{ url_for('post_shift') }}" class="navbar-link">Post Shift</a>
+                <a href="{{ url_for('manage_shifts') }}" class="navbar-link">Manage Shifts</a>
+                <span class="navbar-facility-label">{{ deets.facility_name }}</span>
+                <span class="navbar-plan-badge">{{ deets.plan|capitalize }} Plan ({{ deets.status|capitalize }})</span>
+                <a href="{{ url_for('facility_logout') }}" class="navbar-link">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div style="max-width: 1200px; margin: 16px auto 0; padding: 0 16px;">
+  {% for category, message in messages %}
+  <div style="padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem; {{ 'background:#FDECEC; color:#B42318; border:1px solid #F5C2C2;' if category == 'errormsg' else 'background:#E8F5E9; color:#1B5E20; border:1px solid #B7DFB9;' }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+        <div class="row g-4">
+
+            <!-- Quick Stats & Actions -->
+            <div class="col-md-4">
+                <div class="shiift-card">
+                    <div class="shiift-card-header">
+                        <p class="shiift-card-header-title">Overview</p>
+                    </div>
+                    <div class="p-4">
+                        <div class="mb-3">
+                            <div class="text-muted small">Open Shifts</div>
+                            <div style="font-size: 1.75rem; font-weight: 700;">{{ open_count }}</div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="text-muted small">Filled Shifts</div>
+                            <div style="font-size: 1.75rem; font-weight: 700;">{{ filled_count }}</div>
+                        </div>
+                        <a href="{{ url_for('post_shift') }}" class="btn-shiift-primary d-block text-center mb-2">+ Post New Shift</a>
+                        <a href="{{ url_for('manage_shifts') }}" class="btn-shiift-outline d-block text-center">Manage All Shifts</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shifts tracker -->
+            <div class="col-md-8">
+                <div class="shiift-card">
+                    <div class="shiift-card-header">
+                        <p class="shiift-card-header-title">Recent Shifts</p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table shiift-table mb-0" id="shiftsTable">
+                            <thead>
+                                <tr>
+                                    <th>Role</th>
+                                    <th>Date</th>
+                                    <th>Time Schedule</th>
+                                    <th>Rate</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for shift in recent_shifts %}
+                                <tr>
+                                    <td>{{ shift.role_needed }}</td>
+                                    <td>{{ shift.shift_date.strftime('%Y-%m-%d') }}</td>
+                                    <td>{{ shift.start_time.strftime('%I:%M %p') }} - {{ shift.end_time.strftime('%I:%M %p') }}</td>
+                                    <td>&#8358;{{ '{:,.0f}'.format(shift.pay_rate) }}/hr</td>
+                                    <td><span class="badge-{{ shift.status }} shift-status">{{ shift.status|capitalize }}</span></td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">No shifts posted yet. Post your first shift to get started.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="/static/js/jquery-4.0.0.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

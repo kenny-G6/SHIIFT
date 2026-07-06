@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booking Details | Shiift</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-dark: #0A4144;
+    --primary-mid: #0F6E68;
+    --accent-mint: #6FD490;
+    --accent-hover: #58C27E;
+    --bg: #F7FBF8;
+    --text-primary: #10302E;
+    --text-muted: #56716D;
+    --border: #E1F0E4;
+    --badge-bg: #D7F2DD;
+    --badge-border: #A7E3AF;
+    --danger: #C64B4B;
+    --danger-bg: #FBEAEA;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, .brand {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  /* Navbar */
+  .navbar {
+    background: var(--primary-dark);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .nav-links a {
+    color: #CFE6E2;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.92rem;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav-links a:hover { color: #FFFFFF; }
+
+  .nav-links a.active {
+    color: var(--accent-mint);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .nav-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  /* Page container */
+  .page-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  .breadcrumb {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+
+  .breadcrumb a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover { color: var(--primary-mid); }
+
+  /* Layout */
+  .detail-layout {
+    display: grid;
+    grid-template-columns: 1.7fr 1fr;
+    gap: 22px;
+  }
+
+  .card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 24px;
+    margin-bottom: 18px;
+  }
+
+  .shift-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .shift-header h1 {
+    font-size: 1.4rem;
+    color: var(--primary-dark);
+  }
+
+  .shift-header .facility-name {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .status-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 5px 13px;
+    border-radius: 100px;
+  }
+
+  .status-upcoming {
+    background: var(--badge-bg);
+    border: 1px solid var(--badge-border);
+    color: var(--primary-dark);
+  }
+
+  .status-completed {
+    background: #EDEDED;
+    border: 1px solid #D8D8D8;
+    color: var(--text-muted);
+  }
+
+  .status-cancelled {
+    background: var(--danger-bg);
+    border: 1px solid #EFC7C7;
+    color: var(--danger);
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .info-item label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .info-item .value {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .section-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 14px;
+  }
+
+  /* Timeline */
+  .timeline {
+    list-style: none;
+  }
+
+  .timeline li {
+    display: flex;
+    gap: 14px;
+    padding-bottom: 18px;
+    position: relative;
+  }
+
+  .timeline li:last-child { padding-bottom: 0; }
+
+  .timeline li::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 16px;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .timeline li:last-child::before { display: none; }
+
+  .timeline-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--border);
+    border: 2px solid #FFFFFF;
+    box-shadow: 0 0 0 1px var(--border);
+    margin-top: 3px;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+
+  .timeline-dot.done {
+    background: var(--accent-mint);
+    box-shadow: 0 0 0 1px var(--accent-mint);
+  }
+
+  .timeline-content .t-title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .timeline-content .t-time {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* Payment summary */
+  .payment-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.88rem;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .payment-row:last-child { border-bottom: none; }
+
+  .payment-row label { color: var(--text-muted); }
+
+  .payment-row .value { font-weight: 600; }
+
+  .payment-row.total {
+    padding-top: 12px;
+    margin-top: 4px;
+    border-top: 1px solid var(--border);
+  }
+
+  .payment-row.total label {
+    color: var(--text-primary);
+    font-weight: 700;
+  }
+
+  .payment-row.total .value {
+    color: var(--primary-mid);
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: 1.05rem;
+  }
+
+  .payment-status {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 100px;
+    background: var(--badge-bg);
+    border: 1px solid var(--badge-border);
+    color: var(--primary-dark);
+    margin-top: 10px;
+  }
+
+  /* Sidebar */
+  .sidebar-card {
+    position: sticky;
+    top: 24px;
+  }
+
+  .facility-meta-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    padding: 7px 0;
+  }
+
+  .facility-meta-row label { color: var(--text-muted); }
+  .facility-meta-row .value { font-weight: 600; color: var(--text-primary); }
+
+  .location-line {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .btn-outline-full {
+    width: 100%;
+    background: #FFFFFF;
+    color: var(--danger);
+    border: 1px solid #EFC7C7;
+    border-radius: 10px;
+    padding: 12px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: background 0.15s ease;
+  }
+
+  .btn-outline-full:hover { background: var(--danger-bg); }
+
+  .btn-primary-full {
+    width: 100%;
+    background: var(--accent-mint);
+    color: var(--primary-dark);
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: background 0.15s ease;
+  }
+
+  .btn-primary-full:hover { background: var(--accent-hover); }
+
+  /* Modal */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 65, 68, 0.35);
+    align-items: center;
+    justify-content: center;
+    z-index: 998;
+  }
+
+  .modal-backdrop.show { display: flex; }
+
+  .modal-box {
+    background: #FFFFFF;
+    border-radius: 14px;
+    padding: 28px;
+    max-width: 380px;
+    width: 90%;
+    box-shadow: 0 12px 32px rgba(10, 65, 68, 0.2);
+  }
+
+  .modal-box h3 {
+    color: var(--primary-dark);
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+
+  .modal-box p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .modal-actions button {
+    flex: 1;
+    border-radius: 10px;
+    padding: 11px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-confirm-danger {
+    background: var(--danger);
+    color: #FFFFFF;
+  }
+
+  .btn-confirm-danger:hover { background: #B23F3F; }
+
+  .btn-cancel-modal {
+    background: var(--bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border) !important;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--primary-dark);
+    color: #FFFFFF;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(10, 65, 68, 0.25);
+    transform: translateY(20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    z-index: 999;
+  }
+
+  .toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  @media (max-width: 800px) {
+    .detail-layout { grid-template-columns: 1fr; }
+    .info-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .sidebar-card { position: static; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/worker/dashboard" class="brand">Shiift</a>
+  <div class="nav-links">
+    <a href="/worker/dashboard">Dashboard</a>
+    <a href="/worker/browse-shifts">Browse Shifts</a>
+    <a href="/worker/my-bookings" class="active">My Bookings</a>
+    <a href="/worker/profile">Profile</a>
+  </div>
+  <div class="nav-avatar">KA</div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="breadcrumb">
+    <a href="/worker/my-bookings">My Bookings</a> / Booking Details
+  </div>
+
+  <div class="detail-layout">
+
+    <!-- Main column -->
+    <div>
+      <div class="card">
+        <div class="shift-header">
+          <div>
+            <h1>Registered Nurse</h1>
+            <div class="facility-name">St. Claire General Hospital</div>
+          </div>
+          <span class="status-badge status-upcoming">Confirmed</span>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Date</label>
+            <div class="value">Monday, July 6, 2026</div>
+          </div>
+          <div class="info-item">
+            <label>Time</label>
+            <div class="value">7:00 AM – 3:00 PM</div>
+          </div>
+          <div class="info-item">
+            <label>Booking ID</label>
+            <div class="value">#BK-000201</div>
+          </div>
+          <div class="info-item">
+            <label>Location</label>
+            <div class="value">Ikeja, Lagos</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Booking Timeline</div>
+        <ul class="timeline">
+          <li>
+            <div class="timeline-dot done"></div>
+            <div class="timeline-content">
+              <div class="t-title">Booking confirmed</div>
+              <div class="t-time">Jul 3, 2026 · 9:12 AM</div>
+            </div>
+          </li>
+          <li>
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="t-title">En route to shift</div>
+              <div class="t-time">Awaiting check-in on shift day</div>
+            </div>
+          </li>
+          <li>
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="t-title">Shift completed</div>
+              <div class="t-time">Marked complete by facility</div>
+            </div>
+          </li>
+          <li>
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="t-title">Payment released</div>
+              <div class="t-time">Processed after facility sign-off</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Payment Summary</div>
+        <div class="payment-row">
+          <label>Base pay</label>
+          <span class="value">₦18,000</span>
+        </div>
+        <div class="payment-row">
+          <label>Platform commission</label>
+          <span class="value">– ₦1,800</span>
+        </div>
+        <div class="payment-row total">
+          <label>Your payout</label>
+          <span class="value">₦16,200</span>
+        </div>
+        <span class="payment-status">Pending — released after shift</span>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div>
+      <div class="card sidebar-card">
+        <div class="section-title">Facility</div>
+        <div class="facility-meta-row">
+          <label>Name</label>
+          <span class="value">St. Claire General</span>
+        </div>
+        <div class="facility-meta-row">
+          <label>Plan</label>
+          <span class="value">Verified Partner</span>
+        </div>
+        <div class="facility-meta-row">
+          <label>Rating</label>
+          <span class="value">4.7 / 5</span>
+        </div>
+        <div class="location-line">17 Awolowo Road, Ikeja, Lagos</div>
+
+        <button class="btn-primary-full" onclick="showToast('Location sharing will begin on shift day')">Enable Location Sharing</button>
+        <button class="btn-outline-full" onclick="openCancel()">Cancel Booking</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal-backdrop" id="cancelModal">
+  <div class="modal-box">
+    <h3>Cancel this booking?</h3>
+    <p>Cancelling less than 24 hours before a shift may affect your reliability score with facilities. This action cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="btn-cancel-modal" onclick="closeCancel()">Keep Booking</button>
+      <button class="btn-confirm-danger" onclick="confirmCancel()">Yes, Cancel It</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/static/js/jquery-4.0.0.min.js"></script>
+<script>
+  // In production: GET /worker/api/bookings/<id> to populate this page,
+  // and DELETE /worker/api/bookings/<id> on cancel confirm.
+  // Location sharing toggle would start posting to worker_locations
+  // via the Geolocation API once the shift day arrives.
+
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function openCancel() {
+    document.getElementById('cancelModal').classList.add('show');
+  }
+
+  function closeCancel() {
+    document.getElementById('cancelModal').classList.remove('show');
+  }
+
+  function confirmCancel() {
+    closeCancel();
+    showToast('Booking cancelled');
+  }
+</script>
+
+</body>
+</html>

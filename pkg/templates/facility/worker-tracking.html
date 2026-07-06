@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track Worker | Shiift</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-dark: #0A4144;
+    --primary-mid: #0F6E68;
+    --accent-mint: #6FD490;
+    --accent-hover: #58C27E;
+    --bg: #F7FBF8;
+    --text-primary: #10302E;
+    --text-muted: #56716D;
+    --border: #E1F0E4;
+    --badge-bg: #D7F2DD;
+    --badge-border: #A7E3AF;
+    --danger: #C64B4B;
+    --danger-bg: #FBEAEA;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, .brand {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  /* Navbar */
+  .navbar {
+    background: var(--primary-dark);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+  }
+
+  .nav-links a {
+    color: #CFE6E2;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.92rem;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav-links a:hover { color: #FFFFFF; }
+
+  .nav-links a.active {
+    color: var(--accent-mint);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .nav-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  /* Page container */
+  .page-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  .breadcrumb {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+
+  .breadcrumb a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover { color: var(--primary-mid); }
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .page-header h1 {
+    font-size: 1.5rem;
+    color: var(--primary-dark);
+  }
+
+  .page-header p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 4px;
+  }
+
+  .live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--badge-bg);
+    border: 1px solid var(--badge-border);
+    color: var(--primary-dark);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 7px 14px;
+    border-radius: 100px;
+  }
+
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-mint);
+    animation: pulse 1.6s infinite;
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(111, 212, 144, 0.55); }
+    70% { box-shadow: 0 0 0 7px rgba(111, 212, 144, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(111, 212, 144, 0); }
+  }
+
+  /* Layout */
+  .track-layout {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 22px;
+  }
+
+  .card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 22px;
+  }
+
+  /* Map card */
+  .map-card { padding: 0; overflow: hidden; }
+
+  .map-surface {
+    position: relative;
+    width: 100%;
+    height: 420px;
+    background: var(--bg);
+  }
+
+  .map-surface svg { width: 100%; height: 100%; display: block; }
+
+  .map-note {
+    padding: 14px 22px;
+    border-top: 1px solid var(--border);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  /* ETA strip */
+  .eta-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .eta-card {
+    text-align: center;
+  }
+
+  .eta-card label {
+    display: block;
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .eta-card .val {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: var(--primary-dark);
+  }
+
+  .eta-card .val.mint { color: var(--primary-mid); }
+
+  /* Worker info */
+  .worker-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .worker-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .worker-name {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 1.02rem;
+    color: var(--primary-dark);
+  }
+
+  .worker-role {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.86rem;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .info-row:last-of-type { border-bottom: none; }
+
+  .info-row label { color: var(--text-muted); }
+  .info-row .value { font-weight: 600; color: var(--text-primary); }
+
+  .btn-contact {
+    width: 100%;
+    background: var(--accent-mint);
+    color: var(--primary-dark);
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: background 0.15s ease;
+  }
+
+  .btn-contact:hover { background: var(--accent-hover); }
+
+  .btn-mark-arrived {
+    width: 100%;
+    background: #FFFFFF;
+    color: var(--primary-dark);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 11px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: border-color 0.15s ease;
+  }
+
+  .btn-mark-arrived:hover { border-color: var(--primary-mid); }
+
+  /* Ping timeline */
+  .ping-timeline {
+    list-style: none;
+    margin-top: 4px;
+  }
+
+  .ping-timeline li {
+    display: flex;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.82rem;
+  }
+
+  .ping-timeline li:last-child { border-bottom: none; }
+
+  .ping-timeline .ping-time {
+    color: var(--text-muted);
+    flex-shrink: 0;
+    width: 64px;
+  }
+
+  .ping-timeline .ping-text { color: var(--text-primary); }
+
+  @media (max-width: 900px) {
+    .track-layout { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .eta-strip { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/facility/dashboard" class="brand">Shiift</a>
+  <div class="nav-links">
+    <a href="/facility/dashboard">Dashboard</a>
+    <a href="/facility/post-shift">Post Shift</a>
+    <a href="/facility/manage-shifts" class="active">Manage Shifts</a>
+    <a href="/facility/bookings">Bookings</a>
+    <a href="/facility/reviews">Reviews</a>
+    <a href="/facility/profile">Profile</a>
+  </div>
+  <div class="nav-avatar">SC</div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="breadcrumb">
+    <a href="/facility/manage-shifts">Manage Shifts</a> / Track Worker
+  </div>
+
+  <div class="page-header">
+    <div>
+      <h1>Tracking: Registered Nurse — Shift #SH-1038</h1>
+      <p>Live location updates as the worker travels to your facility.</p>
+    </div>
+    <span class="live-badge"><span class="live-dot"></span> Live</span>
+  </div>
+
+  <div class="track-layout">
+
+    <!-- Map column -->
+    <div>
+      <div class="card map-card">
+        <div class="map-surface">
+          <svg viewBox="0 0 600 420" preserveAspectRatio="xMidYMid slice">
+            <rect width="600" height="420" fill="#F7FBF8"></rect>
+
+            <!-- simple block "streets" for visual context, not a real map -->
+            <line x1="0" y1="90" x2="600" y2="90" stroke="#E1F0E4" stroke-width="10"></line>
+            <line x1="0" y1="230" x2="600" y2="230" stroke="#E1F0E4" stroke-width="10"></line>
+            <line x1="0" y1="350" x2="600" y2="350" stroke="#E1F0E4" stroke-width="10"></line>
+            <line x1="130" y1="0" x2="130" y2="420" stroke="#E1F0E4" stroke-width="10"></line>
+            <line x1="330" y1="0" x2="330" y2="420" stroke="#E1F0E4" stroke-width="10"></line>
+            <line x1="480" y1="0" x2="480" y2="420" stroke="#E1F0E4" stroke-width="10"></line>
+
+            <!-- route path -->
+            <path id="routePath" d="M 70 350 C 180 340, 220 260, 280 230 S 400 130, 480 90"
+                  fill="none" stroke="#6FD490" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round"></path>
+
+            <!-- origin marker (worker start) -->
+            <circle cx="70" cy="350" r="7" fill="#0F6E68"></circle>
+            <text x="70" y="374" text-anchor="middle" font-family="Poppins, sans-serif" font-size="11" fill="#56716D">Start point</text>
+
+            <!-- destination marker (facility) -->
+            <circle cx="480" cy="90" r="9" fill="#0A4144"></circle>
+            <circle cx="480" cy="90" r="15" fill="none" stroke="#0A4144" stroke-width="2" opacity="0.3"></circle>
+            <text x="480" y="72" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="700" font-size="12" fill="#0A4144">St. Claire General</text>
+
+            <!-- moving worker marker -->
+            <g id="workerMarker">
+              <circle r="14" fill="#6FD490" opacity="0.3"></circle>
+              <circle r="8" fill="#6FD490" stroke="#0A4144" stroke-width="2"></circle>
+            </g>
+          </svg>
+        </div>
+        <div class="map-note">
+          Illustrative route preview. In production, this renders on Google Maps / Leaflet using live coordinates from the <code>worker_locations</code> table, updated via the Geolocation API every 30s.
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div>
+      <div class="card" style="margin-bottom: 18px;">
+        <div class="worker-info">
+          <div class="worker-avatar">TO</div>
+          <div>
+            <div class="worker-name">Tunde Okafor</div>
+            <div class="worker-role">Registered Nurse</div>
+          </div>
+        </div>
+
+        <div class="eta-strip">
+          <div class="eta-card">
+            <label>ETA</label>
+            <div class="val mint" id="etaValue">11 min</div>
+          </div>
+          <div class="eta-card">
+            <label>Distance</label>
+            <div class="val" id="distValue">3.2 km</div>
+          </div>
+          <div class="eta-card">
+            <label>Last Ping</label>
+            <div class="val" style="font-size: 1rem;" id="lastPing">Just now</div>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <label>Shift starts</label>
+          <span class="value">7:00 AM</span>
+        </div>
+        <div class="info-row">
+          <label>Booking ID</label>
+          <span class="value">#BK-000201</span>
+        </div>
+        <div class="info-row">
+          <label>Phone</label>
+          <span class="value">0803 452 XXXX</span>
+        </div>
+
+        <button class="btn-contact" onclick="showToast('Calling worker...')">Call Worker</button>
+        <button class="btn-mark-arrived" onclick="markArrived()">Mark as Arrived</button>
+      </div>
+
+      <div class="card">
+        <div style="font-weight:700; color: var(--primary-dark); font-size: 0.92rem; margin-bottom: 10px;">Location Updates</div>
+        <ul class="ping-timeline" id="pingTimeline">
+          <li><span class="ping-time">6:49 AM</span><span class="ping-text">3.2 km away, moving</span></li>
+          <li><span class="ping-time">6:42 AM</span><span class="ping-text">4.8 km away, moving</span></li>
+          <li><span class="ping-time">6:35 AM</span><span class="ping-text">6.1 km away, moving</span></li>
+          <li><span class="ping-time">6:20 AM</span><span class="ping-text">Left starting location</span></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/static/js/jquery-4.0.0.min.js"></script>
+<script>
+  // In production: replace the SVG route with a real map (Google Maps JS API or Leaflet).
+  // Poll GET /facility/api/bookings/<id>/location every 30s for the latest lat/lng
+  // from worker_locations, and update the marker position + ETA/distance from there.
+  // markArrived() should POST /facility/api/bookings/<id>/arrived to log check-in time.
+
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  // Animate the marker along the route path to simulate live movement
+  const path = document.getElementById('routePath');
+  const marker = document.getElementById('workerMarker');
+  const pathLength = path.getTotalLength();
+
+  let progress = 0.15; // starting position along the path (0 to 1)
+  const speed = 0.0006; // per animation frame
+
+  function animateMarker() {
+    if (progress < 0.96) {
+      progress += speed;
+    }
+    const point = path.getPointAtLength(progress * pathLength);
+    marker.setAttribute('transform', `translate(${point.x}, ${point.y})`);
+    requestAnimationFrame(animateMarker);
+  }
+
+  animateMarker();
+
+  // Simulate periodic location ping updates
+  const distances = ['2.9 km', '2.4 km', '1.8 km', '1.1 km'];
+  const etas = ['9 min', '7 min', '5 min', '2 min'];
+  let pingIndex = 0;
+
+  setInterval(() => {
+    if (pingIndex >= distances.length) return;
+
+    document.getElementById('etaValue').textContent = etas[pingIndex];
+    document.getElementById('distValue').textContent = distances[pingIndex];
+    document.getElementById('lastPing').textContent = 'Just now';
+
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="ping-time">${timeStr}</span><span class="ping-text">${distances[pingIndex]} away, moving</span>`;
+    document.getElementById('pingTimeline').prepend(li);
+
+    pingIndex++;
+  }, 8000);
+
+  function markArrived() {
+    showToast('Worker marked as arrived at facility');
+    document.getElementById('etaValue').textContent = '0 min';
+    document.getElementById('distValue').textContent = '0 km';
+  }
+</script>
+
+</body>
+</html>

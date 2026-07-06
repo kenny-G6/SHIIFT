@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bookings | Shiift</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-dark: #0A4144;
+    --primary-mid: #0F6E68;
+    --accent-mint: #6FD490;
+    --accent-hover: #58C27E;
+    --bg: #F7FBF8;
+    --text-primary: #10302E;
+    --text-muted: #56716D;
+    --border: #E1F0E4;
+    --badge-bg: #D7F2DD;
+    --badge-border: #A7E3AF;
+    --danger: #C64B4B;
+    --danger-bg: #FBEAEA;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, .brand {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  /* Navbar */
+  .navbar {
+    background: var(--primary-dark);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+  }
+
+  .nav-links a {
+    color: #CFE6E2;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.92rem;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav-links a:hover { color: #FFFFFF; }
+
+  .nav-links a.active {
+    color: var(--accent-mint);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .nav-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  /* Page container */
+  .page-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 36px 24px 64px;
+  }
+
+  .page-header h1 {
+    font-size: 1.6rem;
+    color: var(--primary-dark);
+  }
+
+  .page-header p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin-top: 4px;
+    margin-bottom: 24px;
+  }
+
+  /* Summary strip */
+  .summary-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .summary-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 16px 18px;
+  }
+
+  .summary-card label {
+    display: block;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .summary-card .num {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--primary-dark);
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .tab {
+    background: none;
+    border: none;
+    padding: 10px 16px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .tab:hover { color: var(--primary-dark); }
+
+  .tab.active {
+    color: var(--primary-dark);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .tab .count { color: var(--text-muted); font-weight: 500; }
+
+  /* Toolbar */
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .search-input {
+    flex: 1;
+    max-width: 320px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.86rem;
+    background: #FFFFFF;
+  }
+
+  .search-input:focus { outline: none; border-color: var(--accent-mint); }
+
+  /* Table card */
+  .card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    overflow: hidden;
+  }
+
+  .bookings-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .bookings-table th {
+    text-align: left;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 14px 16px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .bookings-table td {
+    padding: 14px 16px;
+    font-size: 0.88rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .bookings-table tr:last-child td { border-bottom: none; }
+  .bookings-table tr:hover td { background: var(--bg); }
+
+  .worker-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .worker-avatar-sm {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.78rem;
+    flex-shrink: 0;
+  }
+
+  .worker-name { font-weight: 600; color: var(--text-primary); }
+  .worker-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 1px; }
+
+  .status-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 5px 13px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  .status-upcoming { background: var(--badge-bg); border: 1px solid var(--badge-border); color: var(--primary-dark); }
+  .status-en-route { background: #E4EEFB; border: 1px solid #BFD8F5; color: #2C5A9E; }
+  .status-completed { background: #EDEDED; border: 1px solid #D8D8D8; color: var(--text-muted); }
+  .status-cancelled { background: var(--danger-bg); border: 1px solid #EFC7C7; color: var(--danger); }
+
+  .pay-status {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 100px;
+  }
+
+  .pay-status.paid { background: var(--badge-bg); border: 1px solid var(--badge-border); color: var(--primary-dark); }
+  .pay-status.pending { background: #FFF3D9; border: 1px solid #F0DBA0; color: #8A6A1B; }
+  .pay-status.na { color: var(--text-muted); font-size: 0.8rem; font-weight: 500; }
+
+  .row-link {
+    color: var(--primary-mid);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+  }
+
+  .row-link:hover { text-decoration: underline; }
+
+  .track-link { color: var(--primary-mid); }
+
+  /* Empty state */
+  .empty-state {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .empty-state h3 { font-size: 1.05rem; color: var(--primary-dark); margin-bottom: 6px; }
+  .empty-state p { color: var(--text-muted); font-size: 0.88rem; }
+
+  @media (max-width: 900px) {
+    .summary-strip { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+    .bookings-table { display: block; overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/facility/dashboard" class="brand">Shiift</a>
+  <div class="nav-links">
+    <a href="/facility/dashboard">Dashboard</a>
+    <a href="/facility/post-shift">Post Shift</a>
+    <a href="/facility/manage-shifts">Manage Shifts</a>
+    <a href="/facility/bookings" class="active">Bookings</a>
+    <a href="/facility/reviews">Reviews</a>
+    <a href="/facility/profile">Profile</a>
+  </div>
+  <div class="nav-avatar">SC</div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <h1>Bookings</h1>
+    <p>Every worker booked across all your shifts, in one place.</p>
+  </div>
+
+  <div class="summary-strip">
+    <div class="summary-card">
+      <label>Upcoming</label>
+      <div class="num">5</div>
+    </div>
+    <div class="summary-card">
+      <label>En Route</label>
+      <div class="num">1</div>
+    </div>
+    <div class="summary-card">
+      <label>Completed</label>
+      <div class="num">21</div>
+    </div>
+    <div class="summary-card">
+      <label>Cancelled</label>
+      <div class="num">2</div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <input type="text" class="search-input" id="searchInput" placeholder="Search by worker or booking ID..." onkeyup="applyFilters()">
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-status="all" onclick="filterByStatus('all')">All <span class="count">(29)</span></button>
+    <button class="tab" data-status="upcoming" onclick="filterByStatus('upcoming')">Upcoming <span class="count">(5)</span></button>
+    <button class="tab" data-status="en-route" onclick="filterByStatus('en-route')">En Route <span class="count">(1)</span></button>
+    <button class="tab" data-status="completed" onclick="filterByStatus('completed')">Completed <span class="count">(21)</span></button>
+    <button class="tab" data-status="cancelled" onclick="filterByStatus('cancelled')">Cancelled <span class="count">(2)</span></button>
+  </div>
+
+  <div class="card">
+    <table class="bookings-table" id="bookingsTable">
+      <thead>
+        <tr>
+          <th>Booking ID</th>
+          <th>Worker</th>
+          <th>Shift</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Payment</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="bookingsBody">
+
+        <tr data-status="en-route" data-search="tunde okafor bk-000201 sh-1038">
+          <td>#BK-000201</td>
+          <td>
+            <div class="worker-cell">
+              <div class="worker-avatar-sm">TO</div>
+              <div>
+                <div class="worker-name">Tunde Okafor</div>
+                <div class="worker-sub">Registered Nurse</div>
+              </div>
+            </div>
+          </td>
+          <td>#SH-1038</td>
+          <td>Jul 6, 2026</td>
+          <td><span class="status-badge status-en-route">En Route</span></td>
+          <td><span class="pay-status pending">Pending</span></td>
+          <td><a href="/facility/worker-tracking?shift=SH-1038" class="row-link track-link">Track</a></td>
+        </tr>
+
+        <tr data-status="upcoming" data-search="kemi adeyemi bk-000205 sh-1042">
+          <td>#BK-000205</td>
+          <td>
+            <div class="worker-cell">
+              <div class="worker-avatar-sm">KA</div>
+              <div>
+                <div class="worker-name">Kemi Adeyemi</div>
+                <div class="worker-sub">Registered Nurse</div>
+              </div>
+            </div>
+          </td>
+          <td>#SH-1042</td>
+          <td>Jul 8, 2026</td>
+          <td><span class="status-badge status-upcoming">Confirmed</span></td>
+          <td><span class="pay-status pending">Pending</span></td>
+          <td><a href="/facility/booking-detail?id=BK-000205" class="row-link">View</a></td>
+        </tr>
+
+        <tr data-status="upcoming" data-search="funmi bello bk-000206 sh-1044">
+          <td>#BK-000206</td>
+          <td>
+            <div class="worker-cell">
+              <div class="worker-avatar-sm">FB</div>
+              <div>
+                <div class="worker-name">Funmi Bello</div>
+                <div class="worker-sub">Pharmacist</div>
+              </div>
+            </div>
+          </td>
+          <td>#SH-1044</td>
+          <td>Jul 9, 2026</td>
+          <td><span class="status-badge status-upcoming">Confirmed</span></td>
+          <td><span class="pay-status pending">Pending</span></td>
+          <td><a href="/facility/booking-detail?id=BK-000206" class="row-link">View</a></td>
+        </tr>
+
+        <tr data-status="completed" data-search="chidinma eze bk-000188 sh-1021">
+          <td>#BK-000188</td>
+          <td>
+            <div class="worker-cell">
+              <div class="worker-avatar-sm">CE</div>
+              <div>
+                <div class="worker-name">Chidinma Eze</div>
+                <div class="worker-sub">Registered Nurse</div>
+              </div>
+            </div>
+          </td>
+          <td>#SH-1021</td>
+          <td>Jun 28, 2026</td>
+          <td><span class="status-badge status-completed">Completed</span></td>
+          <td><span class="pay-status paid">Paid</span></td>
+          <td><a href="/facility/booking-detail?id=BK-000188" class="row-link">View</a></td>
+        </tr>
+
+        <tr data-status="completed" data-search="ibrahim musa bk-000174 sh-1017">
+          <td>#BK-000174</td>
+          <td>
+            <div class="worker-cell">
+              <div class="worker-avatar-sm">IM</div>
+              <div>
+                <div class="worker-name">Ibrahim Musa</div>
+                <div class="worker-sub">Radiographer</div>
+              </div>
+            </div>
+          </td>
+          <td>#SH-1017</td>
+          <td>Jun 24, 2026</td>
+          <td><span class="status-badge status-completed">Completed</span></td>
+          <td><span class="pay-status paid">Paid</span></td>
+          <td><a href="/facility/booking-detail?id=BK-000174" class="row-link">View</a></td>
+        </tr>
+
+        <tr data-status="completed" data-search="grace nwosu bk-000162 sh-1009">
+          <td>#BK-000162</td>
+          <td>
+            <div class="worker-cell">
+              <div class="worker-avatar-sm">GN</div>
+              <div>
+                <div class="worker-name">Grace Nwosu</div>
+                <div class="worker-sub">Registered Nurse</div>
+              </div>
+            </div>
+          </td>
+          <td>#SH-1009</td>
+          <td>Jun 18, 2026</td>
+          <td><span class="status-badge status-completed">Completed</span></td>
+          <td><span class="pay-status paid">Paid</span></td>
+          <td><a href="/facility/booking-detail?id=BK-000162" class="row-link">View</a></td>
+        </tr>
+
+        <tr data-status="cancelled" data-search="segun bakare bk-000151 sh-1004">
+          <td>#BK-000151</td>
+          <td>
+            <div class="worker-cell">
+              <div class="worker-avatar-sm">SB</div>
+              <div>
+                <div class="worker-name">Segun Bakare</div>
+                <div class="worker-sub">Registered Nurse</div>
+              </div>
+            </div>
+          </td>
+          <td>#SH-1004</td>
+          <td>Jun 12, 2026</td>
+          <td><span class="status-badge status-cancelled">Cancelled</span></td>
+          <td><span class="pay-status na">— Not charged</span></td>
+          <td><a href="/facility/booking-detail?id=BK-000151" class="row-link">View</a></td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <div class="empty-state" id="emptyState">
+      <h3>No bookings match your filters</h3>
+      <p>Try a different status or search term.</p>
+    </div>
+  </div>
+
+</div>
+
+<script src="/static/js/jquery-4.0.0.min.js"></script>
+<script>
+  // In production: GET /facility/api/bookings?status=&search= to populate this table.
+
+  let currentStatusFilter = 'all';
+
+  function filterByStatus(status) {
+    currentStatusFilter = status;
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.status === status);
+    });
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+    const rows = document.querySelectorAll('#bookingsBody tr');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+      const matchesStatus = currentStatusFilter === 'all' || row.dataset.status === currentStatusFilter;
+      const matchesSearch = searchTerm === '' || row.dataset.search.includes(searchTerm);
+      const isVisible = matchesStatus && matchesSearch;
+
+      row.style.display = isVisible ? '' : 'none';
+      if (isVisible) visibleCount++;
+    });
+
+    document.getElementById('emptyState').style.display = visibleCount === 0 ? 'block' : 'none';
+    document.getElementById('bookingsTable').style.display = visibleCount === 0 ? 'none' : 'table';
+  }
+</script>
+
+</body>
+</html>

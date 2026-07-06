@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHIIFT - Facility Profile</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #F7FBF8;
+            color: #10302E;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Baloo 2', 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Navbar */
+        .navbar-shiift { background-color: #0A4144; }
+
+        .navbar-brand-shiift {
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 800;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            color: #F7FBF8 !important;
+            text-decoration: none;
+        }
+
+        .navbar-facility-label {
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 700;
+            color: #6FD490;
+            font-size: 0.95rem;
+        }
+
+        .navbar-status-badge {
+            background-color: #6FD490;
+            color: #0A4144;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.3em 0.8em;
+            border-radius: 100px;
+        }
+
+        .navbar-link {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #A7C8C4 !important;
+            text-decoration: none;
+        }
+
+        .navbar-link:hover { color: #F7FBF8 !important; }
+
+        /* Section eyebrow */
+        .section-eyebrow {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #0F6E68;
+            margin-bottom: 0.85rem;
+        }
+
+        /* Cards */
+        .shiift-card {
+            background-color: #FFFFFF;
+            border: 1px solid #E1F0E4;
+            border-radius: 14px;
+            box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+        }
+
+        .shiift-card-header {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #E1F0E4;
+            padding: 1rem 1.25rem;
+            border-radius: 14px 14px 0 0;
+        }
+
+        .shiift-card-header-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #0F6E68;
+            margin: 0;
+        }
+
+        /* Facility avatar */
+        .facility-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 14px;
+            background-color: #D7F2DD;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: #0A4144;
+            flex-shrink: 0;
+        }
+
+        .facility-name {
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: #0A4144;
+            margin: 0;
+        }
+
+        .facility-type {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.82rem;
+            color: #56716D;
+            margin: 0;
+        }
+
+        /* Plan badge */
+        .plan-badge-pro {
+            background-color: #0A4144;
+            color: #6FD490;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.3em 0.85em;
+            border-radius: 100px;
+        }
+
+        .plan-badge-free {
+            background-color: #F7FBF8;
+            border: 1px solid #E1F0E4;
+            color: #56716D;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.3em 0.85em;
+            border-radius: 100px;
+        }
+
+        /* Info labels */
+        .info-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #56716D;
+            margin-bottom: 0.15rem;
+        }
+
+        .info-value {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            color: #10302E;
+            font-weight: 500;
+        }
+
+        /* Stat pills */
+        .stat-pill {
+            background-color: #F7FBF8;
+            border: 1px solid #E1F0E4;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            text-align: center;
+        }
+
+        .stat-pill-value {
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: #0A4144;
+            line-height: 1.2;
+        }
+
+        .stat-pill-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #56716D;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        /* Plan upgrade card */
+        .plan-upgrade-card {
+            background-color: #0A4144;
+            border-radius: 12px;
+            padding: 1.25rem;
+            color: #F7FBF8;
+        }
+
+        .plan-upgrade-card h6 {
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 800;
+            color: #6FD490;
+            margin-bottom: 0.25rem;
+        }
+
+        .plan-upgrade-card p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.82rem;
+            color: #A7C8C4;
+            margin-bottom: 0.85rem;
+        }
+
+        .btn-upgrade {
+            background-color: #6FD490;
+            border: none;
+            color: #0A4144;
+            border-radius: 8px;
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 0.45rem 1.1rem;
+            transition: background-color 0.15s ease;
+        }
+
+        .btn-upgrade:hover {
+            background-color: #58C27E;
+            color: #0A4144;
+        }
+
+        /* Form elements */
+        .section-divider {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #0F6E68;
+            border-bottom: 1px solid #E1F0E4;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .form-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #10302E;
+        }
+
+        .form-control, .form-select {
+            border: 1px solid #E1F0E4;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            color: #10302E;
+            padding: 0.6rem 0.9rem;
+            background-color: #FFFFFF;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #6FD490;
+            box-shadow: 0 0 0 0.2rem rgba(111, 212, 144, 0.2);
+        }
+
+        .form-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.75rem;
+            color: #56716D;
+        }
+
+        /* Password */
+        .password-wrapper { position: relative; }
+        .password-wrapper .form-control { padding-right: 2.8rem; }
+
+        .toggle-pw {
+            position: absolute;
+            right: 0.9rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            color: #56716D;
+            font-size: 0.78rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .toggle-pw:hover { color: #0A4144; }
+
+        /* Buttons */
+        .btn-shiift-primary {
+            background-color: #0A4144;
+            border: none;
+            color: #F7FBF8;
+            border-radius: 10px;
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.55rem 1.4rem;
+            transition: background-color 0.15s ease;
+        }
+
+        .btn-shiift-primary:hover {
+            background-color: #0F6E68;
+            color: #F7FBF8;
+        }
+
+        .btn-shiift-outline {
+            background-color: transparent;
+            border: 1.5px solid #0A4144;
+            color: #0A4144;
+            border-radius: 10px;
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.55rem 1.4rem;
+            transition: all 0.15s ease;
+        }
+
+        .btn-shiift-outline:hover {
+            background-color: #0A4144;
+            color: #F7FBF8;
+        }
+
+        .btn-shiift-danger {
+            background-color: transparent;
+            border: 1.5px solid #dc3545;
+            color: #dc3545;
+            border-radius: 10px;
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.55rem 1.4rem;
+            transition: all 0.15s ease;
+        }
+
+        .btn-shiift-danger:hover {
+            background-color: #dc3545;
+            color: #FFFFFF;
+        }
+
+        /* Toast */
+        .shiift-toast {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background-color: #D7F2DD;
+            border: 1px solid #A7E3AF;
+            border-radius: 10px;
+            color: #0A4144;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.85rem 1.25rem;
+            display: none;
+            z-index: 9999;
+            box-shadow: 0 4px 18px rgba(10, 65, 68, 0.12);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-shiift">
+        <div class="container">
+            <a class="navbar-brand-shiift" href="/facility-dashboard.html">SHIIFT</a>
+            <div class="ms-auto d-flex align-items-center gap-3">
+                <a href="/facility-dashboard.html" class="navbar-link">Dashboard</a>
+                <a href="/manage-shifts.html" class="navbar-link">Shifts</a>
+                <a href="/facility-bookings.html" class="navbar-link">Bookings</a>
+                <a href="/facility-payment.html" class="navbar-link">Payments</a>
+                <span class="navbar-facility-label">Lagoon Hospital</span>
+                <span class="navbar-status-badge">Pro</span>
+                <a href="/index.html" class="navbar-link">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <div class="row g-4">
+
+            <!-- LEFT: Facility Summary -->
+            <div class="col-lg-4">
+
+                <!-- Identity Card -->
+                <div class="shiift-card mb-4">
+                    <div class="p-4">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="facility-avatar">LH</div>
+                            <div>
+                                <p class="facility-name">Lagoon Hospital</p>
+                                <p class="facility-type">Private Hospital &bull; Lagos</p>
+                                <span class="plan-badge-pro mt-1 d-inline-block">Pro Plan</span>
+                            </div>
+                        </div>
+
+                        <hr style="border-color: #E1F0E4;">
+
+                        <div class="mb-3">
+                            <p class="info-label">CAC Number</p>
+                            <p class="info-value">RC-284710</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="info-label">Plan Expires</p>
+                            <p class="info-value">August 31, 2026</p>
+                        </div>
+                        <div>
+                            <p class="info-label">Member Since</p>
+                            <p class="info-value mb-0">March 2025</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="shiift-card mb-4">
+                    <div class="shiift-card-header">
+                        <p class="shiift-card-header-title">Activity Overview</p>
+                    </div>
+                    <div class="p-3">
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <div class="stat-pill">
+                                    <p class="stat-pill-value">38</p>
+                                    <p class="stat-pill-label mb-0">Shifts Posted</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-pill">
+                                    <p class="stat-pill-value">31</p>
+                                    <p class="stat-pill-label mb-0">Filled</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-pill">
+                                    <p class="stat-pill-value">4.7</p>
+                                    <p class="stat-pill-label mb-0">Avg Rating</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-pill">
+                                    <p class="stat-pill-value">5</p>
+                                    <p class="stat-pill-label mb-0">Active</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Plan Upgrade -->
+                <div class="plan-upgrade-card">
+                    <h6>Upgrade to Enterprise</h6>
+                    <p>Multi-branch support, dedicated account manager and API access for large networks.</p>
+                    <button class="btn-upgrade">Contact Sales</button>
+                </div>
+
+            </div>
+
+            <!-- RIGHT: Edit Forms -->
+            <div class="col-lg-8">
+
+                <!-- Facility Information -->
+                <p class="section-eyebrow">Facility Information</p>
+                <div class="shiift-card mb-4">
+                    <div class="shiift-card-header">
+                        <p class="shiift-card-header-title">Edit Facility Details</p>
+                    </div>
+                    <div class="p-4">
+                        <form id="facilityInfoForm">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label" for="facilityName">Facility Name</label>
+                                    <input type="text" class="form-control" id="facilityName" value="Lagoon Hospital" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="facilityType">Facility Type</label>
+                                    <select class="form-select" id="facilityType">
+                                        <option value="General">General Hospital</option>
+                                        <option value="Private" selected>Private Hospital</option>
+                                        <option value="Diagnostic">Diagnostic / Lab Centre</option>
+                                        <option value="Specialist">Specialist Hospital</option>
+                                        <option value="Maternity">Maternity / Birthing Centre</option>
+                                        <option value="Dental">Dental Clinic</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="state">State</label>
+                                    <select class="form-select" id="state" required>
+                                        <option value="Lagos" selected>Lagos</option>
+                                        <option value="Abuja">FCT Abuja</option>
+                                        <option value="Oyo">Oyo</option>
+                                        <option value="Kano">Kano</option>
+                                        <option value="Rivers">Rivers</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="city">City / Area</label>
+                                    <input type="text" class="form-control" id="city" value="Ikoyi">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="cacNumber">CAC Number</label>
+                                    <input type="text" class="form-control" id="cacNumber" value="RC-284710" disabled>
+                                    <div class="form-text mt-1">Contact support to update your CAC number.</div>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label" for="address">Full Address</label>
+                                    <input type="text" class="form-control" id="address" value="3 Mosley Road, Ikoyi, Lagos" required>
+                                </div>
+                            </div>
+                            <div class="mt-4 d-flex gap-2">
+                                <button type="submit" class="btn-shiift-primary">Save Changes</button>
+                                <button type="reset" class="btn-shiift-outline">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Contact Person -->
+                <p class="section-eyebrow">Contact Person</p>
+                <div class="shiift-card mb-4">
+                    <div class="shiift-card-header">
+                        <p class="shiift-card-header-title">Primary Contact Details</p>
+                    </div>
+                    <div class="p-4">
+                        <form id="contactForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="contactName">Contact Name</label>
+                                    <input type="text" class="form-control" id="contactName" value="Dr. Amaka Obi" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="contactPhone">Phone Number</label>
+                                    <input type="tel" class="form-control" id="contactPhone" value="08012345678" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label" for="contactEmail">Email Address</label>
+                                    <input type="email" class="form-control" id="contactEmail" value="admin@lagoonhospital.com" required>
+                                </div>
+                            </div>
+                            <div class="mt-4 d-flex gap-2">
+                                <button type="submit" class="btn-shiift-primary">Save Changes</button>
+                                <button type="reset" class="btn-shiift-outline">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Security -->
+                <p class="section-eyebrow">Security</p>
+                <div class="shiift-card mb-4">
+                    <div class="shiift-card-header">
+                        <p class="shiift-card-header-title">Change Password</p>
+                    </div>
+                    <div class="p-4">
+                        <form id="changePasswordForm" novalidate>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label" for="currentPassword">Current Password</label>
+                                    <div class="password-wrapper">
+                                        <input type="password" class="form-control" id="currentPassword" placeholder="••••••••" required>
+                                        <button type="button" class="toggle-pw" data-target="currentPassword">Show</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="newPassword">New Password</label>
+                                    <div class="password-wrapper">
+                                        <input type="password" class="form-control" id="newPassword" placeholder="••••••••" required>
+                                        <button type="button" class="toggle-pw" data-target="newPassword">Show</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="confirmPassword">Confirm New Password</label>
+                                    <div class="password-wrapper">
+                                        <input type="password" class="form-control" id="confirmPassword" placeholder="••••••••" required>
+                                        <button type="button" class="toggle-pw" data-target="confirmPassword">Show</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <button type="submit" class="btn-shiift-primary">Update Password</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Danger Zone -->
+                <p class="section-eyebrow">Account</p>
+                <div class="shiift-card">
+                    <div class="p-4 d-flex align-items-center justify-content-between flex-wrap gap-3">
+                        <div>
+                            <p class="fw-bold mb-0" style="font-size: 0.9rem; color: #10302E;">Deactivate Facility Account</p>
+                            <p class="form-text mb-0">Your facility will be hidden from workers. All active shifts will be cancelled.</p>
+                        </div>
+                        <button class="btn-shiift-danger" id="deactivateBtn">Deactivate</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="shiift-toast" id="shiiftToast"></div>
+
+    <script src="/static/js/jquery-4.0.0.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            function showToast(msg) {
+                $('#shiiftToast').text(msg).fadeIn(200);
+                setTimeout(function () { $('#shiiftToast').fadeOut(300); }, 3000);
+            }
+
+            // Toggle password visibility
+            $('.toggle-pw').on('click', function () {
+                var targetId = $(this).data('target');
+                var input = $('#' + targetId);
+                var isHidden = input.attr('type') === 'password';
+                input.attr('type', isHidden ? 'text' : 'password');
+                $(this).text(isHidden ? 'Hide' : 'Show');
+            });
+
+            // Facility info save
+            $('#facilityInfoForm').on('submit', function (e) {
+                e.preventDefault();
+                showToast('Facility details updated.');
+            });
+
+            // Contact save
+            $('#contactForm').on('submit', function (e) {
+                e.preventDefault();
+                showToast('Contact details updated.');
+            });
+
+            // Change password
+            $('#changePasswordForm').on('submit', function (e) {
+                e.preventDefault();
+                var newPw = $('#newPassword').val();
+                var confirmPw = $('#confirmPassword').val();
+
+                $('#newPassword, #confirmPassword').removeClass('is-invalid');
+
+                if (newPw.length < 8) {
+                    $('#newPassword').addClass('is-invalid');
+                    showToast('Password must be at least 8 characters.');
+                    return;
+                }
+
+                if (newPw !== confirmPw) {
+                    $('#confirmPassword').addClass('is-invalid');
+                    showToast('Passwords do not match.');
+                    return;
+                }
+
+                showToast('Password updated successfully.');
+                $('#changePasswordForm')[0].reset();
+            });
+
+            // Deactivate
+            $('#deactivateBtn').on('click', function () {
+                if (confirm('Are you sure you want to deactivate this facility account? All active shifts will be cancelled.')) {
+                    showToast('Account deactivated. Redirecting...');
+                    setTimeout(function () { window.location.href = '/index.html'; }, 2000);
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

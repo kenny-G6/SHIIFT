@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviews | Shiift</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-dark: #0A4144;
+    --primary-mid: #0F6E68;
+    --accent-mint: #6FD490;
+    --accent-hover: #58C27E;
+    --bg: #F7FBF8;
+    --text-primary: #10302E;
+    --text-muted: #56716D;
+    --border: #E1F0E4;
+    --badge-bg: #D7F2DD;
+    --badge-border: #A7E3AF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, .brand {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  /* Navbar */
+  .navbar {
+    background: var(--primary-dark);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+  }
+
+  .nav-links a {
+    color: #CFE6E2;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.92rem;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav-links a:hover { color: #FFFFFF; }
+
+  .nav-links a.active {
+    color: var(--accent-mint);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .nav-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  /* Page container */
+  .page-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 36px 24px 64px;
+  }
+
+  .page-header h1 {
+    font-size: 1.6rem;
+    color: var(--primary-dark);
+  }
+
+  .page-header p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin-top: 4px;
+    margin-bottom: 24px;
+  }
+
+  .section-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    margin-top: 30px;
+  }
+
+  .section-title-row:first-of-type { margin-top: 0; }
+
+  .section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+  }
+
+  .section-count {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  /* Pending review cards */
+  .pending-card {
+    background: #FFFFFF;
+    border: 1px solid var(--badge-border);
+    background-color: #FBFEFC;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .pending-worker {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .pending-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  .pending-name {
+    font-weight: 600;
+    font-size: 0.94rem;
+    color: var(--text-primary);
+  }
+
+  .pending-meta {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .btn-write-review {
+    background: var(--accent-mint);
+    color: var(--primary-dark);
+    border: none;
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s ease;
+  }
+
+  .btn-write-review:hover { background: var(--accent-hover); }
+
+  /* Given review cards */
+  .review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .review-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 20px;
+  }
+
+  .review-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    gap: 10px;
+  }
+
+  .review-worker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .review-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.82rem;
+    flex-shrink: 0;
+  }
+
+  .review-name {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.96rem;
+    color: var(--primary-dark);
+  }
+
+  .review-meta {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 1px;
+  }
+
+  .review-stars {
+    color: var(--accent-mint);
+    font-size: 0.92rem;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  .review-comment {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    line-height: 1.6;
+  }
+
+  .review-shift-tag {
+    display: inline-block;
+    margin-top: 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    padding: 4px 12px;
+    border-radius: 100px;
+  }
+
+  /* Empty state */
+  .empty-inline {
+    text-align: center;
+    padding: 24px 20px;
+    color: var(--text-muted);
+    font-size: 0.86rem;
+    background: #FFFFFF;
+    border: 1px dashed var(--border);
+    border-radius: 14px;
+  }
+
+  /* Modal */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 65, 68, 0.35);
+    align-items: center;
+    justify-content: center;
+    z-index: 998;
+  }
+
+  .modal-backdrop.show { display: flex; }
+
+  .modal-box {
+    background: #FFFFFF;
+    border-radius: 14px;
+    padding: 28px;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 12px 32px rgba(10, 65, 68, 0.2);
+  }
+
+  .modal-box h3 {
+    color: var(--primary-dark);
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+  }
+
+  .modal-box .modal-sub {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+
+  .star-picker {
+    display: flex;
+    gap: 6px;
+    font-size: 1.8rem;
+    margin-bottom: 18px;
+    justify-content: center;
+  }
+
+  .star-picker span {
+    cursor: pointer;
+    color: var(--border);
+    transition: color 0.1s ease;
+  }
+
+  .star-picker span.filled { color: var(--accent-mint); }
+
+  .modal-box label.field-label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--primary-mid);
+    margin-bottom: 6px;
+  }
+
+  .modal-box textarea {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+    padding: 10px 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.88rem;
+    resize: vertical;
+    min-height: 90px;
+    margin-bottom: 20px;
+  }
+
+  .modal-box textarea:focus {
+    outline: none;
+    border-color: var(--accent-mint);
+    background: #FFFFFF;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .modal-actions button {
+    flex: 1;
+    border-radius: 10px;
+    padding: 11px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-submit-review {
+    background: var(--accent-mint);
+    color: var(--primary-dark);
+  }
+
+  .btn-submit-review:hover { background: var(--accent-hover); }
+
+  .btn-cancel-modal {
+    background: var(--bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border) !important;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--primary-dark);
+    color: #FFFFFF;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(10, 65, 68, 0.25);
+    transform: translateY(20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    z-index: 999;
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  @media (max-width: 700px) {
+    .nav-links { display: none; }
+    .pending-card { flex-direction: column; align-items: flex-start; }
+    .btn-write-review { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/facility/dashboard" class="brand">Shiift</a>
+  <div class="nav-links">
+    <a href="/facility/dashboard">Dashboard</a>
+    <a href="/facility/post-shift">Post Shift</a>
+    <a href="/facility/manage-shifts">Manage Shifts</a>
+    <a href="/facility/bookings">Bookings</a>
+    <a href="/facility/reviews" class="active">Reviews</a>
+    <a href="/facility/profile">Profile</a>
+  </div>
+  <div class="nav-avatar">SC</div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <h1>Reviews</h1>
+    <p>Rate workers after completed shifts to help build a trusted marketplace.</p>
+  </div>
+
+  <div class="section-title-row">
+    <div class="section-title">Pending Reviews</div>
+    <div class="section-count" id="pendingCount">2 awaiting your review</div>
+  </div>
+
+  <div id="pendingList">
+    <div class="pending-card" id="pending-1">
+      <div class="pending-worker">
+        <div class="pending-avatar">CE</div>
+        <div>
+          <div class="pending-name">Chidinma Eze</div>
+          <div class="pending-meta">Registered Nurse · Shift #SH-1021 · Jun 28, 2026</div>
+        </div>
+      </div>
+      <button class="btn-write-review" onclick="openReviewModal(1, 'Chidinma Eze', 'Registered Nurse', 'SH-1021')">Write Review</button>
+    </div>
+
+    <div class="pending-card" id="pending-2">
+      <div class="pending-worker">
+        <div class="pending-avatar">IM</div>
+        <div>
+          <div class="pending-name">Ibrahim Musa</div>
+          <div class="pending-meta">Radiographer · Shift #SH-1017 · Jun 24, 2026</div>
+        </div>
+      </div>
+      <button class="btn-write-review" onclick="openReviewModal(2, 'Ibrahim Musa', 'Radiographer', 'SH-1017')">Write Review</button>
+    </div>
+  </div>
+
+  <div class="empty-inline" id="pendingEmpty" style="display:none;">
+    All caught up — no pending reviews right now.
+  </div>
+
+  <div class="section-title-row">
+    <div class="section-title">Reviews You've Given</div>
+    <div class="section-count">19 reviews</div>
+  </div>
+
+  <div class="review-list" id="reviewList">
+
+    <div class="review-card">
+      <div class="review-top">
+        <div class="review-worker">
+          <div class="review-avatar">GN</div>
+          <div>
+            <div class="review-name">Grace Nwosu</div>
+            <div class="review-meta">Jun 18, 2026</div>
+          </div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+      </div>
+      <p class="review-comment">Punctual and highly professional throughout the shift. Excellent communication with the ward team.</p>
+      <span class="review-shift-tag">Registered Nurse · Shift #SH-1009</span>
+    </div>
+
+    <div class="review-card">
+      <div class="review-top">
+        <div class="review-worker">
+          <div class="review-avatar">TA</div>
+          <div>
+            <div class="review-name">Tobi Adisa</div>
+            <div class="review-meta">Jun 10, 2026</div>
+          </div>
+        </div>
+        <div class="review-stars">★★★★☆</div>
+      </div>
+      <p class="review-comment">Solid clinical performance, arrived a little later than scheduled but communicated ahead of time.</p>
+      <span class="review-shift-tag">Pharmacist · Shift #SH-0998</span>
+    </div>
+
+    <div class="review-card">
+      <div class="review-top">
+        <div class="review-worker">
+          <div class="review-avatar">AO</div>
+          <div>
+            <div class="review-name">Amaka Obi</div>
+            <div class="review-meta">Jun 3, 2026</div>
+          </div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+      </div>
+      <p class="review-comment">Exceptional bedside manner and very thorough with documentation. Would happily book again.</p>
+      <span class="review-shift-tag">Registered Nurse · Shift #SH-0982</span>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="modal-backdrop" id="reviewModal">
+  <div class="modal-box">
+    <h3 id="reviewModalName">Review Worker</h3>
+    <div class="modal-sub" id="reviewModalSub"></div>
+
+    <div class="star-picker" id="starPicker">
+      <span data-star="1">★</span>
+      <span data-star="2">★</span>
+      <span data-star="3">★</span>
+      <span data-star="4">★</span>
+      <span data-star="5">★</span>
+    </div>
+
+    <label class="field-label">Comment</label>
+    <textarea id="reviewComment" placeholder="Share how the shift went..."></textarea>
+
+    <div class="modal-actions">
+      <button class="btn-cancel-modal" onclick="closeReviewModal()">Cancel</button>
+      <button class="btn-submit-review" onclick="submitReview()">Submit Review</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/static/js/jquery-4.0.0.min.js"></script>
+<script>
+  // In production: GET /facility/api/reviews/pending for completed-but-unreviewed bookings,
+  // GET /facility/api/reviews/given for the history list,
+  // POST /facility/api/reviews with { booking_id, rating, comment } on submit.
+
+  let currentPending = null; // { id, name, profession, shift }
+  let selectedRating = 0;
+
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function openReviewModal(id, name, profession, shift) {
+    currentPending = { id, name, profession, shift };
+    selectedRating = 0;
+
+    document.getElementById('reviewModalName').textContent = `Review ${name}`;
+    document.getElementById('reviewModalSub').textContent = `${profession} · Shift #${shift}`;
+    document.getElementById('reviewComment').value = '';
+    updateStars(0);
+
+    document.getElementById('reviewModal').classList.add('show');
+  }
+
+  function closeReviewModal() {
+    document.getElementById('reviewModal').classList.remove('show');
+    currentPending = null;
+  }
+
+  function updateStars(rating) {
+    document.querySelectorAll('#starPicker span').forEach(star => {
+      star.classList.toggle('filled', parseInt(star.dataset.star, 10) <= rating);
+    });
+  }
+
+  document.querySelectorAll('#starPicker span').forEach(star => {
+    star.addEventListener('click', function() {
+      selectedRating = parseInt(this.dataset.star, 10);
+      updateStars(selectedRating);
+    });
+    star.addEventListener('mouseenter', function() {
+      updateStars(parseInt(this.dataset.star, 10));
+    });
+  });
+
+  document.getElementById('starPicker').addEventListener('mouseleave', function() {
+    updateStars(selectedRating);
+  });
+
+  function submitReview() {
+    if (selectedRating === 0) {
+      showToast('Please select a star rating');
+      return;
+    }
+
+    const { id, name } = currentPending;
+    closeReviewModal();
+
+    const card = document.getElementById(`pending-${id}`);
+    if (card) card.remove();
+
+    const remaining = document.querySelectorAll('#pendingList .pending-card').length;
+    document.getElementById('pendingCount').textContent = `${remaining} awaiting your review`;
+    document.getElementById('pendingEmpty').style.display = remaining === 0 ? 'block' : 'none';
+
+    showToast(`Review submitted for ${name}`);
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payments | Shiift Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-dark: #0A4144;
+    --primary-mid: #0F6E68;
+    --accent-mint: #6FD490;
+    --accent-hover: #58C27E;
+    --bg: #F7FBF8;
+    --text-primary: #10302E;
+    --text-muted: #56716D;
+    --border: #E1F0E4;
+    --badge-bg: #D7F2DD;
+    --badge-border: #A7E3AF;
+    --danger: #C64B4B;
+    --danger-bg: #FBEAEA;
+    --warn: #E0A93F;
+    --warn-bg: #FFF3D9;
+    --warn-border: #F0DBA0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, .brand {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  /* Navbar */
+  .navbar {
+    background: var(--primary-dark);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+
+  .brand .admin-tag {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--accent-mint);
+    letter-spacing: 1px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+
+  .nav-links a {
+    color: #CFE6E2;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav-links a:hover { color: #FFFFFF; }
+
+  .nav-links a.active {
+    color: var(--accent-mint);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .nav-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  /* Page container */
+  .page-wrap {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 36px 24px 64px;
+  }
+
+  .page-header h1 {
+    font-size: 1.6rem;
+    color: var(--primary-dark);
+  }
+
+  .page-header p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin-top: 4px;
+    margin-bottom: 24px;
+  }
+
+  /* Summary strip */
+  .summary-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .summary-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 18px 20px;
+  }
+
+  .summary-card label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .summary-card .amount {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--primary-dark);
+  }
+
+  .summary-card .amount.mint { color: var(--primary-mid); }
+  .summary-card .amount.warn { color: #8A6A1B; }
+
+  .summary-card .sub {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* Chart card */
+  .card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 24px;
+    margin-bottom: 22px;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+
+  .section-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+  }
+
+  .period-select {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    height: 180px;
+    padding-top: 10px;
+  }
+
+  .bar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+  }
+
+  .bar {
+    width: 100%;
+    max-width: 40px;
+    background: var(--accent-mint);
+    border-radius: 6px 6px 0 0;
+    transition: background 0.15s ease;
+  }
+
+  .bar:hover { background: var(--accent-hover); }
+
+  .bar-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .tab {
+    background: none;
+    border: none;
+    padding: 10px 16px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .tab:hover { color: var(--primary-dark); }
+
+  .tab.active {
+    color: var(--primary-dark);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .tab .count { color: var(--text-muted); font-weight: 500; }
+
+  /* Table */
+  .payments-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .payments-table th {
+    text-align: left;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 12px;
+    background: var(--bg);
+  }
+
+  .payments-table th:first-child { border-radius: 8px 0 0 8px; }
+  .payments-table th:last-child { border-radius: 0 8px 8px 0; }
+
+  .payments-table td {
+    padding: 12px;
+    font-size: 0.87rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .payments-table tr:hover td { background: var(--bg); }
+
+  .pay-status {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  .pay-status.paid { background: var(--badge-bg); border: 1px solid var(--badge-border); color: var(--primary-dark); }
+  .pay-status.pending { background: var(--warn-bg); border: 1px solid var(--warn-border); color: #8A6A1B; }
+  .pay-status.disputed { background: var(--danger-bg); border: 1px solid #EFC7C7; color: var(--danger); }
+
+  .amount-cell { font-weight: 600; }
+  .amount-cell.commission { color: var(--primary-mid); }
+
+  .action-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .action-btn:hover { border-color: var(--primary-mid); color: var(--primary-mid); }
+  .action-btn.approve:hover { border-color: var(--accent-mint); color: var(--primary-mid); }
+  .action-btn.danger:hover { border-color: var(--danger); color: var(--danger); }
+
+  .row-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+  /* Modal */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 65, 68, 0.35);
+    align-items: center;
+    justify-content: center;
+    z-index: 998;
+  }
+
+  .modal-backdrop.show { display: flex; }
+
+  .modal-box {
+    background: #FFFFFF;
+    border-radius: 14px;
+    padding: 28px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 12px 32px rgba(10, 65, 68, 0.2);
+  }
+
+  .modal-box h3 { color: var(--primary-dark); font-size: 1.1rem; margin-bottom: 8px; }
+  .modal-box p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
+
+  .modal-actions { display: flex; gap: 10px; }
+
+  .modal-actions button {
+    flex: 1;
+    border-radius: 10px;
+    padding: 11px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-confirm-approve { background: var(--accent-mint); color: var(--primary-dark); }
+  .btn-confirm-approve:hover { background: var(--accent-hover); }
+
+  .btn-confirm-danger { background: var(--danger); color: #FFFFFF; }
+  .btn-confirm-danger:hover { background: #B23F3F; }
+
+  .btn-cancel-modal {
+    background: var(--bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border) !important;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--primary-dark);
+    color: #FFFFFF;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(10, 65, 68, 0.25);
+    transform: translateY(20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    z-index: 999;
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  @media (max-width: 900px) {
+    .summary-strip { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+    .payments-table { display: block; overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="{{ url_for('admin_dashboard') }}" class="brand">Shiift<span class="admin-tag">ADMIN</span></a>
+  <div class="nav-links">
+    <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('admin_workers') }}">Workers</a>
+    <a href="{{ url_for('admin_facilities') }}">Facilities</a>
+    <a href="{{ url_for('admin_shifts') }}">Shifts</a>
+    <a href="{{ url_for('admin_bookings') }}">Bookings</a>
+    <a href="{{ url_for('admin_payments') }}" class="active">Payments</a>
+  </div>
+  <div class="nav-avatar">AD</div>
+</nav>
+
+<div class="page-wrap">
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div style="max-width: 1200px; margin: 16px auto 0; padding: 0 16px;">
+  {% for category, message in messages %}
+  <div style="padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem; {{ 'background:#FDECEC; color:#B42318; border:1px solid #F5C2C2;' if category == 'errormsg' else 'background:#E8F5E9; color:#1B5E20; border:1px solid #B7DFB9;' }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+
+  <div class="page-header">
+    <h1>Payments</h1>
+    <p>Platform commission, payouts, and payment disputes.</p>
+  </div>
+
+  <div class="summary-strip">
+    <div class="summary-card">
+      <label>Total Processed</label>
+      <div class="amount">&#8358;{{ '{:,.2f}'.format(totals.processed) }}</div>
+      <div class="sub">Held or released, since platform launch</div>
+    </div>
+    <div class="summary-card">
+      <label>Platform Commission</label>
+      <div class="amount mint">&#8358;{{ '{:,.2f}'.format(totals.commission) }}</div>
+      <div class="sub">{{ (commission_rate * 100)|int }}% commission rate</div>
+    </div>
+    <div class="summary-card">
+      <label>Pending Payouts</label>
+      <div class="amount warn">&#8358;{{ '{:,.2f}'.format(totals.pending_payout) }}</div>
+      <div class="sub">{{ counts.held }} bookings awaiting release</div>
+    </div>
+    <div class="summary-card">
+      <label>Refunded</label>
+      <div class="amount" style="color: var(--danger);">&#8358;{{ '{:,.2f}'.format(totals.refunded) }}</div>
+      <div class="sub">{{ counts.refunded }} refunded bookings</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="tabs">
+      <button class="tab active" data-status="all" onclick="filterByStatus('all')">All <span class="count">({{ counts.all }})</span></button>
+      <button class="tab" data-status="pending" onclick="filterByStatus('pending')">Pending <span class="count">({{ counts.pending }})</span></button>
+      <button class="tab" data-status="held" onclick="filterByStatus('held')">Held in Escrow <span class="count">({{ counts.held }})</span></button>
+      <button class="tab" data-status="released" onclick="filterByStatus('released')">Released <span class="count">({{ counts.released }})</span></button>
+      <button class="tab" data-status="refunded" onclick="filterByStatus('refunded')">Refunded <span class="count">({{ counts.refunded }})</span></button>
+    </div>
+
+    <table class="payments-table" id="paymentsTable">
+      <thead>
+        <tr>
+          <th>Booking</th>
+          <th>Worker</th>
+          <th>Facility</th>
+          <th>Base Pay</th>
+          <th>Commission</th>
+          <th>Payout</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="paymentsBody">
+        {% for payment in payments %}
+        <tr data-status="{{ payment.payment_status }}">
+          <td>#BK-{{ '%06d'|format(payment.booking_id) }}</td>
+          <td>{{ payment.booking.worker.first_name }} {{ payment.booking.worker.last_name }}</td>
+          <td>{{ payment.booking.shift.facility.facility_name }}</td>
+          <td class="amount-cell">&#8358;{{ '{:,.2f}'.format(payment.worker_payout) }}</td>
+          <td class="amount-cell commission">&#8358;{{ '{:,.2f}'.format(payment.commission) }}</td>
+          <td class="amount-cell">&#8358;{{ '{:,.2f}'.format(payment.amount_held) }}</td>
+          <td><span class="pay-status {{ payment.payment_status }}">{{ payment.payment_status|capitalize }}</span></td>
+          <td>
+            <div class="row-actions">
+              {% if payment.payment_status == 'held' and payment.booking.booking_status == 'completed' %}
+              <button class="action-btn approve" onclick="openReleaseModal({{ payment.payment_id }})">Release</button>
+              {% elif payment.payment_status == 'held' %}
+              <button class="action-btn" disabled style="opacity:0.5; cursor:default;">Awaiting Shift Completion</button>
+              {% elif payment.payment_status == 'pending' %}
+              <button class="action-btn" disabled style="opacity:0.5; cursor:default;">Awaiting Payment</button>
+              {% else %}
+              <button class="action-btn" disabled style="opacity:0.5; cursor:default;">{{ payment.payment_status|capitalize }}</button>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<form id="releaseForm" method="post" action="">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+</form>
+
+<div class="modal-backdrop" id="releaseModal">
+  <div class="modal-box">
+    <h3>Release this payment?</h3>
+    <p>Only click Release after you have actually sent the worker their payout via bank transfer. This marks the payment as settled in Shiift's records — it does not move money on its own.</p>
+    <div class="modal-actions">
+      <button class="btn-cancel-modal" onclick="closeReleaseModal()">Cancel</button>
+      <button class="btn-confirm-approve" onclick="confirmRelease()">Yes, I've Paid the Worker</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/static/js/jquery-4.0.0.min.js"></script>
+<script>
+  // Real payments now come from the server via Jinja (see admin_payments route in admin_route.py).
+  // Release posts to /admin/payment/<id>/release/ (only shown once the shift is completed).
+
+  let currentStatusFilter = 'all';
+  let pendingPaymentId = null;
+
+  function filterByStatus(status) {
+    currentStatusFilter = status;
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.status === status);
+    });
+
+    document.querySelectorAll('#paymentsBody tr').forEach(row => {
+      const isVisible = status === 'all' || row.dataset.status === status;
+      row.style.display = isVisible ? '' : 'none';
+    });
+  }
+
+  function openReleaseModal(paymentId) {
+    pendingPaymentId = paymentId;
+    document.getElementById('releaseModal').classList.add('show');
+  }
+
+  function closeReleaseModal() {
+    document.getElementById('releaseModal').classList.remove('show');
+    pendingPaymentId = null;
+  }
+
+  function confirmRelease() {
+    const paymentId = pendingPaymentId;
+    closeReleaseModal();
+    const form = document.getElementById('releaseForm');
+    form.action = '/admin/payment/' + paymentId + '/release/';
+    form.submit();
+  }
+</script>
+
+</body>
+</html>

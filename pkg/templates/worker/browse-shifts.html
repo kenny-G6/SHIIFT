@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Browse Shifts | Shiift</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-dark: #0A4144;
+    --primary-mid: #0F6E68;
+    --accent-mint: #6FD490;
+    --accent-hover: #58C27E;
+    --bg: #F7FBF8;
+    --text-primary: #10302E;
+    --text-muted: #56716D;
+    --border: #E1F0E4;
+    --badge-bg: #D7F2DD;
+    --badge-border: #A7E3AF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, .brand {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  /* Navbar */
+  .navbar {
+    background: var(--primary-dark);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .nav-links a {
+    color: #CFE6E2;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.92rem;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav-links a:hover {
+    color: #FFFFFF;
+  }
+
+  .nav-links a.active {
+    color: var(--accent-mint);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .nav-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  /* Page container */
+  .page-wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 36px 24px 64px;
+  }
+
+  .page-header {
+    margin-bottom: 24px;
+  }
+
+  .page-header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+  }
+
+  .page-header p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin-top: 4px;
+  }
+
+  /* Filter card */
+  .filter-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 20px 22px;
+    margin-bottom: 28px;
+  }
+
+  .filter-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr 1fr auto;
+    gap: 14px;
+    align-items: end;
+  }
+
+  .field label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .field input, .field select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    background: var(--bg);
+  }
+
+  .field input:focus, .field select:focus {
+    outline: none;
+    border-color: var(--primary-mid);
+  }
+
+  .btn-search {
+    background: var(--accent-mint);
+    color: var(--primary-dark);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s ease;
+  }
+
+  .btn-search:hover {
+    background: var(--accent-hover);
+  }
+
+  .filter-tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+
+  .filter-tag {
+    background: var(--badge-bg);
+    border: 1px solid var(--badge-border);
+    color: var(--primary-dark);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .filter-tag button {
+    background: none;
+    border: none;
+    color: var(--primary-dark);
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.85rem;
+    line-height: 1;
+    padding: 0;
+  }
+
+  /* Results header */
+  .results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .results-count {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+  }
+
+  .results-count strong {
+    color: var(--text-primary);
+  }
+
+  .sort-select {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    background: #FFFFFF;
+    color: var(--text-primary);
+  }
+
+  /* Shift cards */
+  .shift-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .shift-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 20px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .shift-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(10, 65, 68, 0.12);
+  }
+
+  .shift-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .shift-role {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--primary-dark);
+  }
+
+  .shift-facility {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .shift-pay {
+    text-align: right;
+  }
+
+  .shift-pay .amount {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--primary-mid);
+  }
+
+  .shift-pay .unit {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    display: block;
+  }
+
+  .shift-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .meta-pill {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 100px;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 100px;
+    background: var(--badge-bg);
+    border: 1px solid var(--badge-border);
+    color: var(--primary-dark);
+  }
+
+  .shift-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+    margin-top: 4px;
+  }
+
+  .shift-location {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  .btn-view {
+    background: var(--primary-dark);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    padding: 9px 18px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .btn-view:hover {
+    background: var(--primary-mid);
+  }
+
+  /* Empty state */
+  .empty-state {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+
+  .empty-state h3 {
+    font-size: 1.15rem;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+  }
+
+  .empty-state p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 18px;
+  }
+
+  .empty-state button {
+    background: var(--accent-mint);
+    color: var(--primary-dark);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--primary-dark);
+    color: #FFFFFF;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(10, 65, 68, 0.25);
+    transform: translateY(20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    z-index: 999;
+  }
+
+  .toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  @media (max-width: 900px) {
+    .filter-grid { grid-template-columns: 1fr 1fr; }
+    .shift-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="{{ url_for('worker_dashboard') }}" class="brand">Shiift</a>
+  <div class="nav-links">
+    <a href="{{ url_for('worker_dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('browse_shifts') }}" class="active">Browse Shifts</a>
+    <a href="{{ url_for('my_bookings') }}">My Bookings</a>
+    <a href="{{ url_for('worker_profile') }}">Profile</a>
+  </div>
+  <div class="nav-avatar">KA</div>
+</nav>
+
+<div class="page-wrap">
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div style="max-width: 1200px; margin: 16px auto 0; padding: 0 16px;">
+  {% for category, message in messages %}
+  <div style="padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem; {{ 'background:#FDECEC; color:#B42318; border:1px solid #F5C2C2;' if category == 'errormsg' else 'background:#E8F5E9; color:#1B5E20; border:1px solid #B7DFB9;' }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+
+  <div class="page-header">
+    <h1>Browse Shifts</h1>
+    <p>Find open shifts that match your profession and location.</p>
+  </div>
+
+  <div class="filter-card">
+    <div class="filter-grid">
+      <div class="field">
+        <label for="filter-role">Profession</label>
+        <select id="filter-role">
+          <option value="">All professions</option>
+          {% for prof in professions %}
+          <option value="{{ prof.profession_id }}">{{ prof.profession_name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="filter-state">State</label>
+        <select id="filter-state">
+          <option value="">All states</option>
+          {% for st in states %}
+          <option value="{{ st.state_id }}">{{ st.state_name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="filter-date">Date</label>
+        <input type="date" id="filter-date">
+      </div>
+      <div class="field">
+        <label for="filter-pay">Min. pay rate</label>
+        <input type="number" id="filter-pay" placeholder="₦ per shift">
+      </div>
+      <button class="btn-search" id="btnSearch">Search Shifts</button>
+    </div>
+
+    <div class="filter-tags" id="filterTags"></div>
+  </div>
+
+  <div class="results-header">
+    <div class="results-count"><strong id="resultCount">{{ shifts|length }}</strong> shifts found</div>
+    <select class="sort-select" id="sortSelect">
+      <option value="soonest">Soonest first</option>
+      <option value="pay-high">Highest pay</option>
+      <option value="pay-low">Lowest pay</option>
+    </select>
+  </div>
+
+  <div class="shift-grid" id="shiftGrid">
+    {% for shift in shifts %}
+    <div class="shift-card" data-role="{{ shift.profession_id }}" data-state="{{ shift.facility.state_id }}" data-pay="{{ shift.pay_rate }}" data-date="{{ shift.shift_date.strftime('%Y-%m-%d') }}">
+      <div class="shift-card-top">
+        <div>
+          <div class="shift-role">{{ shift.role_needed }}</div>
+          <div class="shift-facility">{{ shift.facility.facility_name }}</div>
+        </div>
+        <div class="shift-pay">
+          <span class="amount">&#8358;{{ '{:,.0f}'.format(shift.pay_rate) }}</span>
+          <span class="unit">per shift</span>
+        </div>
+      </div>
+      <div class="shift-meta">
+        <span class="meta-pill">{{ shift.shift_date.strftime('%a, %b %d') }}</span>
+        <span class="meta-pill">{{ shift.start_time.strftime('%I:%M %p') }} – {{ shift.end_time.strftime('%I:%M %p') }}</span>
+        <span class="badge">{{ shift.shift_type_label }}</span>
+      </div>
+      <div class="shift-card-bottom">
+        <span class="shift-location">{{ shift.facility.city }}, {{ shift.facility.state.state_name }}</span>
+        <button class="btn-view" onclick="viewShift({{ shift.shift_id }})">View Details</button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="empty-state" id="emptyState" style="{{ 'display:block;' if not shifts else '' }}">
+    <h3>No shifts match your filters</h3>
+    <p>Try widening your search — remove a filter or check back later for new postings.</p>
+    <button onclick="clearFilters()">Clear all filters</button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/static/js/jquery-4.0.0.min.js"></script>
+<script>
+  // Real open shifts now come from the server via Jinja (see browse_shifts route in worker_route.py).
+  // Filtering/sorting below still runs client-side over the rendered cards.
+
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function viewShift(shiftId) {
+    window.location.href = '/worker/shift/' + shiftId + '/';
+  }
+
+  function clearFilters() {
+    document.getElementById('filter-role').value = '';
+    document.getElementById('filter-state').value = '';
+    document.getElementById('filter-date').value = '';
+    document.getElementById('filter-pay').value = '';
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const role = document.getElementById('filter-role').value;
+    const state = document.getElementById('filter-state').value;
+    const date = document.getElementById('filter-date').value;
+    const minPay = parseFloat(document.getElementById('filter-pay').value) || 0;
+
+    const cards = document.querySelectorAll('.shift-card');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+      const matchesRole = !role || card.dataset.role === role;
+      const matchesState = !state || card.dataset.state === state;
+      const matchesDate = !date || card.dataset.date === date;
+      const matchesPay = parseFloat(card.dataset.pay) >= minPay;
+
+      const isVisible = matchesRole && matchesState && matchesDate && matchesPay;
+      card.style.display = isVisible ? '' : 'none';
+      if (isVisible) visibleCount++;
+    });
+
+    document.getElementById('resultCount').textContent = visibleCount;
+    document.getElementById('emptyState').style.display = visibleCount === 0 ? 'block' : 'none';
+    document.getElementById('shiftGrid').style.display = visibleCount === 0 ? 'none' : 'grid';
+
+    renderFilterTags(role, state, date, minPay);
+  }
+
+  function renderFilterTags(role, state, date, minPay) {
+    const tagsWrap = document.getElementById('filterTags');
+    tagsWrap.innerHTML = '';
+
+    const roleLabels = {
+      {% for prof in professions %}"{{ prof.profession_id }}": "{{ prof.profession_name }}"{{ "," if not loop.last }}{% endfor %}
+    };
+    const stateLabels = {
+      {% for st in states %}"{{ st.state_id }}": "{{ st.state_name }}"{{ "," if not loop.last }}{% endfor %}
+    };
+
+    const tags = [];
+    if (role) tags.push({ key: 'filter-role', label: roleLabels[role] });
+    if (state) tags.push({ key: 'filter-state', label: stateLabels[state] });
+    if (date) tags.push({ key: 'filter-date', label: date });
+    if (minPay) tags.push({ key: 'filter-pay', label: 'Min ₦' + minPay.toLocaleString() });
+
+    tags.forEach(tag => {
+      const el = document.createElement('span');
+      el.className = 'filter-tag';
+      el.innerHTML = tag.label + ' <button onclick="removeFilter(\'' + tag.key + '\')">×</button>';
+      tagsWrap.appendChild(el);
+    });
+  }
+
+  function removeFilter(fieldId) {
+    document.getElementById(fieldId).value = '';
+    applyFilters();
+  }
+
+  document.getElementById('btnSearch').addEventListener('click', () => {
+    applyFilters();
+    showToast('Shifts updated');
+  });
+
+  document.getElementById('sortSelect').addEventListener('change', function() {
+    const grid = document.getElementById('shiftGrid');
+    const cards = Array.from(grid.querySelectorAll('.shift-card'));
+    const mode = this.value;
+
+    cards.sort((a, b) => {
+      if (mode === 'pay-high') return parseFloat(b.dataset.pay) - parseFloat(a.dataset.pay);
+      if (mode === 'pay-low') return parseFloat(a.dataset.pay) - parseFloat(b.dataset.pay);
+      return new Date(a.dataset.date) - new Date(b.dataset.date);
+    });
+
+    cards.forEach(card => grid.appendChild(card));
+  });
+</script>
+
+</body>
+</html>

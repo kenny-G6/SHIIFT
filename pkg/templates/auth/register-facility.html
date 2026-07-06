@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHIIFT - Facility Registration</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #F7FBF8;
+            color: #10302E;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Baloo 2', 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .brand-link {
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 800;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            color: #0A4144;
+            text-decoration: none;
+        }
+
+        .brand-link:hover { color: #0F6E68; }
+
+        .brand-sub {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #56716D;
+        }
+
+        .shiift-card {
+            background-color: #FFFFFF;
+            border: 1px solid #E1F0E4;
+            border-radius: 14px;
+            box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+        }
+
+        .shiift-card-header {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #E1F0E4;
+            padding: 1rem 1.25rem;
+            border-radius: 14px 14px 0 0;
+        }
+
+        .shiift-card-header-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #0F6E68;
+            margin: 0;
+        }
+
+        .form-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #10302E;
+        }
+
+        .form-control, .form-select {
+            border: 1px solid #E1F0E4;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            color: #10302E;
+            padding: 0.6rem 0.9rem;
+            background-color: #FFFFFF;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #6FD490;
+            box-shadow: 0 0 0 0.2rem rgba(111, 212, 144, 0.2);
+        }
+
+        .form-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.75rem;
+            color: #56716D;
+        }
+
+        .invalid-feedback {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.78rem;
+        }
+
+        .section-divider {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #0F6E68;
+            border-bottom: 1px solid #E1F0E4;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Plan cards */
+        .plan-card {
+            border: 2px solid #E1F0E4;
+            border-radius: 12px;
+            padding: 1.1rem;
+            cursor: pointer;
+            transition: border-color 0.15s ease, background-color 0.15s ease;
+            height: 100%;
+        }
+
+        .plan-card:hover {
+            border-color: #6FD490;
+            background-color: #F7FBF8;
+        }
+
+        .plan-card.selected {
+            border-color: #0A4144;
+            background-color: #F7FBF8;
+        }
+
+        .plan-card input[type="radio"] {
+            display: none;
+        }
+
+        .plan-name {
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 800;
+            font-size: 1rem;
+            color: #0A4144;
+            margin-bottom: 0.15rem;
+        }
+
+        .plan-price {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #0F6E68;
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-feature {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.78rem;
+            color: #56716D;
+            line-height: 1.9;
+            margin: 0;
+        }
+
+        .plan-feature span {
+            color: #0F6E68;
+            font-weight: 700;
+            margin-right: 0.3rem;
+        }
+
+        .plan-badge {
+            background-color: #D7F2DD;
+            color: #0A4144;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 0.2em 0.65em;
+            border-radius: 100px;
+        }
+
+        /* Password */
+        .password-wrapper { position: relative; }
+        .password-wrapper .form-control { padding-right: 2.8rem; }
+
+        .toggle-pw {
+            position: absolute;
+            right: 0.9rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            color: #56716D;
+            font-size: 0.78rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .toggle-pw:hover { color: #0A4144; }
+
+        .strength-bar-wrap {
+            height: 4px;
+            background-color: #E1F0E4;
+            border-radius: 100px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            border-radius: 100px;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+
+        .strength-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            margin-top: 0.3rem;
+            color: #56716D;
+        }
+
+        /* Terms */
+        .form-check-input:checked {
+            background-color: #0A4144;
+            border-color: #0A4144;
+        }
+
+        .form-check-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.82rem;
+            color: #56716D;
+        }
+
+        .form-check-label a {
+            color: #0F6E68;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .form-check-label a:hover { text-decoration: underline; }
+
+        /* Submit */
+        .btn-shiift-primary {
+            background-color: #0A4144;
+            border: none;
+            color: #F7FBF8;
+            border-radius: 10px;
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 0.65rem 1rem;
+            width: 100%;
+            transition: background-color 0.15s ease;
+        }
+
+        .btn-shiift-primary:hover {
+            background-color: #0F6E68;
+            color: #F7FBF8;
+        }
+
+        .btn-shiift-primary:disabled {
+            background-color: #A7C8C4;
+            cursor: not-allowed;
+        }
+
+        .login-link {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.82rem;
+            color: #56716D;
+        }
+
+        .login-link a {
+            color: #0F6E68;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .login-link a:hover { text-decoration: underline; }
+
+        .switch-type {
+            background-color: #F7FBF8;
+            border: 1px solid #E1F0E4;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.82rem;
+            color: #56716D;
+            text-align: center;
+        }
+
+        .switch-type a {
+            color: #0A4144;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .switch-type a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body class="my-5">
+
+    <div class="container">
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div style="max-width: 1200px; margin: 0 auto 16px;">
+  {% for category, message in messages %}
+  <div style="padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem; {{ 'background:#FDECEC; color:#B42318; border:1px solid #F5C2C2;' if category == 'errormsg' else 'background:#E8F5E9; color:#1B5E20; border:1px solid #B7DFB9;' }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+
+                <!-- Brand -->
+                <div class="text-center mb-4">
+                    <a href="{{ url_for('index') }}" class="brand-link">SHIIFT</a>
+                    <p class="brand-sub mt-1 mb-0">Hospital / Clinic Registration</p>
+                </div>
+
+                <!-- Switch type -->
+                <div class="switch-type mb-3">
+                    Are you a healthcare worker? <a href="{{ url_for('register', type='worker') }}">Register as a Worker instead</a>
+                </div>
+
+                <!-- Main Card -->
+                <div class="shiift-card">
+                    <div class="shiift-card-header">
+                        <p class="shiift-card-header-title">Facility Information</p>
+                    </div>
+                    <div class="p-4">
+                        <form id="facilityRegForm" method="post" action="{{ url_for('register', type='facility') }}" enctype="multipart/form-data" novalidate>
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                            <!-- Facility Details -->
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label" for="facilityName">Facility / Hospital Name</label>
+                                    <input type="text" class="form-control" id="facilityName" name="facility_name" placeholder="e.g. Lagoon Hospital" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="state">State</label>
+                                    <select class="form-select" id="state" name="state" required>
+                                        <option value="" selected disabled>Select State</option>
+                                        {% for st in states %}
+                                        <option value="{{ st.state_id }}">{{ st.state_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="city">City / Area</label>
+                                    <input type="text" class="form-control" id="city" name="city" placeholder="e.g. Ikoyi" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label" for="address">Full Facility Address</label>
+                                    <input type="text" class="form-control" id="address" name="address" placeholder="e.g. 3 Mosley Road, Ikoyi, Lagos" required>
+                                </div>
+                            </div>
+
+                            <!-- Contact Person -->
+                            <p class="section-divider mt-4">Contact Details</p>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="contactPhone">Contact Phone</label>
+                                    <input type="tel" class="form-control" id="contactPhone" name="contact_phone" placeholder="08012345678" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label" for="contactEmail">Contact Email</label>
+                                    <input type="email" class="form-control" id="contactEmail" name="contact_email" placeholder="admin@yourhospital.com" required>
+                                </div>
+                            </div>
+
+                            <!-- Verification Documents -->
+                            <p class="section-divider mt-4">Verification Documents</p>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="cacDocument">CAC Registration Certificate</label>
+                                    <input type="file" class="form-control" id="cacDocument" name="cac_document" accept=".pdf,.jpg,.jpeg,.png" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="operatingLicenceDocument">Facility Operating Licence</label>
+                                    <input type="file" class="form-control" id="operatingLicenceDocument" name="operating_licence_document" accept=".pdf,.jpg,.jpeg,.png" required>
+                                    <div class="form-text mt-1">From your State Ministry of Health or HEFAMAA (Lagos) / equivalent state regulator.</div>
+                                </div>
+                            </div>
+                            <div class="form-text mb-1">Your account will be reviewed by our team before you can log in. This usually takes less than 24 hours.</div>
+
+                            <!-- Plan Selection -->
+                            <p class="section-divider mt-4">Choose a Plan</p>
+                            <div class="row g-3 mb-2">
+
+                                <div class="col-md-4">
+                                    <label class="plan-card" id="planFree" onclick="selectPlan('free')">
+                                        <input type="radio" name="plan" value="basic" checked>
+                                        <p class="plan-name">Starter</p>
+                                        <p class="plan-price">Free</p>
+                                        <p class="plan-feature">
+                                            <span>&#10003;</span> Up to 3 active shifts<br>
+                                            <span>&#10003;</span> Basic worker search<br>
+                                            <span>&#10003;</span> Standard support
+                                        </p>
+                                    </label>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="plan-card" id="planPro" onclick="selectPlan('pro')">
+                                        <input type="radio" name="plan" value="standard">
+                                        <div class="d-flex align-items-center justify-content-between mb-1">
+                                            <p class="plan-name mb-0">Pro</p>
+                                            <span class="plan-badge">Popular</span>
+                                        </div>
+                                        <p class="plan-price">&#8358;25,000 / mo</p>
+                                        <p class="plan-feature">
+                                            <span>&#10003;</span> Unlimited shifts<br>
+                                            <span>&#10003;</span> Worker location tracking<br>
+                                            <span>&#10003;</span> Priority support
+                                        </p>
+                                    </label>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="plan-card" id="planEnterprise" onclick="selectPlan('enterprise')">
+                                        <input type="radio" name="plan" value="premium">
+                                        <p class="plan-name">Enterprise</p>
+                                        <p class="plan-price">Custom Pricing</p>
+                                        <p class="plan-feature">
+                                            <span>&#10003;</span> Multi-branch support<br>
+                                            <span>&#10003;</span> Dedicated account manager<br>
+                                            <span>&#10003;</span> API access
+                                        </p>
+                                    </label>
+                                </div>
+
+                            </div>
+                            <div class="form-text mb-1">You can upgrade or change your plan at any time from your dashboard.</div>
+
+                            <!-- Password -->
+                            <p class="section-divider mt-4">Set Password</p>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="password">Password</label>
+                                    <div class="password-wrapper">
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required autocomplete="new-password">
+                                        <button type="button" class="toggle-pw" data-target="password">Show</button>
+                                    </div>
+                                    <div class="strength-bar-wrap">
+                                        <div class="strength-bar" id="strengthBar"></div>
+                                    </div>
+                                    <p class="strength-label" id="strengthLabel"></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="confirmPassword">Confirm Password</label>
+                                    <div class="password-wrapper">
+                                        <input type="password" class="form-control" id="confirmPassword" name="confirm_password" placeholder="••••••••" required autocomplete="new-password">
+                                        <button type="button" class="toggle-pw" data-target="confirmPassword">Show</button>
+                                    </div>
+                                    <div class="invalid-feedback" id="confirmError"></div>
+                                </div>
+                            </div>
+
+                            <!-- Terms -->
+                            <div class="form-check mt-4">
+                                <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                                <label class="form-check-label" for="termsCheck">
+                                    I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I confirm this facility is a registered healthcare institution.
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn-shiift-primary mt-4" id="submitBtn">
+                                Create Facility Account
+                            </button>
+
+                        </form>
+                    </div>
+
+                    <div class="border-top px-4 py-3 text-center" style="border-color: #E1F0E4 !important;">
+                        <span class="login-link">Already have an account? <a href="{{ url_for('index') }}">Log in here</a></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/jquery-4.0.0.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Plan selection
+        function selectPlan(plan) {
+            $('.plan-card').removeClass('selected');
+            $('#plan' + plan.charAt(0).toUpperCase() + plan.slice(1)).addClass('selected');
+            $('input[name="plan"][value="' + plan + '"]').prop('checked', true);
+        }
+
+        // Default select starter
+        selectPlan('free');
+
+        $(document).ready(function () {
+
+            // Toggle password visibility
+            $('.toggle-pw').on('click', function () {
+                var targetId = $(this).data('target');
+                var input = $('#' + targetId);
+                var isHidden = input.attr('type') === 'password';
+                input.attr('type', isHidden ? 'text' : 'password');
+                $(this).text(isHidden ? 'Hide' : 'Show');
+            });
+
+            // Password strength
+            $('#password').on('input', function () {
+                var val = $(this).val();
+                var strength = 0;
+                if (val.length >= 8) strength++;
+                if (/[A-Z]/.test(val)) strength++;
+                if (/[0-9]/.test(val)) strength++;
+                if (/[^A-Za-z0-9]/.test(val)) strength++;
+
+                var levels = {
+                    0: { width: '0%',   color: '#E1F0E4', text: '' },
+                    1: { width: '25%',  color: '#dc3545', text: 'Weak' },
+                    2: { width: '50%',  color: '#fd7e14', text: 'Fair' },
+                    3: { width: '75%',  color: '#6FD490', text: 'Good' },
+                    4: { width: '100%', color: '#0A4144', text: 'Strong' }
+                };
+
+                $('#strengthBar').css({ width: levels[strength].width, 'background-color': levels[strength].color });
+                $('#strengthLabel').text(levels[strength].text).css('color', levels[strength].color);
+            });
+
+            // Form submit
+            $('#facilityRegForm').on('submit', function (e) {
+                e.preventDefault();
+
+                var pw = $('#password').val();
+                var cpw = $('#confirmPassword').val();
+                var valid = true;
+
+                $('#confirmPassword').removeClass('is-invalid');
+                $('#confirmError').text('');
+
+                if (pw.length < 8) {
+                    $('#password').addClass('is-invalid');
+                    valid = false;
+                }
+
+                if (pw !== cpw) {
+                    $('#confirmPassword').addClass('is-invalid');
+                    $('#confirmError').text('Passwords do not match.').show();
+                    valid = false;
+                }
+
+                if (!$('#termsCheck').is(':checked')) {
+                    alert('Please accept the terms and conditions to continue.');
+                    valid = false;
+                }
+
+                if (!valid) return;
+
+                var btn = $('#submitBtn');
+                btn.text('Submitting...').prop('disabled', true);
+
+                // Validation passed, now actually hit the Flask route
+                e.target.submit();
+            });
+
+        });
+    </script>
+</body>
+</html>

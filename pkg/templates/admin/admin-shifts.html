@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platform Shifts | Shiift Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-dark: #0A4144;
+    --primary-mid: #0F6E68;
+    --accent-mint: #6FD490;
+    --accent-hover: #58C27E;
+    --bg: #F7FBF8;
+    --text-primary: #10302E;
+    --text-muted: #56716D;
+    --border: #E1F0E4;
+    --badge-bg: #D7F2DD;
+    --badge-border: #A7E3AF;
+    --danger: #C64B4B;
+    --danger-bg: #FBEAEA;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, .brand {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  /* Navbar */
+  .navbar {
+    background: var(--primary-dark);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+
+  .brand .admin-tag {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--accent-mint);
+    letter-spacing: 1px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+
+  .nav-links a {
+    color: #CFE6E2;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav-links a:hover { color: #FFFFFF; }
+
+  .nav-links a.active {
+    color: var(--accent-mint);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .nav-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  /* Page container */
+  .page-wrap {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 36px 24px 64px;
+  }
+
+  .page-header h1 {
+    font-size: 1.6rem;
+    color: var(--primary-dark);
+  }
+
+  .page-header p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin-top: 4px;
+    margin-bottom: 24px;
+  }
+
+  /* Summary strip */
+  .summary-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .summary-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 16px 18px;
+  }
+
+  .summary-card label {
+    display: block;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .summary-card .num {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--primary-dark);
+  }
+
+  /* Toolbar */
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .toolbar-left { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .search-input {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.86rem;
+    background: #FFFFFF;
+    min-width: 240px;
+  }
+
+  .search-input:focus { outline: none; border-color: var(--accent-mint); }
+
+  .filter-select {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.86rem;
+    background: #FFFFFF;
+    color: var(--text-primary);
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .tab {
+    background: none;
+    border: none;
+    padding: 10px 16px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .tab:hover { color: var(--primary-dark); }
+
+  .tab.active {
+    color: var(--primary-dark);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .tab .count { color: var(--text-muted); font-weight: 500; }
+
+  /* Table card */
+  .card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    overflow: hidden;
+  }
+
+  .shifts-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .shifts-table th {
+    text-align: left;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 14px 16px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .shifts-table td {
+    padding: 14px 16px;
+    font-size: 0.88rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .shifts-table tr:last-child td { border-bottom: none; }
+  .shifts-table tr:hover td { background: var(--bg); }
+
+  .role-cell .role-name { font-weight: 600; color: var(--text-primary); }
+  .role-cell .role-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
+  .facility-link {
+    color: var(--primary-mid);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .facility-link:hover { text-decoration: underline; }
+
+  .status-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 5px 13px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  .status-open { background: var(--badge-bg); border: 1px solid var(--badge-border); color: var(--primary-dark); }
+  .status-filled { background: #E4EEFB; border: 1px solid #BFD8F5; color: #2C5A9E; }
+  .status-completed { background: #EDEDED; border: 1px solid #D8D8D8; color: var(--text-muted); }
+  .status-cancelled { background: var(--danger-bg); border: 1px solid #EFC7C7; color: var(--danger); }
+
+  .row-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+  .action-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .action-btn:hover { border-color: var(--primary-mid); color: var(--primary-mid); }
+  .action-btn.danger:hover { border-color: var(--danger); color: var(--danger); }
+
+  /* Empty state */
+  .empty-state {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .empty-state h3 { font-size: 1.05rem; color: var(--primary-dark); margin-bottom: 6px; }
+  .empty-state p { color: var(--text-muted); font-size: 0.88rem; }
+
+  /* Modal */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 65, 68, 0.35);
+    align-items: center;
+    justify-content: center;
+    z-index: 998;
+  }
+
+  .modal-backdrop.show { display: flex; }
+
+  .modal-box {
+    background: #FFFFFF;
+    border-radius: 14px;
+    padding: 28px;
+    max-width: 380px;
+    width: 90%;
+    box-shadow: 0 12px 32px rgba(10, 65, 68, 0.2);
+  }
+
+  .modal-box h3 { color: var(--primary-dark); font-size: 1.1rem; margin-bottom: 8px; }
+  .modal-box p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
+
+  .modal-actions { display: flex; gap: 10px; }
+
+  .modal-actions button {
+    flex: 1;
+    border-radius: 10px;
+    padding: 11px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-confirm-danger { background: var(--danger); color: #FFFFFF; }
+  .btn-confirm-danger:hover { background: #B23F3F; }
+
+  .btn-cancel-modal {
+    background: var(--bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border) !important;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--primary-dark);
+    color: #FFFFFF;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(10, 65, 68, 0.25);
+    transform: translateY(20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    z-index: 999;
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  @media (max-width: 900px) {
+    .summary-strip { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+    .shifts-table { display: block; overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="{{ url_for('admin_dashboard') }}" class="brand">Shiift<span class="admin-tag">ADMIN</span></a>
+  <div class="nav-links">
+    <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('admin_workers') }}">Workers</a>
+    <a href="{{ url_for('admin_facilities') }}">Facilities</a>
+    <a href="{{ url_for('admin_shifts') }}" class="active">Shifts</a>
+    <a href="{{ url_for('admin_bookings') }}">Bookings</a>
+    <a href="{{ url_for('admin_payments') }}">Payments</a>
+  </div>
+  <div class="nav-avatar">AD</div>
+</nav>
+
+<div class="page-wrap">
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div style="max-width: 1200px; margin: 16px auto 0; padding: 0 16px;">
+  {% for category, message in messages %}
+  <div style="padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem; {{ 'background:#FDECEC; color:#B42318; border:1px solid #F5C2C2;' if category == 'errormsg' else 'background:#E8F5E9; color:#1B5E20; border:1px solid #B7DFB9;' }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+
+  <div class="page-header">
+    <h1>Platform Shifts</h1>
+    <p>Every shift posted across all facilities on Shiift.</p>
+  </div>
+
+  <div class="summary-strip">
+    <div class="summary-card">
+      <label>Total Shifts</label>
+      <div class="num">{{ counts.all }}</div>
+    </div>
+    <div class="summary-card">
+      <label>Open</label>
+      <div class="num">{{ counts.open }}</div>
+    </div>
+    <div class="summary-card">
+      <label>Filled</label>
+      <div class="num">{{ counts.filled }}</div>
+    </div>
+    <div class="summary-card">
+      <label>Completed</label>
+      <div class="num">{{ counts.completed }}</div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <input type="text" class="search-input" id="searchInput" placeholder="Search by role, facility, or shift ID..." onkeyup="applyFilters()">
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-status="all" onclick="filterByStatus('all')">All <span class="count">({{ counts.all }})</span></button>
+    <button class="tab" data-status="open" onclick="filterByStatus('open')">Open <span class="count">({{ counts.open }})</span></button>
+    <button class="tab" data-status="filled" onclick="filterByStatus('filled')">Filled <span class="count">({{ counts.filled }})</span></button>
+    <button class="tab" data-status="completed" onclick="filterByStatus('completed')">Completed <span class="count">({{ counts.completed }})</span></button>
+    <button class="tab" data-status="cancelled" onclick="filterByStatus('cancelled')">Cancelled <span class="count">({{ counts.cancelled }})</span></button>
+  </div>
+
+  <div class="card">
+    <table class="shifts-table" id="shiftsTable" {% if not shifts %}style="display:none;"{% endif %}>
+      <thead>
+        <tr>
+          <th>Shift ID</th>
+          <th>Role</th>
+          <th>Facility</th>
+          <th>Date</th>
+          <th>Pay Rate</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="shiftsBody">
+        {% for shift in shifts %}
+        <tr data-status="{{ shift.status }}" data-search="{{ shift.role_needed|lower }} {{ shift.facility.facility_name|lower }} sh-{{ shift.shift_id }}">
+          <td>#SH-{{ shift.shift_id }}</td>
+          <td class="role-cell">
+            <div class="role-name">{{ shift.role_needed }}</div>
+            <div class="role-sub">{{ shift.shift_type_label }}</div>
+          </td>
+          <td><a href="{{ url_for('admin_facilities') }}?search={{ shift.facility.facility_name }}" class="facility-link">{{ shift.facility.facility_name }}</a></td>
+          <td>{{ shift.shift_date.strftime('%b %d, %Y') }}</td>
+          <td>&#8358;{{ '{:,.0f}'.format(shift.pay_rate) }}</td>
+          <td><span class="status-badge status-{{ shift.status }}">{{ shift.status|capitalize }}</span></td>
+          <td>
+            <div class="row-actions">
+              <button class="action-btn" disabled style="opacity:0.5; cursor:default;" title="Coming soon">View</button>
+              {% if shift.status == 'open' %}
+              <button class="action-btn danger" onclick="openRemoveModal({{ shift.shift_id }})">Remove</button>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="empty-state" id="emptyState" {% if not shifts %}style="display:block;"{% else %}style="display:none;"{% endif %}>
+      <h3>No shifts match your filters</h3>
+      <p>Try a different status or search term.</p>
+    </div>
+  </div>
+
+</div>
+
+<form id="removeForm" method="post" action="">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+</form>
+
+<div class="modal-backdrop" id="removeModal">
+  <div class="modal-box">
+    <h3>Remove this shift?</h3>
+    <p id="removeModalText"></p>
+    <div class="modal-actions">
+      <button class="btn-cancel-modal" onclick="closeModal('removeModal')">Cancel</button>
+      <button class="btn-confirm-danger" onclick="confirmRemove()">Yes, Remove</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/static/js/jquery-4.0.0.min.js"></script>
+<script>
+  // Real shifts now come from the server via Jinja (see admin_shifts route in admin_route.py).
+  // Remove posts to /admin/shift/<id>/remove/ (only allowed while a shift is still open).
+
+  let currentStatusFilter = 'all';
+  let pendingShift = null;
+
+  function filterByStatus(status) {
+    currentStatusFilter = status;
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.status === status);
+    });
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+    const rows = document.querySelectorAll('#shiftsBody tr');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+      const matchesStatus = currentStatusFilter === 'all' || row.dataset.status === currentStatusFilter;
+      const matchesSearch = searchTerm === '' || row.dataset.search.includes(searchTerm);
+      const isVisible = matchesStatus && matchesSearch;
+
+      row.style.display = isVisible ? '' : 'none';
+      if (isVisible) visibleCount++;
+    });
+
+    document.getElementById('emptyState').style.display = visibleCount === 0 ? 'block' : 'none';
+    document.getElementById('shiftsTable').style.display = visibleCount === 0 ? 'none' : 'table';
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('show');
+    pendingShift = null;
+  }
+
+  function openRemoveModal(shiftId) {
+    pendingShift = shiftId;
+    document.getElementById('removeModalText').textContent =
+      `Shift #SH-${shiftId} will be permanently removed from the marketplace. The facility will be notified of this moderation action.`;
+    document.getElementById('removeModal').classList.add('show');
+  }
+
+  function confirmRemove() {
+    const shiftId = pendingShift;
+    closeModal('removeModal');
+    const form = document.getElementById('removeForm');
+    form.action = '/admin/shift/' + shiftId + '/remove/';
+    form.submit();
+  }
+</script>
+
+</body>
+</html>

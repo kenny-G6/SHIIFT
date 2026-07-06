@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Bookings | Shiift</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-dark: #0A4144;
+    --primary-mid: #0F6E68;
+    --accent-mint: #6FD490;
+    --accent-hover: #58C27E;
+    --bg: #F7FBF8;
+    --text-primary: #10302E;
+    --text-muted: #56716D;
+    --border: #E1F0E4;
+    --badge-bg: #D7F2DD;
+    --badge-border: #A7E3AF;
+    --danger: #C64B4B;
+    --danger-bg: #FBEAEA;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, .brand {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  /* Navbar */
+  .navbar {
+    background: var(--primary-dark);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .nav-links a {
+    color: #CFE6E2;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.92rem;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav-links a:hover { color: #FFFFFF; }
+
+  .nav-links a.active {
+    color: var(--accent-mint);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .nav-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  /* Page container */
+  .page-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 36px 24px 64px;
+  }
+
+  .page-header h1 {
+    font-size: 1.6rem;
+    color: var(--primary-dark);
+  }
+
+  .page-header p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin-top: 4px;
+    margin-bottom: 22px;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 22px;
+  }
+
+  .tab {
+    background: none;
+    border: none;
+    padding: 10px 18px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .tab:hover { color: var(--primary-dark); }
+
+  .tab.active {
+    color: var(--primary-dark);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .tab .count {
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    font-size: 0.72rem;
+    padding: 1px 8px;
+    border-radius: 100px;
+    margin-left: 6px;
+  }
+
+  /* Booking cards */
+  .booking-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .booking-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .booking-main {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .date-block {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    text-align: center;
+    min-width: 64px;
+  }
+
+  .date-block .month {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .date-block .day {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: var(--primary-dark);
+  }
+
+  .booking-info .role {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--primary-dark);
+  }
+
+  .booking-info .facility {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .booking-info .time-loc {
+    font-size: 0.82rem;
+    color: var(--text-primary);
+    margin-top: 6px;
+  }
+
+  .status-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 5px 13px;
+    border-radius: 100px;
+    margin-top: 8px;
+  }
+
+  .status-upcoming {
+    background: var(--badge-bg);
+    border: 1px solid var(--badge-border);
+    color: var(--primary-dark);
+  }
+
+  .status-completed {
+    background: #EDEDED;
+    border: 1px solid #D8D8D8;
+    color: var(--text-muted);
+  }
+
+  .status-cancelled {
+    background: var(--danger-bg);
+    border: 1px solid #EFC7C7;
+    color: var(--danger);
+  }
+
+  .booking-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 140px;
+  }
+
+  .btn-primary-sm {
+    background: var(--primary-dark);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    padding: 9px 16px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.83rem;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .btn-primary-sm:hover { background: var(--primary-mid); }
+
+  .btn-outline-sm {
+    background: #FFFFFF;
+    color: var(--danger);
+    border: 1px solid #EFC7C7;
+    border-radius: 10px;
+    padding: 9px 16px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.83rem;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .btn-outline-sm:hover { background: var(--danger-bg); }
+
+  .btn-review-sm {
+    background: #FFFFFF;
+    color: var(--primary-dark);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 9px 16px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.83rem;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+
+  .btn-review-sm:hover { border-color: var(--primary-mid); }
+
+  /* Empty state */
+  .empty-state {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+
+  .empty-state h3 {
+    font-size: 1.1rem;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+  }
+
+  .empty-state p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 18px;
+  }
+
+  .empty-state a {
+    display: inline-block;
+    background: var(--accent-mint);
+    color: var(--primary-dark);
+    text-decoration: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+
+  /* Cancel modal */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 65, 68, 0.35);
+    align-items: center;
+    justify-content: center;
+    z-index: 998;
+  }
+
+  .modal-backdrop.show { display: flex; }
+
+  .modal-box {
+    background: #FFFFFF;
+    border-radius: 14px;
+    padding: 28px;
+    max-width: 380px;
+    width: 90%;
+    box-shadow: 0 12px 32px rgba(10, 65, 68, 0.2);
+  }
+
+  .modal-box h3 {
+    color: var(--primary-dark);
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+
+  .modal-box p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .modal-actions button {
+    flex: 1;
+    border-radius: 10px;
+    padding: 11px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-confirm-danger {
+    background: var(--danger);
+    color: #FFFFFF;
+  }
+
+  .btn-confirm-danger:hover { background: #B23F3F; }
+
+  .btn-cancel-modal {
+    background: var(--bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border) !important;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--primary-dark);
+    color: #FFFFFF;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(10, 65, 68, 0.25);
+    transform: translateY(20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    z-index: 999;
+  }
+
+  .toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  @media (max-width: 700px) {
+    .nav-links { display: none; }
+    .booking-card { grid-template-columns: 1fr; }
+    .booking-actions { flex-direction: row; min-width: 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="{{ url_for('worker_dashboard') }}" class="brand">Shiift</a>
+  <div class="nav-links">
+    <a href="{{ url_for('worker_dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('browse_shifts') }}">Browse Shifts</a>
+    <a href="{{ url_for('my_bookings') }}" class="active">My Bookings</a>
+    <a href="{{ url_for('worker_profile') }}">Profile</a>
+  </div>
+  <div class="nav-avatar">KA</div>
+</nav>
+
+<div class="page-wrap">
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div style="max-width: 1200px; margin: 16px auto 0; padding: 0 16px;">
+  {% for category, message in messages %}
+  <div style="padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem; {{ 'background:#FDECEC; color:#B42318; border:1px solid #F5C2C2;' if category == 'errormsg' else 'background:#E8F5E9; color:#1B5E20; border:1px solid #B7DFB9;' }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+
+  <div class="page-header">
+    <h1>My Bookings</h1>
+    <p>Track your upcoming, completed, and cancelled shifts.</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="upcoming" onclick="switchTab('upcoming')">Upcoming <span class="count">{{ upcoming|length }}</span></button>
+    <button class="tab" data-tab="completed" onclick="switchTab('completed')">Completed <span class="count">{{ completed|length }}</span></button>
+    <button class="tab" data-tab="cancelled" onclick="switchTab('cancelled')">Cancelled <span class="count">{{ cancelled|length }}</span></button>
+  </div>
+
+  <!-- Upcoming -->
+  <div class="booking-list" data-panel="upcoming">
+    {% for booking in upcoming %}
+    <div class="booking-card">
+      <div class="booking-main">
+        <div class="date-block">
+          <div class="month">{{ booking.shift.shift_date.strftime('%b') }}</div>
+          <div class="day">{{ booking.shift.shift_date.day }}</div>
+        </div>
+        <div class="booking-info">
+          <div class="role">{{ booking.shift.role_needed }}</div>
+          <div class="facility">{{ booking.shift.facility.facility_name }}</div>
+          <div class="time-loc">{{ booking.shift.start_time.strftime('%I:%M %p') }} – {{ booking.shift.end_time.strftime('%I:%M %p') }} &middot; {{ booking.shift.facility.city }}, {{ booking.shift.facility.state.state_name }}</div>
+          <span class="status-badge status-upcoming">{{ booking.booking_status|capitalize }}</span>
+        </div>
+      </div>
+      <div class="booking-actions">
+        <button class="btn-primary-sm" disabled style="opacity:0.5; cursor:default;" title="Coming soon">View Details</button>
+        <button class="btn-outline-sm" disabled style="opacity:0.5; cursor:default;" title="Coming soon">Cancel Booking</button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Completed -->
+  <div class="booking-list" data-panel="completed" style="display:none;">
+    {% for booking in completed %}
+    <div class="booking-card">
+      <div class="booking-main">
+        <div class="date-block">
+          <div class="month">{{ booking.shift.shift_date.strftime('%b') }}</div>
+          <div class="day">{{ booking.shift.shift_date.day }}</div>
+        </div>
+        <div class="booking-info">
+          <div class="role">{{ booking.shift.role_needed }}</div>
+          <div class="facility">{{ booking.shift.facility.facility_name }}</div>
+          <div class="time-loc">{{ booking.shift.start_time.strftime('%I:%M %p') }} – {{ booking.shift.end_time.strftime('%I:%M %p') }} &middot; {{ booking.shift.facility.city }}, {{ booking.shift.facility.state.state_name }}</div>
+          <span class="status-badge status-completed">Completed</span>
+        </div>
+      </div>
+      <div class="booking-actions">
+        <button class="btn-review-sm" disabled style="opacity:0.5; cursor:default;" title="Coming soon">View Details</button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Cancelled -->
+  <div class="booking-list" data-panel="cancelled" style="display:none;">
+    {% for booking in cancelled %}
+    <div class="booking-card">
+      <div class="booking-main">
+        <div class="date-block">
+          <div class="month">{{ booking.shift.shift_date.strftime('%b') }}</div>
+          <div class="day">{{ booking.shift.shift_date.day }}</div>
+        </div>
+        <div class="booking-info">
+          <div class="role">{{ booking.shift.role_needed }}</div>
+          <div class="facility">{{ booking.shift.facility.facility_name }}</div>
+          <div class="time-loc">{{ booking.shift.start_time.strftime('%I:%M %p') }} – {{ booking.shift.end_time.strftime('%I:%M %p') }} &middot; {{ booking.shift.facility.city }}, {{ booking.shift.facility.state.state_name }}</div>
+          <span class="status-badge status-cancelled">Cancelled</span>
+        </div>
+      </div>
+      <div class="booking-actions">
+        <button class="btn-review-sm" disabled style="opacity:0.5; cursor:default;" title="Coming soon">View Details</button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="empty-state" id="emptyState" style="{{ 'display:none;' if upcoming else 'display:block;' }}">
+    <h3>Nothing here yet</h3>
+    <p>Bookings you make will show up in this tab.</p>
+    <a href="{{ url_for('browse_shifts') }}">Browse Available Shifts</a>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/static/js/jquery-4.0.0.min.js"></script>
+<script>
+  // Real bookings now come from the server via Jinja (see my_bookings route in worker_route.py).
+  // View Details / Cancel Booking / Leave a Review are disabled for now — not built yet.
+
+  function switchTab(tabName) {
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.tab === tabName);
+    });
+    document.querySelectorAll('.booking-list').forEach(panel => {
+      const isMatch = panel.dataset.panel === tabName;
+      panel.style.display = isMatch ? 'flex' : 'none';
+
+      if (isMatch) {
+        const hasCards = panel.querySelectorAll('.booking-card').length > 0;
+        document.getElementById('emptyState').style.display = hasCards ? 'none' : 'block';
+        panel.style.display = hasCards ? 'flex' : 'none';
+      }
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Workers | Shiift Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-dark: #0A4144;
+    --primary-mid: #0F6E68;
+    --accent-mint: #6FD490;
+    --accent-hover: #58C27E;
+    --bg: #F7FBF8;
+    --text-primary: #10302E;
+    --text-muted: #56716D;
+    --border: #E1F0E4;
+    --badge-bg: #D7F2DD;
+    --badge-border: #A7E3AF;
+    --danger: #C64B4B;
+    --danger-bg: #FBEAEA;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, .brand {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  /* Navbar */
+  .navbar {
+    background: var(--primary-dark);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+
+  .brand .admin-tag {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--accent-mint);
+    letter-spacing: 1px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+
+  .nav-links a {
+    color: #CFE6E2;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav-links a:hover { color: #FFFFFF; }
+
+  .nav-links a.active {
+    color: var(--accent-mint);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .nav-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  /* Page container */
+  .page-wrap {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 36px 24px 64px;
+  }
+
+  .page-header h1 {
+    font-size: 1.6rem;
+    color: var(--primary-dark);
+  }
+
+  .page-header p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin-top: 4px;
+    margin-bottom: 24px;
+  }
+
+  /* Summary strip */
+  .summary-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .summary-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 16px 18px;
+  }
+
+  .summary-card label {
+    display: block;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .summary-card .num {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--primary-dark);
+  }
+
+  /* Toolbar */
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .toolbar-left {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .search-input {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.86rem;
+    background: #FFFFFF;
+    min-width: 240px;
+  }
+
+  .search-input:focus { outline: none; border-color: var(--accent-mint); }
+
+  .filter-select {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.86rem;
+    background: #FFFFFF;
+    color: var(--text-primary);
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .tab {
+    background: none;
+    border: none;
+    padding: 10px 16px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .tab:hover { color: var(--primary-dark); }
+
+  .tab.active {
+    color: var(--primary-dark);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .tab .count { color: var(--text-muted); font-weight: 500; }
+
+  /* Table card */
+  .card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    overflow: hidden;
+  }
+
+  .workers-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .workers-table th {
+    text-align: left;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 14px 16px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .workers-table td {
+    padding: 14px 16px;
+    font-size: 0.88rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .workers-table tr:last-child td { border-bottom: none; }
+  .workers-table tr:hover td { background: var(--bg); }
+
+  .worker-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .worker-avatar-sm {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.78rem;
+    flex-shrink: 0;
+  }
+
+  .worker-name { font-weight: 600; color: var(--text-primary); }
+  .worker-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 1px; }
+
+  .status-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 5px 13px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  .status-active { background: var(--badge-bg); border: 1px solid var(--badge-border); color: var(--primary-dark); }
+  .status-pending { background: #FFF3D9; border: 1px solid #F0DBA0; color: #8A6A1B; }
+  .status-suspended { background: var(--danger-bg); border: 1px solid #EFC7C7; color: var(--danger); }
+
+  .rating-cell { color: var(--accent-mint); font-size: 0.85rem; }
+  .rating-cell .num { color: var(--text-primary); font-weight: 600; margin-left: 3px; }
+
+  .row-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .action-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .action-btn:hover { border-color: var(--primary-mid); color: var(--primary-mid); }
+  .action-btn.danger:hover { border-color: var(--danger); color: var(--danger); }
+  .action-btn.approve:hover { border-color: var(--primary-mid); color: var(--primary-mid); }
+
+  /* Empty state */
+  .empty-state {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .empty-state h3 { font-size: 1.05rem; color: var(--primary-dark); margin-bottom: 6px; }
+  .empty-state p { color: var(--text-muted); font-size: 0.88rem; }
+
+  /* Modal */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 65, 68, 0.35);
+    align-items: center;
+    justify-content: center;
+    z-index: 998;
+  }
+
+  .modal-backdrop.show { display: flex; }
+
+  .modal-box {
+    background: #FFFFFF;
+    border-radius: 14px;
+    padding: 28px;
+    max-width: 380px;
+    width: 90%;
+    box-shadow: 0 12px 32px rgba(10, 65, 68, 0.2);
+  }
+
+  .modal-box h3 { color: var(--primary-dark); font-size: 1.1rem; margin-bottom: 8px; }
+  .modal-box p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
+
+  .modal-actions { display: flex; gap: 10px; }
+
+  .modal-actions button {
+    flex: 1;
+    border-radius: 10px;
+    padding: 11px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-confirm-danger { background: var(--danger); color: #FFFFFF; }
+  .btn-confirm-danger:hover { background: #B23F3F; }
+
+  .btn-confirm-approve { background: var(--accent-mint); color: var(--primary-dark); }
+  .btn-confirm-approve:hover { background: var(--accent-hover); }
+
+  .btn-cancel-modal {
+    background: var(--bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border) !important;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--primary-dark);
+    color: #FFFFFF;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(10, 65, 68, 0.25);
+    transform: translateY(20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    z-index: 999;
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  @media (max-width: 900px) {
+    .summary-strip { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+    .workers-table { display: block; overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="{{ url_for('admin_dashboard') }}" class="brand">Shiift<span class="admin-tag">ADMIN</span></a>
+  <div class="nav-links">
+    <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('admin_workers') }}" class="active">Workers</a>
+    <a href="{{ url_for('admin_facilities') }}">Facilities</a>
+    <a href="{{ url_for('admin_shifts') }}">Shifts</a>
+    <a href="{{ url_for('admin_bookings') }}">Bookings</a>
+    <a href="{{ url_for('admin_payments') }}">Payments</a>
+  </div>
+  <div class="nav-avatar">AD</div>
+</nav>
+
+<div class="page-wrap">
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div style="max-width: 1200px; margin: 16px auto 0; padding: 0 16px;">
+  {% for category, message in messages %}
+  <div style="padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem; {{ 'background:#FDECEC; color:#B42318; border:1px solid #F5C2C2;' if category == 'errormsg' else 'background:#E8F5E9; color:#1B5E20; border:1px solid #B7DFB9;' }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+
+  <div class="page-header">
+    <h1>Manage Workers</h1>
+    <p>Search, verify, and manage healthcare worker accounts across the platform.</p>
+  </div>
+
+  <div class="summary-strip">
+    <div class="summary-card">
+      <label>Total Workers</label>
+      <div class="num">{{ counts.all }}</div>
+    </div>
+    <div class="summary-card">
+      <label>Active</label>
+      <div class="num">{{ counts.active }}</div>
+    </div>
+    <div class="summary-card">
+      <label>Pending Verification</label>
+      <div class="num">{{ counts.pending }}</div>
+    </div>
+    <div class="summary-card">
+      <label>Suspended</label>
+      <div class="num">{{ counts.suspended }}</div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <input type="text" class="search-input" id="searchInput" placeholder="Search by name, email, or licence no..." onkeyup="applyFilters()">
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-status="all" onclick="filterByStatus('all')">All <span class="count">({{ counts.all }})</span></button>
+    <button class="tab" data-status="active" onclick="filterByStatus('active')">Active <span class="count">({{ counts.active }})</span></button>
+    <button class="tab" data-status="pending" onclick="filterByStatus('pending')">Pending <span class="count">({{ counts.pending }})</span></button>
+    <button class="tab" data-status="suspended" onclick="filterByStatus('suspended')">Suspended <span class="count">({{ counts.suspended }})</span></button>
+  </div>
+
+  <div class="card">
+    <table class="workers-table" id="workersTable">
+      <thead>
+        <tr>
+          <th>Worker</th>
+          <th>Profession</th>
+          <th>State</th>
+          <th>Shifts Completed</th>
+          <th>Documents</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="workersBody">
+        {% for worker in workers %}
+        {% set shifts_done = worker.bookings|selectattr('booking_status', 'equalto', 'completed')|list|length %}
+        <tr data-status="{{ worker.status }}" data-search="{{ worker.first_name|lower }} {{ worker.last_name|lower }} {{ worker.email_address|lower }} {{ (worker.licence_number or '')|lower }}">
+          <td>
+            <div class="worker-cell">
+              <div class="worker-avatar-sm">{{ worker.first_name[0] }}{{ worker.last_name[0] }}</div>
+              <div>
+                <div class="worker-name"><a href="{{ url_for('worker_detail', worker_id=worker.worker_id) }}" style="color: inherit; text-decoration: none;">{{ worker.first_name }} {{ worker.last_name }}</a></div>
+                <div class="worker-sub">{{ worker.email_address }}</div>
+              </div>
+            </div>
+          </td>
+          <td>{{ worker.profession.profession_name }}</td>
+          <td>{{ worker.state.state_name }}</td>
+          <td>{{ shifts_done }}</td>
+          <td>
+            {% if worker.licence_document %}<a href="/static/uploads/{{ worker.licence_document }}" target="_blank">Licence</a>{% endif %}
+            {% if worker.qualification_document %} &middot; <a href="/static/uploads/{{ worker.qualification_document }}" target="_blank">Qualification</a>{% endif %}
+            {% if worker.id_document %} &middot; <a href="/static/uploads/{{ worker.id_document }}" target="_blank">ID</a>{% endif %}
+            {% if worker.passport_photo %} &middot; <a href="/static/uploads/{{ worker.passport_photo }}" target="_blank">Photo</a>{% endif %}
+          </td>
+          <td><span class="status-badge status-{{ worker.status }}">{{ worker.status|capitalize }}</span></td>
+          <td>
+            <div class="row-actions">
+              <a href="{{ url_for('worker_detail', worker_id=worker.worker_id) }}" class="action-btn">View</a>
+              {% if worker.status == 'pending' %}
+              <button class="action-btn approve" onclick="openApproveModal({{ worker.worker_id }}, '{{ worker.first_name }} {{ worker.last_name }}')">Verify</button>
+              <button class="action-btn danger" onclick="openSuspendModal({{ worker.worker_id }}, '{{ worker.first_name }} {{ worker.last_name }}')">Reject</button>
+              {% elif worker.status == 'active' %}
+              <button class="action-btn danger" onclick="openSuspendModal({{ worker.worker_id }}, '{{ worker.first_name }} {{ worker.last_name }}')">Suspend</button>
+              {% elif worker.status == 'suspended' %}
+              <button class="action-btn approve" onclick="openReactivateModal({{ worker.worker_id }}, '{{ worker.first_name }} {{ worker.last_name }}')">Reactivate</button>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="empty-state" id="emptyState" style="{{ 'display:block;' if not workers else 'display:none;' }}">
+      <h3>No workers match your filters</h3>
+      <p>Try a different status, profession, or search term.</p>
+    </div>
+  </div>
+
+</div>
+
+<form id="statusForm" method="post" action="">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <input type="hidden" name="status" id="statusFormValue">
+</form>
+
+<div class="modal-backdrop" id="suspendModal">
+  <div class="modal-box">
+    <h3>Suspend this worker?</h3>
+    <p id="suspendModalText"></p>
+    <div class="modal-actions">
+      <button class="btn-cancel-modal" onclick="closeModal('suspendModal')">Cancel</button>
+      <button class="btn-confirm-danger" onclick="confirmSuspend()">Yes, Suspend</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="approveModal">
+  <div class="modal-box">
+    <h3>Verify this worker?</h3>
+    <p id="approveModalText"></p>
+    <div class="modal-actions">
+      <button class="btn-cancel-modal" onclick="closeModal('approveModal')">Cancel</button>
+      <button class="btn-confirm-approve" onclick="confirmApprove()">Yes, Verify</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="reactivateModal">
+  <div class="modal-box">
+    <h3>Reactivate this worker?</h3>
+    <p id="reactivateModalText"></p>
+    <div class="modal-actions">
+      <button class="btn-cancel-modal" onclick="closeModal('reactivateModal')">Cancel</button>
+      <button class="btn-confirm-approve" onclick="confirmReactivate()">Yes, Reactivate</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/static/js/jquery-4.0.0.min.js"></script>
+<script>
+  // Real workers now come from the server via Jinja (see admin_workers route in admin_route.py).
+  // Verify / Reject / Suspend / Reactivate all post to /admin/worker/<id>/status/.
+
+  let currentStatusFilter = 'all';
+  let pendingWorker = null; // { id, name }
+
+  function filterByStatus(status) {
+    currentStatusFilter = status;
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.status === status);
+    });
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+    const rows = document.querySelectorAll('#workersBody tr');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+      const matchesStatus = currentStatusFilter === 'all' || row.dataset.status === currentStatusFilter;
+      const matchesSearch = searchTerm === '' || row.dataset.search.includes(searchTerm);
+      const isVisible = matchesStatus && matchesSearch;
+
+      row.style.display = isVisible ? '' : 'none';
+      if (isVisible) visibleCount++;
+    });
+
+    document.getElementById('emptyState').style.display = visibleCount === 0 ? 'block' : 'none';
+    document.getElementById('workersTable').style.display = visibleCount === 0 ? 'none' : 'table';
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('show');
+    pendingWorker = null;
+  }
+
+  function openSuspendModal(id, name) {
+    pendingWorker = { id, name };
+    document.getElementById('suspendModalText').textContent =
+      `${name} will lose access to Shiift immediately and won't be able to claim new shifts until reactivated.`;
+    document.getElementById('suspendModal').classList.add('show');
+  }
+
+  function confirmSuspend() {
+    const { id } = pendingWorker;
+    closeModal('suspendModal');
+    const form = document.getElementById('statusForm');
+    form.action = '/admin/worker/' + id + '/status/';
+    document.getElementById('statusFormValue').value = 'suspended';
+    form.submit();
+  }
+
+  function openApproveModal(id, name) {
+    pendingWorker = { id, name };
+    document.getElementById('approveModalText').textContent =
+      `${name}'s licence and documents will be marked as verified, activating their account on Shiift.`;
+    document.getElementById('approveModal').classList.add('show');
+  }
+
+  function confirmApprove() {
+    const { id } = pendingWorker;
+    closeModal('approveModal');
+    const form = document.getElementById('statusForm');
+    form.action = '/admin/worker/' + id + '/status/';
+    document.getElementById('statusFormValue').value = 'active';
+    form.submit();
+  }
+
+  function openReactivateModal(id, name) {
+    pendingWorker = { id, name };
+    document.getElementById('reactivateModalText').textContent =
+      `${name} will regain full access to Shiift and can claim shifts again.`;
+    document.getElementById('reactivateModal').classList.add('show');
+  }
+
+  function confirmReactivate() {
+    const { id } = pendingWorker;
+    closeModal('reactivateModal');
+    const form = document.getElementById('statusForm');
+    form.action = '/admin/worker/' + id + '/status/';
+    document.getElementById('statusFormValue').value = 'active';
+    form.submit();
+  }
+</script>
+
+</body>
+</html>

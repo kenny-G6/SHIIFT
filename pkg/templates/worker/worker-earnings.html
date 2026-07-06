@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Earnings | Shiift</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-dark: #0A4144;
+    --primary-mid: #0F6E68;
+    --accent-mint: #6FD490;
+    --accent-hover: #58C27E;
+    --bg: #F7FBF8;
+    --text-primary: #10302E;
+    --text-muted: #56716D;
+    --border: #E1F0E4;
+    --badge-bg: #D7F2DD;
+    --badge-border: #A7E3AF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, .brand {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  /* Navbar */
+  .navbar {
+    background: var(--primary-dark);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .nav-links a {
+    color: #CFE6E2;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.92rem;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav-links a:hover { color: #FFFFFF; }
+
+  .nav-links a.active {
+    color: var(--accent-mint);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .nav-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  /* Page container */
+  .page-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 36px 24px 64px;
+  }
+
+  .page-header h1 {
+    font-size: 1.6rem;
+    color: var(--primary-dark);
+  }
+
+  .page-header p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin-top: 4px;
+    margin-bottom: 24px;
+  }
+
+  /* Summary cards */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 26px;
+  }
+
+  .summary-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 18px 20px;
+  }
+
+  .summary-card label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .summary-card .amount {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--primary-dark);
+  }
+
+  .summary-card .amount.mint { color: var(--primary-mid); }
+
+  .summary-card .sub {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* Chart card */
+  .card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 24px;
+    margin-bottom: 22px;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+
+  .section-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+  }
+
+  .period-select {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    height: 180px;
+    padding-top: 10px;
+  }
+
+  .bar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+  }
+
+  .bar {
+    width: 100%;
+    max-width: 40px;
+    background: var(--accent-mint);
+    border-radius: 6px 6px 0 0;
+    transition: background 0.15s ease;
+  }
+
+  .bar:hover { background: var(--accent-hover); }
+
+  .bar-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+
+  /* Table */
+  .earnings-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .earnings-table th {
+    text-align: left;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    padding: 10px 12px;
+    background: var(--bg);
+  }
+
+  .earnings-table th:first-child { border-radius: 8px 0 0 8px; }
+  .earnings-table th:last-child { border-radius: 0 8px 8px 0; text-align: right; }
+
+  .earnings-table td {
+    padding: 12px;
+    font-size: 0.88rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .earnings-table td:last-child { text-align: right; font-weight: 600; }
+
+  .earnings-table tr:hover td { background: var(--bg); }
+
+  .pay-status {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 100px;
+  }
+
+  .pay-status.paid {
+    background: var(--badge-bg);
+    border: 1px solid var(--badge-border);
+    color: var(--primary-dark);
+  }
+
+  .pay-status.pending {
+    background: #FFF3D9;
+    border: 1px solid #F0DBA0;
+    color: #8A6A1B;
+  }
+
+  @media (max-width: 900px) {
+    .summary-grid { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+    .earnings-table { display: block; overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/worker/dashboard" class="brand">Shiift</a>
+  <div class="nav-links">
+    <a href="/worker/dashboard">Dashboard</a>
+    <a href="/worker/browse-shifts">Browse Shifts</a>
+    <a href="/worker/my-bookings">My Bookings</a>
+    <a href="/worker/earnings" class="active">Earnings</a>
+    <a href="/worker/profile">Profile</a>
+  </div>
+  <div class="nav-avatar">KA</div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <h1>Earnings</h1>
+    <p>Track your payouts and shift history at a glance.</p>
+  </div>
+
+  <div class="summary-grid">
+    <div class="summary-card">
+      <label>This Month</label>
+      <div class="amount mint">₦64,800</div>
+      <div class="sub">8 shifts completed</div>
+    </div>
+    <div class="summary-card">
+      <label>Pending Payout</label>
+      <div class="amount">₦16,200</div>
+      <div class="sub">1 shift awaiting release</div>
+    </div>
+    <div class="summary-card">
+      <label>Total Earned</label>
+      <div class="amount">₦412,500</div>
+      <div class="sub">Since joining Shiift</div>
+    </div>
+    <div class="summary-card">
+      <label>Avg. Per Shift</label>
+      <div class="amount">₦16,850</div>
+      <div class="sub">Across 24 shifts</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="section-title">Earnings Overview</div>
+      <select class="period-select" id="periodSelect" onchange="updateChart()">
+        <option value="week">Last 7 days</option>
+        <option value="month" selected>Last 6 months</option>
+      </select>
+    </div>
+    <div class="bar-chart" id="barChart"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="section-title">Payout History</div>
+    </div>
+    <table class="earnings-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Facility</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Jul 6, 2026</td>
+          <td>St. Claire General Hospital</td>
+          <td>Registered Nurse</td>
+          <td><span class="pay-status pending">Pending</span></td>
+          <td>₦16,200</td>
+        </tr>
+        <tr>
+          <td>Jun 28, 2026</td>
+          <td>Havenwell Care Home</td>
+          <td>Registered Nurse</td>
+          <td><span class="pay-status paid">Paid</span></td>
+          <td>₦10,800</td>
+        </tr>
+        <tr>
+          <td>Jun 21, 2026</td>
+          <td>Grace Medical Centre</td>
+          <td>Registered Nurse</td>
+          <td><span class="pay-status paid">Paid</span></td>
+          <td>₦13,500</td>
+        </tr>
+        <tr>
+          <td>Jun 14, 2026</td>
+          <td>Sunrise Specialist Hospital</td>
+          <td>Registered Nurse</td>
+          <td><span class="pay-status paid">Paid</span></td>
+          <td>₦15,300</td>
+        </tr>
+        <tr>
+          <td>Jun 7, 2026</td>
+          <td>MedPlus Community Clinic</td>
+          <td>Registered Nurse</td>
+          <td><span class="pay-status paid">Paid</span></td>
+          <td>₦19,800</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script src="/static/js/jquery-4.0.0.min.js"></script>
+<script>
+  // In production: GET /worker/api/earnings/summary and
+  // GET /worker/api/earnings/history?period=week|month
+
+  const chartData = {
+    week: [
+      { label: 'Mon', value: 0 },
+      { label: 'Tue', value: 16200 },
+      { label: 'Wed', value: 0 },
+      { label: 'Thu', value: 15300 },
+      { label: 'Fri', value: 19800 },
+      { label: 'Sat', value: 13500 },
+      { label: 'Sun', value: 0 }
+    ],
+    month: [
+      { label: 'Feb', value: 58200 },
+      { label: 'Mar', value: 71400 },
+      { label: 'Apr', value: 49800 },
+      { label: 'May', value: 82600 },
+      { label: 'Jun', value: 75600 },
+      { label: 'Jul', value: 64800 }
+    ]
+  };
+
+  function renderChart(period) {
+    const data = chartData[period];
+    const max = Math.max(...data.map(d => d.value), 1);
+    const chart = document.getElementById('barChart');
+    chart.innerHTML = '';
+
+    data.forEach(d => {
+      const col = document.createElement('div');
+      col.className = 'bar-col';
+
+      const bar = document.createElement('div');
+      bar.className = 'bar';
+      bar.style.height = ((d.value / max) * 100) + '%';
+      bar.title = '₦' + d.value.toLocaleString();
+
+      const label = document.createElement('div');
+      label.className = 'bar-label';
+      label.textContent = d.label;
+
+      col.appendChild(bar);
+      col.appendChild(label);
+      chart.appendChild(col);
+    });
+  }
+
+  function updateChart() {
+    const period = document.getElementById('periodSelect').value;
+    renderChart(period);
+  }
+
+  renderChart('month');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHIIFT - Ondemand Healthcare Staffing</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== Brand foundation (no CSS variables, hard-coded values throughout) ===== */
+        html, body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #F7FBF8;
+            color: #10302E;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Baloo 2', 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        a {
+            color: #0F6E68;
+        }
+
+        a:hover {
+            color: #0A4144;
+        }
+
+        /* ===== Navbar ===== */
+        .navbar-brand-shiift {
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 800;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            color: #F7FBF8 !important;
+        }
+
+        .navbar-shiift {
+            background-color: #0A4144;
+        }
+
+        .navbar-shiift .nav-link {
+            color: #D7F2DD;
+            font-weight: 500;
+            padding-left: 0.85rem;
+            padding-right: 0.85rem;
+        }
+
+        .navbar-shiift .nav-link:hover,
+        .navbar-shiift .nav-link.active {
+            color: #6FD490;
+        }
+
+        .btn-shiift-outline {
+            border: 2px solid #6FD490;
+            color: #6FD490;
+            background-color: transparent;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        .btn-shiift-outline:hover {
+            background-color: #6FD490;
+            color: #0A4144;
+        }
+
+        /* ===== Hero ===== */
+        /* 
+           PLACEHOLDER IMAGE NOTICE:
+           background-image below uses a generated placeholder (hero-placeholder.svg).
+           To use your real photo of nurses, replace the url() on the next rule with
+           your actual image path, e.g.:
+               background-image: url('images/nurses-hero.jpg');
+           Keep the linear-gradient() overlay in front of it so the white headline
+           text stays readable on top of the photo.
+        */
+        .hero-section {
+            background-image:
+                linear-gradient(100deg, rgba(10, 65, 68, 0.94) 0%, rgba(10, 65, 68, 0.86) 38%, rgba(10, 65, 68, 0.55) 68%, rgba(10, 65, 68, 0.30) 100%),
+                url('/static/images/nurseimg.jpg');
+            background-size: cover;
+            background-position: center right;
+            background-repeat: no-repeat;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-padding {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        @media (min-width: 992px) {
+            .hero-padding {
+                padding-top: 5rem;
+                padding-bottom: 5rem;
+            }
+        }
+
+        .hero-eyebrow {
+            display: inline-block;
+            background-color: #6FD490;
+            color: #0A4144;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 0.45rem 1rem;
+            border-radius: 100px;
+            margin-bottom: 1.25rem;
+        }
+
+        .hero-title {
+            color: #FFFFFF;
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 700;
+            line-height: 1.08;
+            font-size: 3rem;
+        }
+
+        .hero-lead {
+            color: #C7E6CC;
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .btn-shiift-outline-light {
+            border: 2px solid #C7E6CC;
+            color: #FFFFFF;
+            border-radius: 10px;
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .btn-shiift-outline-light:hover {
+            background-color: rgba(199, 230, 204, 0.12);
+            border-color: #6FD490;
+            color: #FFFFFF;
+        }
+
+        .hero-stats {
+            gap: 1.75rem;
+        }
+
+        .hero-stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero-stat-number {
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: #6FD490;
+            line-height: 1.1;
+        }
+
+        .hero-stat-label {
+            font-size: 0.78rem;
+            color: #9FC4BC;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== Feature cards ===== */
+        .feature-card {
+            background-color: #FFFFFF;
+            border: 1px solid #E1F0E4;
+            border-radius: 14px;
+            padding: 1.5rem;
+            height: 100%;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(10, 65, 68, 0.1);
+        }
+
+        .feature-icon {
+            width: 46px;
+            height: 46px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            color: #FFFFFF;
+            margin-bottom: 0.85rem;
+        }
+
+        .feature-icon-teal   { background-color: #0F6E68; }
+        .feature-icon-mint   { background-color: #6FD490; color: #0A4144; }
+        .feature-icon-deep   { background-color: #0A4144; }
+        .feature-icon-pale   { background-color: #A7E3AF; color: #0A4144; }
+
+        .feature-card h5 {
+            color: #0A4144;
+            font-size: 1.05rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .feature-card p {
+            color: #56716D;
+            font-size: 0.9rem;
+        }
+
+        /* ===== Login card ===== */
+        .login-card {
+            background-color: #FFFFFF;
+            border-radius: 18px;
+            border: 1px solid #E1F0E4;
+            box-shadow: 0 20px 45px rgba(10, 65, 68, 0.18);
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-card-badge {
+            position: absolute;
+            top: -16px;
+            right: 24px;
+            z-index: 5;
+            background-color: #6FD490;
+            color: #0A4144;
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 700;
+            font-size: 0.78rem;
+            padding: 0.5rem 0.9rem;
+            border-radius: 100px;
+            box-shadow: 0 6px 16px rgba(10, 65, 68, 0.25);
+        }
+
+        .login-card h3 {
+            color: #0A4144;
+        }
+
+        .login-card .form-label {
+            color: #0F6E68;
+            font-size: 0.78rem;
+            letter-spacing: 0.6px;
+        }
+
+        .login-card .form-control {
+            border: 1.5px solid #E1F0E4;
+            border-radius: 10px;
+            background-color: #F7FBF8;
+        }
+
+        .login-card .form-control:focus {
+            border-color: #6FD490;
+            box-shadow: 0 0 0 3px rgba(111, 212, 144, 0.25);
+            background-color: #FFFFFF;
+        }
+
+        .role-toggle .btn {
+            border-radius: 10px !important;
+            font-size: 0.82rem;
+            font-weight: 600;
+            padding-top: 0.6rem;
+            padding-bottom: 0.6rem;
+        }
+
+        .role-toggle .btn-outline-primary {
+            color: #0F6E68;
+            border-color: #CFE9D2;
+        }
+
+        .role-toggle .btn-check:checked + .btn-outline-primary {
+            background-color: #0F6E68;
+            border-color: #0F6E68;
+            color: #FFFFFF;
+        }
+
+        .role-toggle .btn-outline-dark {
+            color: #0A4144;
+            border-color: #CFE9D2;
+        }
+
+        .role-toggle .btn-check:checked + .btn-outline-dark {
+            background-color: #0A4144;
+            border-color: #0A4144;
+            color: #FFFFFF;
+        }
+
+        .btn-shiift-primary {
+            background-color: #6FD490;
+            border: none;
+            color: #0A4144;
+            border-radius: 10px;
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            font-size: 0.95rem;
+        }
+
+        .btn-shiift-primary:hover {
+            background-color: #58C27E;
+            color: #0A4144;
+        }
+
+        /* ===== About / footer band ===== */
+        .about-band {
+            background-color: #D7F2DD;
+        }
+
+        .about-band h5 {
+            color: #0A4144;
+        }
+
+        .about-band p {
+            color: #3E6358;
+        }
+
+        .about-proof {
+            display: inline-block;
+            background-color: #FFFFFF;
+            border-left: 4px solid #6FD490;
+            border-radius: 8px;
+            padding: 0.85rem 1.1rem;
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #0A4144;
+        }
+
+        .about-image {
+            border-radius: 16px;
+            box-shadow: 0 16px 36px rgba(10, 65, 68, 0.18);
+            display: block;
+        }
+
+        /* ===== Footer ===== */
+        .footer-shiift {
+            background-color: #0A4144;
+        }
+
+        .footer-logo {
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        .footer-logo:hover {
+            color: #6FD490;
+        }
+
+        .footer-tagline {
+            color: #9FC4BC;
+            font-size: 0.88rem;
+            max-width: 360px;
+        }
+
+        .footer-heading {
+            color: #6FD490;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.6rem;
+        }
+
+        .footer-links a {
+            color: #C7E6CC;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: #6FD490;
+        }
+
+        .footer-contact li {
+            margin-bottom: 0.7rem;
+            font-size: 0.9rem;
+            color: #C7E6CC;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .footer-contact a {
+            color: #C7E6CC;
+            text-decoration: none;
+        }
+
+        .footer-contact a:hover {
+            color: #6FD490;
+        }
+
+        .footer-contact-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            margin-right: 0.6rem;
+            color: #6FD490;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+
+        .footer-divider {
+            border: none;
+            border-top: 1px solid #1B5C58;
+            margin: 1.5rem 0;
+            opacity: 1;
+        }
+
+        .footer-copy {
+            color: #88AFA8;
+            font-size: 0.82rem;
+        }
+
+        .footer-legal-link {
+            color: #88AFA8;
+            font-size: 0.82rem;
+            text-decoration: none;
+        }
+
+        .footer-legal-link:hover {
+            color: #6FD490;
+        }
+
+        .footer-legal-sep {
+            color: #1B5C58;
+            margin: 0 0.5rem;
+        }
+
+        @media (max-width: 767.98px) {
+            .hero-title {
+                font-size: 2.1rem;
+            }
+
+            .login-card-badge {
+                top: -14px;
+                right: 16px;
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-shiift">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-shiift" href="{{ url_for('index') }}">SHIIFT</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav ms-3 me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">How It Works</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About Platform</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="{{url_for('register')}}" class="btn btn-shiift-outline btn-sm px-3">Create Free Account</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div style="max-width: 1200px; margin: 16px auto 0; padding: 0 16px;">
+  {% for category, message in messages %}
+  <div style="padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem; {{ 'background:#FDECEC; color:#B42318; border:1px solid #F5C2C2;' if category == 'errormsg' else 'background:#E8F5E9; color:#1B5E20; border:1px solid #B7DFB9;' }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+    <div class="hero-section hero-padding">
+        <div class="container py-4">
+        <div class="row g-5 align-items-center">
+            
+            <div class="col-lg-7">
+                <span class="hero-eyebrow">Coming soon</span>
+                <h1 class="hero-title mb-3">Connecting Healthcare Workers to Open Shifts, Instantly.</h1>
+                <p class="hero-lead mb-4">
+                    Shiift eliminates the overhead of medical staffing. Hospitals seamlessly publish vacancies, and verified nurses, doctors, and scientists claim open shifts matching their schedules.
+                </p>
+
+                <div class="d-flex flex-wrap gap-3 mb-4">
+                    <a href="{{ url_for('register', type='worker') }}" class="btn btn-shiift-primary px-4 py-2 text-uppercase">Find a Shift</a>
+                    <a href="{{ url_for('register', type='facility') }}" class="btn btn-shiift-outline-light px-4 py-2 text-uppercase">Post a Shift</a>
+                </div>
+
+                <!-- <div class="hero-stats d-flex flex-wrap mb-2">
+                    <div class="hero-stat">
+                        <span class="hero-stat-number">1,200+</span>
+                        <span class="hero-stat-label">Shifts Filled</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-number">85+</span>
+                        <span class="hero-stat-label">Facilities Onboard</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-number">6</span>
+                        <span class="hero-stat-label">States Covered</span>
+                    </div>
+                </div> -->
+
+                <div class="row g-4 mt-2" id="features">
+                    <div class="col-md-6">
+                        <div class="feature-card">
+                            <div class="feature-icon feature-icon-teal">1</div>
+                            <h5>Post Vacancies</h5>
+                            <p class="mb-0">Hospitals and diagnostic centers can post emergency openings or planned shift schedules within minutes.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="feature-card">
+                            <div class="feature-icon feature-icon-mint">2</div>
+                            <h5>Instant Claims</h5>
+                            <p class="mb-0">Verified professionals get notified and can instantly review rates, times, and claim available shifts locally.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="feature-card">
+                            <div class="feature-icon feature-icon-pale">3</div>
+                            <h5>Verified Credentials</h5>
+                            <p class="mb-0">Every license is checked against MDCN and NMCN registries before an account goes live — no exceptions.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="feature-card">
+                            <div class="feature-icon feature-icon-deep">4</div>
+                            <h5>Secure Escrow</h5>
+                            <p class="mb-0">Shift funding is held safely upon booking confirmation, protecting both the facility and worker payouts.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="position-relative">
+                <span class="login-card-badge">Free to join</span>
+                <div class="card login-card border-0 p-2">
+                    <div class="card-body">
+                        <h3 class="mb-1">Welcome Back</h3>
+                        <p class="text-muted small mb-4">Select your operational group to safely access your portal dashboard context.</p>
+
+                        <form id="portalLoginForm" method="post" action="/login/">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <div class="mb-4">
+                                <label class="form-label fw-bold text-uppercase mb-2">Account Portal Type</label>
+                                <div class="btn-group w-100 role-toggle" role="group">
+                                    <input type="radio" class="btn-check" name="role" id="portalWorker" value="worker" checked>
+                                    <label class="btn btn-outline-primary py-2" for="portalWorker">Healthcare Worker</label>
+
+                                    <input type="radio" class="btn-check" name="role" id="portalFacility" value="facility">
+                                    <label class="btn btn-outline-dark py-2" for="portalFacility">Medical Facility</label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small">Email Address</label>
+                                <input type="email" class="form-control py-2" id="portalEmail" name="email" placeholder="e.g. name@hospital.com" required>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label fw-bold small">Password</label>
+                                <input type="password" class="form-control py-2" id="portalPassword" name="password" placeholder="••••••••" required>
+                            </div>
+
+                            <div class="mb-4 form-check">
+                                <input type="checkbox" class="form-check-input" id="showPasswordToggle">
+                                <label class="form-check-label small text-secondary" for="showPasswordToggle">Show password</label>
+                            </div>
+
+                            <button type="submit" class="btn btn-shiift-primary w-100 py-2 text-uppercase">Access My Workspace</button>
+                        </form>
+                    </div>
+
+                    <div class="card-footer bg-white text-center py-3 border-0">
+                        <p class="small text-muted mb-0">Don't have an account registered? <a href="{{ url_for('register') }}" class="fw-bold text-decoration-none ms-1">Register now</a></p>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+        </div>
+        </div>
+    </div>
+
+    <div class="about-band py-5" id="about">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6 text-center text-lg-start">
+                    <h5 class="mb-2">About SHIIFT</h5>
+                    <p class="mb-3">Streamlining workforce management solutions for healthcare infrastructure across Nigerian states. We connect verified medical professionals with hospitals and diagnostic centers that need them, when they need them.</p>
+                    <p class="about-proof mb-4">Average shift is claimed in under 2 hours-every professional is verified before they ever see an opening.</p>
+                    <a href="{{ url_for('register') }}" class="btn btn-shiift-primary px-4 py-2 text-uppercase">Get Started Free</a>
+                </div>
+                <div class="col-lg-6">
+                    <!-- PLACEHOLDER IMAGE: replace src below with a real photo of nurses,
+                         e.g. src="images/about-nurses.jpg" -->
+                    <img src="/static/images/nurse2.jpg" alt="Healthcare workers using Shiift" class="about-image img-fluid w-100">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-shiift pt-5 pb-4">
+        <div class="container">
+            <div class="row g-4">
+
+                <div class="col-lg-4 col-md-12 mb-3">
+                    <a href="{{ url_for('index') }}" class="footer-logo d-inline-block mb-3">SHIIFT</a>
+                    <p class="footer-tagline mb-0">On demand healthcare staffing for hospitals, clinics, and diagnostic centers across Nigeria. Post a shift or claim one in minutes.</p>
+                </div>
+
+                <div class="col-lg-2 col-md-4 col-6 mb-3">
+                    <h6 class="footer-heading">Navigation</h6>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="{{ url_for('index') }}">Home</a></li>
+                        <li><a href="#features">How It Works</a></li>
+                        <li><a href="#about">About Platform</a></li>
+                        <li><a href="{{ url_for('register') }}">Create Account</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-md-4 col-6 mb-3">
+                    <h6 class="footer-heading">Portals</h6>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="{{ url_for('worker_dashboard') }}">Healthcare Worker</a></li>
+                        <li><a href="{{ url_for('facility_dashboard') }}">Medical Facility</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-12 mb-3">
+                    <h6 class="footer-heading">Contact Us</h6>
+                    <ul class="list-unstyled footer-contact">
+                        <li>
+                            <span class="footer-contact-icon">&#9742;</span>
+                            <a href="tel:+2349022220505">0902 222 0505</a>
+                        </li>
+                        <li>
+                            <span class="footer-contact-icon">&#9993;</span>
+                            <a href="mailto:hello@shiift.ng">hello@shiift.ng</a>
+                        </li>
+                        <li>
+                            <span class="footer-contact-icon">&#9737;</span>
+                            <span>Ikeja, Island, Lagos, Nigeria</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <hr class="footer-divider">
+
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="footer-copy mb-0">&copy; 2026 Shiift Tech Solutions. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="footer-legal-link">Privacy Policy</a>
+                    <span class="footer-legal-sep">&middot;</span>
+                    <a href="#" class="footer-legal-link">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/static/js/jquery-4.0.0.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            
+            // Password Visibility Toggle Logic
+            $('#showPasswordToggle').on('change', function() {
+                var passwordField = $('#portalPassword');
+                
+                // Switch input types natively based on checkbox check state
+                if ($(this).is(':checked')) {
+                    passwordField.attr('type', 'text');
+                } else {
+                    passwordField.attr('type', 'password');
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

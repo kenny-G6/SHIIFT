@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page Not Found | Shiift</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-dark: #0A4144;
+    --primary-mid: #0F6E68;
+    --accent-mint: #6FD490;
+    --accent-hover: #58C27E;
+    --bg: #F7FBF8;
+    --text-primary: #10302E;
+    --text-muted: #56716D;
+    --border: #E1F0E4;
+    --badge-bg: #D7F2DD;
+    --badge-border: #A7E3AF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+  }
+
+  h1, h2, .brand {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  /* Navbar */
+  .navbar {
+    background: var(--primary-dark);
+    padding: 16px 32px;
+  }
+
+  .brand {
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+
+  /* Error content */
+  .error-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+  }
+
+  .error-card {
+    text-align: center;
+    max-width: 480px;
+  }
+
+  .error-icon-wrap {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    border: 1px solid var(--badge-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 22px;
+  }
+
+  .error-icon-wrap svg {
+    width: 38px;
+    height: 38px;
+  }
+
+  .error-code {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: 5.5rem;
+    color: var(--primary-dark);
+    line-height: 1;
+    letter-spacing: -2px;
+  }
+
+  .error-title {
+    font-size: 1.3rem;
+    color: var(--primary-dark);
+    margin-top: 14px;
+    margin-bottom: 10px;
+  }
+
+  .error-message {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 30px;
+  }
+
+  .error-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary-shiift {
+    background: var(--accent-mint);
+    color: var(--primary-dark);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 26px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.92rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.15s ease;
+  }
+
+  .btn-primary-shiift:hover { background: var(--accent-hover); }
+
+  .btn-secondary-shiift {
+    background: #FFFFFF;
+    color: var(--primary-dark);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 26px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.92rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: border-color 0.15s ease;
+  }
+
+  .btn-secondary-shiift:hover { border-color: var(--primary-mid); }
+
+  /* Search suggestion box */
+  .search-box {
+    margin-top: 30px;
+    display: flex;
+    gap: 8px;
+    max-width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .search-box input {
+    flex: 1;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.88rem;
+    background: #FFFFFF;
+  }
+
+  .search-box input:focus {
+    outline: none;
+    border-color: var(--accent-mint);
+  }
+
+  .search-box button {
+    background: var(--primary-dark);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    padding: 0 18px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.86rem;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .search-box button:hover { background: var(--primary-mid); }
+
+  @media (max-width: 480px) {
+    .error-code { font-size: 4rem; }
+    .error-title { font-size: 1.1rem; }
+    .search-box { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/" class="brand">Shiift</a>
+</nav>
+
+<div class="error-wrap">
+  <div class="error-card">
+    <div class="error-icon-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0A4144" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        <line x1="8" y1="11" x2="14" y2="11"></line>
+      </svg>
+    </div>
+
+    <div class="error-code">404</div>
+    <h1 class="error-title">We couldn't find that page</h1>
+    <p class="error-message">
+      The page you're looking for may have been moved, renamed, or doesn't exist. Double-check the link or head back to safety.
+    </p>
+
+    <div class="error-actions">
+      <a href="/" class="btn-primary-shiift">Back to Home</a>
+      <a href="/worker/browse-shifts" class="btn-secondary-shiift">Browse Shifts</a>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

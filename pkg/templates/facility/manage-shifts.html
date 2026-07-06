@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Shifts | Shiift</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-dark: #0A4144;
+    --primary-mid: #0F6E68;
+    --accent-mint: #6FD490;
+    --accent-hover: #58C27E;
+    --bg: #F7FBF8;
+    --text-primary: #10302E;
+    --text-muted: #56716D;
+    --border: #E1F0E4;
+    --badge-bg: #D7F2DD;
+    --badge-border: #A7E3AF;
+    --danger: #C64B4B;
+    --danger-bg: #FBEAEA;
+    --warn: #E0A93F;
+    --warn-bg: #FFF3D9;
+    --warn-border: #F0DBA0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, .brand {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  /* Navbar */
+  .navbar {
+    background: var(--primary-dark);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+  }
+
+  .nav-links a {
+    color: #CFE6E2;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.92rem;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav-links a:hover { color: #FFFFFF; }
+
+  .nav-links a.active {
+    color: var(--accent-mint);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .nav-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  /* Page container */
+  .page-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 36px 24px 64px;
+  }
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+  }
+
+  .page-header h1 {
+    font-size: 1.6rem;
+    color: var(--primary-dark);
+  }
+
+  .page-header p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin-top: 4px;
+  }
+
+  .btn-post {
+    background: var(--accent-mint);
+    color: var(--primary-dark);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 22px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .btn-post:hover { background: var(--accent-hover); }
+
+  /* Summary strip */
+  .summary-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .summary-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 16px 18px;
+  }
+
+  .summary-card label {
+    display: block;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .summary-card .num {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--primary-dark);
+  }
+
+  /* Filter tabs */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .tab {
+    background: none;
+    border: none;
+    padding: 10px 16px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .tab:hover { color: var(--primary-dark); }
+
+  .tab.active {
+    color: var(--primary-dark);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .tab .count {
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* Search */
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 12px;
+  }
+
+  .search-input {
+    flex: 1;
+    max-width: 320px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.86rem;
+    background: #FFFFFF;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: var(--accent-mint);
+  }
+
+  /* Table card */
+  .card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    overflow: hidden;
+  }
+
+  .shifts-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .shifts-table th {
+    text-align: left;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 14px 16px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .shifts-table td {
+    padding: 14px 16px;
+    font-size: 0.88rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .shifts-table tr:last-child td { border-bottom: none; }
+
+  .shifts-table tr:hover td { background: var(--bg); }
+
+  .role-cell .role-name {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .role-cell .role-sub {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .status-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 5px 13px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  .status-open {
+    background: var(--badge-bg);
+    border: 1px solid var(--badge-border);
+    color: var(--primary-dark);
+  }
+
+  .status-filled {
+    background: #E4EEFB;
+    border: 1px solid #BFD8F5;
+    color: #2C5A9E;
+  }
+
+  .status-completed {
+    background: #EDEDED;
+    border: 1px solid #D8D8D8;
+    color: var(--text-muted);
+  }
+
+  .status-cancelled {
+    background: var(--danger-bg);
+    border: 1px solid #EFC7C7;
+    color: var(--danger);
+  }
+
+  .applicants-link {
+    color: var(--primary-mid);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+  }
+
+  .applicants-link:hover { text-decoration: underline; }
+
+  .row-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .action-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .action-btn:hover {
+    border-color: var(--primary-mid);
+    color: var(--primary-mid);
+  }
+
+  .action-btn.danger:hover {
+    border-color: var(--danger);
+    color: var(--danger);
+  }
+
+  /* Empty state */
+  .empty-state {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .empty-state h3 {
+    font-size: 1.05rem;
+    color: var(--primary-dark);
+    margin-bottom: 6px;
+  }
+
+  .empty-state p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+  }
+
+  /* Modal */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 65, 68, 0.35);
+    align-items: center;
+    justify-content: center;
+    z-index: 998;
+  }
+
+  .modal-backdrop.show { display: flex; }
+
+  .modal-box {
+    background: #FFFFFF;
+    border-radius: 14px;
+    padding: 28px;
+    max-width: 380px;
+    width: 90%;
+    box-shadow: 0 12px 32px rgba(10, 65, 68, 0.2);
+  }
+
+  .modal-box h3 {
+    color: var(--primary-dark);
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+
+  .modal-box p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .modal-actions button {
+    flex: 1;
+    border-radius: 10px;
+    padding: 11px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-confirm-danger {
+    background: var(--danger);
+    color: #FFFFFF;
+  }
+
+  .btn-confirm-danger:hover { background: #B23F3F; }
+
+  .btn-cancel-modal {
+    background: var(--bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border) !important;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--primary-dark);
+    color: #FFFFFF;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(10, 65, 68, 0.25);
+    transform: translateY(20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    z-index: 999;
+  }
+
+  .toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  @media (max-width: 900px) {
+    .summary-strip { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+    .shifts-table { display: block; overflow-x: auto; }
+    .page-header { flex-direction: column; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="{{ url_for('facility_dashboard') }}" class="brand">Shiift</a>
+  <div class="nav-links">
+    <a href="{{ url_for('facility_dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('post_shift') }}">Post Shift</a>
+    <a href="{{ url_for('manage_shifts') }}" class="active">Manage Shifts</a>
+    <a href="#">Bookings</a>
+    <a href="#">Reviews</a>
+    <a href="#">Profile</a>
+  </div>
+  <div class="nav-avatar">SC</div>
+</nav>
+
+<div class="page-wrap">
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div style="max-width: 1200px; margin: 16px auto 0; padding: 0 16px;">
+  {% for category, message in messages %}
+  <div style="padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem; {{ 'background:#FDECEC; color:#B42318; border:1px solid #F5C2C2;' if category == 'errormsg' else 'background:#E8F5E9; color:#1B5E20; border:1px solid #B7DFB9;' }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+
+  <div class="page-header">
+    <div>
+      <h1>Manage Shifts</h1>
+      <p>View, edit, and track every shift you've posted.</p>
+    </div>
+    <a href="{{ url_for('post_shift') }}" class="btn-post">+ Post New Shift</a>
+  </div>
+
+  <div class="summary-strip">
+    <div class="summary-card">
+      <label>Open Shifts</label>
+      <div class="num">{{ counts.open }}</div>
+    </div>
+    <div class="summary-card">
+      <label>Filled</label>
+      <div class="num">{{ counts.filled }}</div>
+    </div>
+    <div class="summary-card">
+      <label>Completed</label>
+      <div class="num">{{ counts.completed }}</div>
+    </div>
+    <div class="summary-card">
+      <label>Cancelled</label>
+      <div class="num">{{ counts.cancelled }}</div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <input type="text" class="search-input" id="searchInput" placeholder="Search by role or shift ID..." onkeyup="applyFilters()">
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-status="all" onclick="filterByStatus('all')">All <span class="count">({{ counts.all }})</span></button>
+    <button class="tab" data-status="open" onclick="filterByStatus('open')">Open <span class="count">({{ counts.open }})</span></button>
+    <button class="tab" data-status="filled" onclick="filterByStatus('filled')">Filled <span class="count">({{ counts.filled }})</span></button>
+    <button class="tab" data-status="completed" onclick="filterByStatus('completed')">Completed <span class="count">({{ counts.completed }})</span></button>
+    <button class="tab" data-status="cancelled" onclick="filterByStatus('cancelled')">Cancelled <span class="count">({{ counts.cancelled }})</span></button>
+  </div>
+
+  <div class="card">
+    <table class="shifts-table" id="shiftsTable">
+      <thead>
+        <tr>
+          <th>Shift ID</th>
+          <th>Role</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Pay Rate</th>
+          <th>Status</th>
+          <th>Applicants</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="shiftsBody">
+        {% for shift in shifts %}
+        <tr data-status="{{ shift.status }}" data-search="{{ shift.role_needed|lower }} sh-{{ shift.shift_id }}">
+          <td>#SH-{{ shift.shift_id }}</td>
+          <td class="role-cell">
+            <div class="role-name">{{ shift.role_needed }}</div>
+          </td>
+          <td>{{ shift.shift_date.strftime('%b %d, %Y') }}</td>
+          <td>{{ shift.start_time.strftime('%I:%M %p') }} – {{ shift.end_time.strftime('%I:%M %p') }}</td>
+          <td>&#8358;{{ '{:,.0f}'.format(shift.pay_rate) }}</td>
+          <td><span class="status-badge status-{{ shift.status }}">{{ shift.status|capitalize }}</span></td>
+          <td>
+            {% set pending_count = shift.bookings|selectattr('booking_status', 'equalto', 'pending')|list|length %}
+            {% if pending_count > 0 %}
+            <a href="{{ url_for('shift_applicants', shift_id=shift.shift_id) }}" class="applicants-link">{{ pending_count }} applied</a>
+            {% elif shift.status == 'filled' %}
+            <a href="{{ url_for('shift_applicants', shift_id=shift.shift_id) }}" class="applicants-link">View booking</a>
+            {% else %}
+            <span style="color: var(--text-muted); font-size: 0.85rem;">&mdash;</span>
+            {% endif %}
+          </td>
+          <td>
+            <div class="row-actions">
+              {% if shift.status == 'open' %}
+              <button class="action-btn" disabled style="opacity:0.5; cursor:default;" title="Coming soon">Edit</button>
+              <button class="action-btn danger" onclick="openCancelModal({{ shift.shift_id }})">Cancel</button>
+              {% elif shift.status == 'filled' %}
+              {% set confirmed_bookings = shift.bookings|selectattr('booking_status', 'equalto', 'confirmed')|list %}
+              {% if confirmed_bookings %}
+                {% set confirmed_booking = confirmed_bookings[0] %}
+                {% if confirmed_booking.payment and confirmed_booking.payment.payment_status == 'pending' %}
+                <a href="{{ url_for('facility_payment', booking_id=confirmed_booking.booking_id) }}" class="action-btn">Pay Now</a>
+                {% elif confirmed_booking.payment and confirmed_booking.payment.payment_status == 'held' %}
+                <form method="post" action="{{ url_for('mark_complete', booking_id=confirmed_booking.booking_id) }}" style="display:inline;">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button type="submit" class="action-btn">Mark Complete</button>
+                </form>
+                {% endif %}
+              {% endif %}
+              <button class="action-btn danger" onclick="openCancelModal({{ shift.shift_id }})">Cancel</button>
+              {% elif shift.status == 'completed' %}
+              <button class="action-btn" disabled style="opacity:0.5; cursor:default;" title="Coming soon">Leave Review</button>
+              {% else %}
+              <button class="action-btn" disabled style="opacity:0.5; cursor:default;">Closed</button>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="empty-state" id="emptyState" style="{{ 'display:block;' if not shifts else 'display:none;' }}">
+      <h3>No shifts match your filters</h3>
+      <p>Try a different status or search term.</p>
+    </div>
+  </div>
+
+</div>
+
+<form id="cancelForm" method="post" action="">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+</form>
+
+<div class="modal-backdrop" id="cancelModal">
+  <div class="modal-box">
+    <h3>Cancel this shift?</h3>
+    <p id="cancelModalText">This shift will be removed from the marketplace and any pending applicants will be notified. This action cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="btn-cancel-modal" onclick="closeCancelModal()">Keep Shift</button>
+      <button class="btn-confirm-danger" onclick="confirmCancelShift()">Yes, Cancel It</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/static/js/jquery-4.0.0.min.js"></script>
+<script>
+  // Real shifts now come from the server via Jinja (see manage_shifts route in facility_route.py).
+  // Cancel posts to /facility/shift/<id>/cancel/ via the hidden #cancelForm below.
+
+  let shiftToCancel = null;
+  let currentStatusFilter = 'all';
+
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function filterByStatus(status) {
+    currentStatusFilter = status;
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.status === status);
+    });
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+    const rows = document.querySelectorAll('#shiftsBody tr');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+      const matchesStatus = currentStatusFilter === 'all' || row.dataset.status === currentStatusFilter;
+      const matchesSearch = searchTerm === '' || row.dataset.search.includes(searchTerm);
+      const isVisible = matchesStatus && matchesSearch;
+
+      row.style.display = isVisible ? '' : 'none';
+      if (isVisible) visibleCount++;
+    });
+
+    document.getElementById('emptyState').style.display = visibleCount === 0 ? 'block' : 'none';
+    document.getElementById('shiftsTable').style.display = visibleCount === 0 ? 'none' : 'table';
+  }
+
+  function openCancelModal(shiftId) {
+    shiftToCancel = shiftId;
+    document.getElementById('cancelModalText').textContent =
+      `Shift #SH-${shiftId} will be removed from the marketplace and any pending applicants will be notified. This action cannot be undone.`;
+    document.getElementById('cancelModal').classList.add('show');
+  }
+
+  function closeCancelModal() {
+    document.getElementById('cancelModal').classList.remove('show');
+    shiftToCancel = null;
+  }
+
+  function confirmCancelShift() {
+    const form = document.getElementById('cancelForm');
+    form.action = '/facility/shift/' + shiftToCancel + '/cancel/';
+    closeCancelModal();
+    form.submit();
+  }
+</script>
+
+</body>
+</html>

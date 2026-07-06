@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platform Bookings | Shiift Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-dark: #0A4144;
+    --primary-mid: #0F6E68;
+    --accent-mint: #6FD490;
+    --accent-hover: #58C27E;
+    --bg: #F7FBF8;
+    --text-primary: #10302E;
+    --text-muted: #56716D;
+    --border: #E1F0E4;
+    --badge-bg: #D7F2DD;
+    --badge-border: #A7E3AF;
+    --danger: #C64B4B;
+    --danger-bg: #FBEAEA;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, .brand {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  /* Navbar */
+  .navbar {
+    background: var(--primary-dark);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+
+  .brand .admin-tag {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--accent-mint);
+    letter-spacing: 1px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+
+  .nav-links a {
+    color: #CFE6E2;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav-links a:hover { color: #FFFFFF; }
+
+  .nav-links a.active {
+    color: var(--accent-mint);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .nav-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  /* Page container */
+  .page-wrap {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 36px 24px 64px;
+  }
+
+  .page-header h1 {
+    font-size: 1.6rem;
+    color: var(--primary-dark);
+  }
+
+  .page-header p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin-top: 4px;
+    margin-bottom: 24px;
+  }
+
+  /* Summary strip */
+  .summary-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .summary-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    padding: 16px 18px;
+  }
+
+  .summary-card label {
+    display: block;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .summary-card .num {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--primary-dark);
+  }
+
+  /* Toolbar */
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .toolbar-left { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .search-input {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.86rem;
+    background: #FFFFFF;
+    min-width: 240px;
+  }
+
+  .search-input:focus { outline: none; border-color: var(--accent-mint); }
+
+  .filter-select {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.86rem;
+    background: #FFFFFF;
+    color: var(--text-primary);
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .tab {
+    background: none;
+    border: none;
+    padding: 10px 16px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .tab:hover { color: var(--primary-dark); }
+
+  .tab.active {
+    color: var(--primary-dark);
+    border-bottom: 2px solid var(--accent-mint);
+  }
+
+  .tab .count { color: var(--text-muted); font-weight: 500; }
+
+  /* Table card */
+  .card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+    overflow: hidden;
+  }
+
+  .bookings-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .bookings-table th {
+    text-align: left;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 14px 16px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .bookings-table td {
+    padding: 14px 16px;
+    font-size: 0.88rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .bookings-table tr:last-child td { border-bottom: none; }
+  .bookings-table tr:hover td { background: var(--bg); }
+
+  .party-cell { display: flex; align-items: center; gap: 10px; }
+
+  .party-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.74rem;
+    flex-shrink: 0;
+  }
+
+  .party-name { font-weight: 600; color: var(--text-primary); font-size: 0.86rem; }
+  .party-sub { font-size: 0.76rem; color: var(--text-muted); margin-top: 1px; }
+
+  .status-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 5px 13px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  .status-upcoming { background: var(--badge-bg); border: 1px solid var(--badge-border); color: var(--primary-dark); }
+  .status-en-route { background: #E4EEFB; border: 1px solid #BFD8F5; color: #2C5A9E; }
+  .status-completed { background: #EDEDED; border: 1px solid #D8D8D8; color: var(--text-muted); }
+  .status-cancelled { background: var(--danger-bg); border: 1px solid #EFC7C7; color: var(--danger); }
+
+  .pay-status {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 100px;
+  }
+
+  .pay-status.paid { background: var(--badge-bg); border: 1px solid var(--badge-border); color: var(--primary-dark); }
+  .pay-status.pending { background: #FFF3D9; border: 1px solid #F0DBA0; color: #8A6A1B; }
+  .pay-status.disputed { background: var(--danger-bg); border: 1px solid #EFC7C7; color: var(--danger); }
+  .pay-status.na { color: var(--text-muted); font-size: 0.8rem; font-weight: 500; }
+
+  .row-link {
+    color: var(--primary-mid);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+  }
+
+  .row-link:hover { text-decoration: underline; }
+
+  /* Empty state */
+  .empty-state {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .empty-state h3 { font-size: 1.05rem; color: var(--primary-dark); margin-bottom: 6px; }
+  .empty-state p { color: var(--text-muted); font-size: 0.88rem; }
+
+  @media (max-width: 900px) {
+    .summary-strip { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+    .bookings-table { display: block; overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="{{ url_for('admin_dashboard') }}" class="brand">Shiift<span class="admin-tag">ADMIN</span></a>
+  <div class="nav-links">
+     <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('admin_workers') }}">Workers</a>
+     <a href="{{ url_for('admin_facilities') }}">Facilities</a>
+     <a href="{{ url_for('admin_shifts') }}">Shifts</a>
+     <a href="{{ url_for('admin_bookings') }}" class="active">Bookings</a>
+     <a href="{{ url_for('admin_payments') }}">Payments</a>
+  </div>
+  <div class="nav-avatar">AD</div>
+</nav>
+
+<div class="page-wrap">
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div style="max-width: 1200px; margin: 16px auto 0; padding: 0 16px;">
+  {% for category, message in messages %}
+  <div style="padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem; {{ 'background:#FDECEC; color:#B42318; border:1px solid #F5C2C2;' if category == 'errormsg' else 'background:#E8F5E9; color:#1B5E20; border:1px solid #B7DFB9;' }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+
+  <div class="page-header">
+    <h1>Platform Bookings</h1>
+    <p>Every booking across all workers and facilities, with payment status at a glance.</p>
+  </div>
+
+  <div class="summary-strip">
+    <div class="summary-card">
+      <label>Total Bookings</label>
+      <div class="num">{{ counts.all }}</div>
+    </div>
+    <div class="summary-card">
+      <label>Upcoming</label>
+      <div class="num">{{ counts.upcoming }}</div>
+    </div>
+    <div class="summary-card">
+      <label>Completed</label>
+      <div class="num">{{ counts.completed }}</div>
+    </div>
+    <div class="summary-card">
+      <label>Cancelled</label>
+      <div class="num">{{ counts.cancelled }}</div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <input type="text" class="search-input" id="searchInput" placeholder="Search by worker, facility, or booking ID..." onkeyup="applyFilters()">
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-status="all" onclick="filterByStatus('all')">All <span class="count">({{ counts.all }})</span></button>
+    <button class="tab" data-status="upcoming" onclick="filterByStatus('upcoming')">Upcoming <span class="count">({{ counts.upcoming }})</span></button>
+    <button class="tab" data-status="completed" onclick="filterByStatus('completed')">Completed <span class="count">({{ counts.completed }})</span></button>
+    <button class="tab" data-status="cancelled" onclick="filterByStatus('cancelled')">Cancelled <span class="count">({{ counts.cancelled }})</span></button>
+  </div>
+
+  <div class="card">
+    <table class="bookings-table" id="bookingsTable">
+      <thead>
+        <tr>
+          <th>Booking ID</th>
+          <th>Worker</th>
+          <th>Facility</th>
+          <th>Shift Date</th>
+          <th>Status</th>
+          <th>Payment</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="bookingsBody">
+        {% for booking in bookings %}
+        {% set ui_status = 'upcoming' if booking.booking_status in ['pending', 'confirmed'] else booking.booking_status %}
+        <tr data-status="{{ ui_status }}" data-search="{{ booking.worker.first_name|lower }} {{ booking.worker.last_name|lower }} {{ booking.shift.facility.facility_name|lower }} bk-{{ booking.booking_id }}">
+          <td>#BK-{{ '%06d'|format(booking.booking_id) }}</td>
+          <td>
+            <div class="party-cell">
+              <div class="party-avatar">{{ booking.worker.first_name[0] }}{{ booking.worker.last_name[0] }}</div>
+              <div>
+                <div class="party-name">{{ booking.worker.first_name }} {{ booking.worker.last_name }}</div>
+                <div class="party-sub">{{ booking.shift.role_needed }}</div>
+              </div>
+            </div>
+          </td>
+          <td>{{ booking.shift.facility.facility_name }}</td>
+          <td>{{ booking.shift.shift_date.strftime('%b %d, %Y') }}</td>
+          <td><span class="status-badge status-{{ 'upcoming' if ui_status == 'upcoming' else ui_status }}">{{ booking.booking_status|capitalize }}</span></td>
+          <td>
+            {% if booking.payment %}
+            <span class="pay-status {{ booking.payment.payment_status }}">{{ booking.payment.payment_status|capitalize }}</span>
+            {% else %}
+            <span class="pay-status na">&mdash; Not charged</span>
+            {% endif %}
+          </td>
+          <td><span class="row-link" style="opacity:0.5;" title="Coming soon">View</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="empty-state" id="emptyState" style="{{ 'display:block;' if not bookings else 'display:none;' }}">
+      <h3>No bookings match your filters</h3>
+      <p>Try a different status or search term.</p>
+    </div>
+  </div>
+
+</div>
+
+<script src="/static/js/jquery-4.0.0.min.js"></script>
+<script>
+  // Real bookings now come from the server via Jinja (see admin_bookings route in admin_route.py).
+
+  let currentStatusFilter = 'all';
+
+  function filterByStatus(status) {
+    currentStatusFilter = status;
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.status === status);
+    });
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+    const rows = document.querySelectorAll('#bookingsBody tr');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+      const matchesStatus = currentStatusFilter === 'all' || row.dataset.status === currentStatusFilter;
+      const matchesSearch = searchTerm === '' || row.dataset.search.includes(searchTerm);
+      const isVisible = matchesStatus && matchesSearch;
+
+      row.style.display = isVisible ? '' : 'none';
+      if (isVisible) visibleCount++;
+    });
+
+    document.getElementById('emptyState').style.display = visibleCount === 0 ? 'block' : 'none';
+    document.getElementById('bookingsTable').style.display = visibleCount === 0 ? 'none' : 'table';
+  }
+</script>
+
+</body>
+</html>

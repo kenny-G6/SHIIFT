@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shiift Central Ops - Admin Control</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #F7FBF8;
+            color: #10302E;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Baloo 2', 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Navbar */
+        .navbar-shiift {
+            background-color: #0A4144;
+        }
+
+        .navbar-brand-shiift {
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 800;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            color: #F7FBF8 !important;
+        }
+
+        .navbar-admin-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #9FC4BC;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .navbar-admin-user {
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 700;
+            color: #6FD490;
+            font-size: 0.95rem;
+        }
+
+        /* Cards */
+        .shiift-card {
+            background-color: #FFFFFF;
+            border: 1px solid #E1F0E4;
+            border-radius: 14px;
+            box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+            overflow: hidden;
+        }
+
+        .shiift-card-header {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #E1F0E4;
+            padding: 1rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .shiift-card-header-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #0F6E68;
+            margin: 0;
+        }
+
+        /* Tables */
+        .shiift-table thead th {
+            background-color: #F7FBF8;
+            color: #56716D;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            border-bottom: 1px solid #E1F0E4;
+            padding: 0.85rem 1rem;
+        }
+
+        .shiift-table tbody td {
+            font-size: 0.88rem;
+            color: #10302E;
+            border-bottom: 1px solid #F0F7F1;
+            padding: 0.85rem 1rem;
+            vertical-align: middle;
+        }
+
+        .shiift-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .shiift-table tbody tr:hover td {
+            background-color: #F7FBF8;
+        }
+
+        /* Badges */
+        .badge-pending {
+            background-color: #D7F2DD;
+            color: #0A4144;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.35em 0.75em;
+            border-radius: 100px;
+        }
+
+        .badge-escrow {
+            background-color: #FEF3C7;
+            color: #92400E;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.35em 0.75em;
+            border-radius: 100px;
+        }
+
+        .badge-released {
+            background-color: #D7F2DD;
+            color: #0A4144;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.35em 0.75em;
+            border-radius: 100px;
+        }
+
+        /* Buttons */
+        .btn-shiift-approve {
+            background-color: #6FD490;
+            border: none;
+            color: #0A4144;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.78rem;
+        }
+
+        .btn-shiift-approve:hover {
+            background-color: #58C27E;
+            color: #0A4144;
+        }
+
+        .btn-shiift-reject {
+            background-color: transparent;
+            border: 1.5px solid #E1F0E4;
+            color: #56716D;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.78rem;
+        }
+
+        .btn-shiift-reject:hover {
+            border-color: #0A4144;
+            color: #0A4144;
+        }
+
+        .btn-shiift-release {
+            background-color: #0F6E68;
+            border: none;
+            color: #FFFFFF;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.78rem;
+        }
+
+        .btn-shiift-release:hover {
+            background-color: #0A4144;
+            color: #FFFFFF;
+        }
+
+        .btn-shiift-settled {
+            background-color: #F0F7F1;
+            border: none;
+            color: #9FC4BC;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.78rem;
+        }
+
+        /* Page title */
+        .page-eyebrow {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #0F6E68;
+        }
+
+        .page-title {
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 700;
+            color: #0A4144;
+            font-size: 1.4rem;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-shiift">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-shiift" href="{{ url_for('admin_dashboard') }}">SHIIFT</a>
+            <div class="ms-auto d-flex align-items-center gap-3">
+                <a href="{{ url_for('admin_dashboard') }}" class="navbar-link">Dashboard</a>
+                <a href="{{ url_for('admin_workers') }}" class="navbar-link">Workers</a>
+                <a href="{{ url_for('admin_facilities') }}" class="navbar-link">Facilities</a>
+                <a href="{{ url_for('admin_shifts') }}" class="navbar-link">Shifts</a>
+                <a href="{{ url_for('admin_bookings') }}" class="navbar-link">Bookings</a>
+                <a href="{{ url_for('admin_payments') }}" class="navbar-link">Payments</a>
+                <a href="{{ url_for('admin_logout') }}" class="navbar-link">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div style="max-width: 1200px; margin: 16px auto 0; padding: 0 16px;">
+  {% for category, message in messages %}
+  <div style="padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem; {{ 'background:#FDECEC; color:#B42318; border:1px solid #F5C2C2;' if category == 'errormsg' else 'background:#E8F5E9; color:#1B5E20; border:1px solid #B7DFB9;' }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+
+        <!-- Page heading -->
+        <div class="mb-4">
+            <p class="page-eyebrow mb-0">Central Operations</p>
+            <h1 class="page-title">Admin Dashboard</h1>
+        </div>
+
+        <!-- Verification table -->
+        <div class="shiift-card mb-4">
+            <div class="shiift-card-header">
+                <p class="shiift-card-header-title">Pending Onboarding Credentials Verification</p>
+                <span class="badge-pending" id="verifyCount">{{ pending_workers|length + pending_facilities|length }} Pending</span>
+            </div>
+            <table class="table shiift-table mb-0" id="verificationTable">
+                <thead>
+                    <tr>
+                        <th>Applicant Name</th>
+                        <th>Type</th>
+                        <th>Profession / Plan</th>
+                        <th>Location State</th>
+                        <th>Documents</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for worker in pending_workers %}
+                    <tr>
+                        <td><strong><a href="{{ url_for('worker_detail', worker_id=worker.worker_id) }}" style="color: inherit;">{{ worker.first_name }} {{ worker.last_name }}</a></strong></td>
+                        <td>Worker</td>
+                        <td>{{ worker.profession.profession_name }}</td>
+                        <td>{{ worker.state.state_name }}</td>
+                        <td>
+                            {% if worker.licence_document %}<a href="/static/uploads/{{ worker.licence_document }}" target="_blank">Licence</a>{% endif %}
+                            {% if worker.qualification_document %} &middot; <a href="/static/uploads/{{ worker.qualification_document }}" target="_blank">Qualification</a>{% endif %}
+                            {% if worker.id_document %} &middot; <a href="/static/uploads/{{ worker.id_document }}" target="_blank">ID</a>{% endif %}
+                        </td>
+                        <td class="text-end">
+                            <form method="post" action="{{ url_for('update_worker_status', worker_id=worker.worker_id) }}" style="display:inline;">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="status" value="active">
+                                <button type="submit" class="btn btn-sm btn-shiift-approve me-1">Approve &amp; Activate</button>
+                            </form>
+                            <form method="post" action="{{ url_for('update_worker_status', worker_id=worker.worker_id) }}" style="display:inline;">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="status" value="suspended">
+                                <button type="submit" class="btn btn-sm btn-shiift-reject">Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% for facility in pending_facilities %}
+                    <tr>
+                        <td><strong><a href="{{ url_for('facility_detail', facility_id=facility.facility_id) }}" style="color: inherit;">{{ facility.facility_name }}</a></strong></td>
+                        <td>Facility</td>
+                        <td>{{ facility.plan|capitalize }}</td>
+                        <td>{{ facility.state.state_name }}</td>
+                        <td>
+                            {% if facility.cac_document %}<a href="/static/uploads/{{ facility.cac_document }}" target="_blank">CAC</a>{% endif %}
+                            {% if facility.operating_licence_document %} &middot; <a href="/static/uploads/{{ facility.operating_licence_document }}" target="_blank">Licence</a>{% endif %}
+                        </td>
+                        <td class="text-end">
+                            <form method="post" action="{{ url_for('update_facility_status', facility_id=facility.facility_id) }}" style="display:inline;">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="status" value="active">
+                                <button type="submit" class="btn btn-sm btn-shiift-approve me-1">Approve &amp; Activate</button>
+                            </form>
+                            <form method="post" action="{{ url_for('update_facility_status', facility_id=facility.facility_id) }}" style="display:inline;">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="status" value="suspended">
+                                <button type="submit" class="btn btn-sm btn-shiift-reject">Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% if not pending_workers and not pending_facilities %}
+                    <tr>
+                        <td colspan="6" class="text-center p-4" style="color:#9FC4BC; font-size:0.88rem;">Verification queue clear. No pending workers or facilities.</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Escrow ledger -->
+        <div class="shiift-card">
+            <div class="shiift-card-header">
+                <p class="shiift-card-header-title">Escrow Ledger &amp; Worker Payout Release</p>
+            </div>
+            <table class="table shiift-table mb-0">
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Total Escrow Held</th>
+                        <th>Shiift Cut ({{ (commission_rate * 100)|int }}%)</th>
+                        <th>Worker Earnings</th>
+                        <th>Status</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in releasable_payments %}
+                    <tr>
+                        <td>#B-{{ '%05d'|format(payment.booking_id) }}</td>
+                        <td>&#8358;{{ '{:,.2f}'.format(payment.amount_held) }}</td>
+                        <td>&#8358;{{ '{:,.2f}'.format(payment.commission) }}</td>
+                        <td>&#8358;{{ '{:,.2f}'.format(payment.worker_payout) }}</td>
+                        <td><span class="badge-escrow status-badge">Held in Escrow</span></td>
+                        <td class="text-end">
+                            <form method="post" action="{{ url_for('release_payment', payment_id=payment.payment_id) }}" style="display:inline;" onsubmit="return confirm('Release funds to the healthcare worker\'s payout balance? Only confirm after you have actually sent the transfer. This cannot be undone.');">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn btn-sm btn-shiift-release">Release Payout</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% for payment in recently_released %}
+                    <tr>
+                        <td>#B-{{ '%05d'|format(payment.booking_id) }}</td>
+                        <td>&#8358;{{ '{:,.2f}'.format(payment.amount_held) }}</td>
+                        <td>&#8358;{{ '{:,.2f}'.format(payment.commission) }}</td>
+                        <td>&#8358;{{ '{:,.2f}'.format(payment.worker_payout) }}</td>
+                        <td><span class="badge-released status-badge">Released</span></td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-shiift-settled" disabled>Settled</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% if not releasable_payments and not recently_released %}
+                    <tr>
+                        <td colspan="6" class="text-center p-4" style="color:#9FC4BC; font-size:0.88rem;">No escrow activity yet.</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script src="/static/js/jquery-4.0.0.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

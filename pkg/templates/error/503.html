@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Down for Maintenance | Shiift</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-dark: #0A4144;
+    --primary-mid: #0F6E68;
+    --accent-mint: #6FD490;
+    --accent-hover: #58C27E;
+    --bg: #F7FBF8;
+    --text-primary: #10302E;
+    --text-muted: #56716D;
+    --border: #E1F0E4;
+    --badge-bg: #D7F2DD;
+    --badge-border: #A7E3AF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+  }
+
+  h1, h2, .brand {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  /* Navbar */
+  .navbar {
+    background: var(--primary-dark);
+    padding: 16px 32px;
+  }
+
+  .brand {
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+
+  /* Error content */
+  .error-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+  }
+
+  .error-card {
+    text-align: center;
+    max-width: 480px;
+  }
+
+  .error-icon-wrap {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: var(--badge-bg);
+    border: 1px solid var(--badge-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 22px;
+    position: relative;
+  }
+
+  .error-icon-wrap svg {
+    width: 38px;
+    height: 38px;
+  }
+
+  .error-icon-wrap.spinning::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top-color: var(--accent-mint);
+    animation: spin 1.4s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .error-code {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: 5.5rem;
+    color: var(--primary-dark);
+    line-height: 1;
+    letter-spacing: -2px;
+  }
+
+  .error-title {
+    font-size: 1.3rem;
+    color: var(--primary-dark);
+    margin-top: 14px;
+    margin-bottom: 10px;
+  }
+
+  .error-message {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 26px;
+  }
+
+  .status-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 9px 18px;
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-mint);
+    animation: pulse 1.6s infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(111, 212, 144, 0.55); }
+    70% { box-shadow: 0 0 0 7px rgba(111, 212, 144, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(111, 212, 144, 0); }
+  }
+
+  .error-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary-shiift {
+    background: var(--accent-mint);
+    color: var(--primary-dark);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 26px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.92rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.15s ease;
+  }
+
+  .btn-primary-shiift:hover { background: var(--accent-hover); }
+
+  @media (max-width: 480px) {
+    .error-code { font-size: 4rem; }
+    .error-title { font-size: 1.1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/" class="brand">Shiift</a>
+</nav>
+
+<div class="error-wrap">
+  <div class="error-card">
+    <div class="error-icon-wrap spinning">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0A4144" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2v4"></path>
+        <path d="m16.2 7.8 2.9-2.9"></path>
+        <path d="M18 12h4"></path>
+        <path d="m16.2 16.2 2.9 2.9"></path>
+        <path d="M12 18v4"></path>
+        <path d="m4.9 19.1 2.9-2.9"></path>
+        <path d="M2 12h4"></path>
+        <path d="m4.9 4.9 2.9 2.9"></path>
+      </svg>
+    </div>
+
+    <div class="error-code">503</div>
+    <h1 class="error-title">We're down for scheduled maintenance</h1>
+    <p class="error-message">
+      Shiift is briefly unavailable while we make some improvements. We'll be back shortly — thanks for your patience.
+    </p>
+
+    <div class="status-note">
+      <span class="status-dot"></span> Expected back online shortly
+    </div>
+
+    <div class="error-actions">
+      <button class="btn-primary-shiift" onclick="window.location.reload()">Refresh Page</button>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

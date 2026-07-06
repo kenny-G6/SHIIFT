@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHIIFT - Post a Shift</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #F7FBF8;
+            color: #10302E;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Baloo 2', 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Navbar */
+        .navbar-shiift { background-color: #0A4144; }
+
+        .navbar-brand-shiift {
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 800;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            color: #F7FBF8 !important;
+            text-decoration: none;
+        }
+
+        .navbar-facility-label {
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 700;
+            color: #6FD490;
+            font-size: 0.95rem;
+        }
+
+        .navbar-status-badge {
+            background-color: #6FD490;
+            color: #0A4144;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.3em 0.8em;
+            border-radius: 100px;
+        }
+
+        .navbar-link {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #A7C8C4 !important;
+            text-decoration: none;
+        }
+
+        .navbar-link:hover { color: #F7FBF8 !important; }
+
+        /* Section eyebrow */
+        .section-eyebrow {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #0F6E68;
+            margin-bottom: 0.85rem;
+        }
+
+        /* Cards */
+        .shiift-card {
+            background-color: #FFFFFF;
+            border: 1px solid #E1F0E4;
+            border-radius: 14px;
+            box-shadow: 0 4px 18px rgba(10, 65, 68, 0.07);
+        }
+
+        .shiift-card-header {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #E1F0E4;
+            padding: 1rem 1.25rem;
+            border-radius: 14px 14px 0 0;
+        }
+
+        .shiift-card-header-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #0F6E68;
+            margin: 0;
+        }
+
+        /* Section divider */
+        .section-divider {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #0F6E68;
+            border-bottom: 1px solid #E1F0E4;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Form */
+        .form-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #10302E;
+        }
+
+        .form-control, .form-select {
+            border: 1px solid #E1F0E4;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            color: #10302E;
+            padding: 0.6rem 0.9rem;
+            background-color: #FFFFFF;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #6FD490;
+            box-shadow: 0 0 0 0.2rem rgba(111, 212, 144, 0.2);
+        }
+
+        .form-control.is-invalid {
+            border-color: #dc3545;
+            box-shadow: none;
+        }
+
+        .form-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.75rem;
+            color: #56716D;
+        }
+
+        .invalid-feedback {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.78rem;
+        }
+
+        /* Pay rate input group */
+        .input-group-text {
+            background-color: #F7FBF8;
+            border: 1px solid #E1F0E4;
+            border-right: none;
+            border-radius: 8px 0 0 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #56716D;
+        }
+
+        .input-group .form-control {
+            border-left: none;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .input-group .form-control:focus {
+            border-color: #6FD490;
+            box-shadow: 0 0 0 0.2rem rgba(111, 212, 144, 0.2);
+        }
+
+        /* Preview card */
+        .preview-card {
+            background-color: #F7FBF8;
+            border: 1px solid #E1F0E4;
+            border-radius: 12px;
+            padding: 1.25rem;
+            position: sticky;
+            top: 1.5rem;
+        }
+
+        .preview-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #0F6E68;
+            margin-bottom: 0.85rem;
+        }
+
+        .preview-role {
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #0A4144;
+            margin-bottom: 0.15rem;
+        }
+
+        .preview-facility {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.82rem;
+            color: #56716D;
+            margin-bottom: 0.85rem;
+        }
+
+        .preview-divider {
+            border-color: #E1F0E4;
+            margin: 0.85rem 0;
+        }
+
+        .preview-meta {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.82rem;
+            color: #56716D;
+            line-height: 2;
+        }
+
+        .preview-meta strong { color: #0A4144; }
+
+        .badge-rate-preview {
+            background-color: #D7F2DD;
+            color: #0A4144;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.35em 0.85em;
+            border-radius: 100px;
+        }
+
+        .badge-shift-type {
+            background-color: #F7FBF8;
+            border: 1px solid #E1F0E4;
+            color: #56716D;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.3em 0.75em;
+            border-radius: 100px;
+        }
+
+        .payout-estimate {
+            background-color: #D7F2DD;
+            border: 1px solid #A7E3AF;
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+            margin-top: 0.85rem;
+        }
+
+        .payout-estimate-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #0F6E68;
+            margin-bottom: 0.15rem;
+        }
+
+        .payout-estimate-value {
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: #0A4144;
+            margin: 0;
+        }
+
+        .payout-note {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            color: #56716D;
+            margin: 0.25rem 0 0 0;
+        }
+
+        /* Buttons */
+        .btn-shiift-primary {
+            background-color: #0A4144;
+            border: none;
+            color: #F7FBF8;
+            border-radius: 10px;
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 0.65rem 1.4rem;
+            transition: background-color 0.15s ease;
+        }
+
+        .btn-shiift-primary:hover {
+            background-color: #0F6E68;
+            color: #F7FBF8;
+        }
+
+        .btn-shiift-primary:disabled {
+            background-color: #A7C8C4;
+            cursor: not-allowed;
+        }
+
+        .btn-shiift-outline {
+            background-color: transparent;
+            border: 1.5px solid #0A4144;
+            color: #0A4144;
+            border-radius: 10px;
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 0.65rem 1.4rem;
+            transition: all 0.15s ease;
+        }
+
+        .btn-shiift-outline:hover {
+            background-color: #0A4144;
+            color: #F7FBF8;
+        }
+
+        /* Toast */
+        .shiift-toast {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background-color: #D7F2DD;
+            border: 1px solid #A7E3AF;
+            border-radius: 10px;
+            color: #0A4144;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.85rem 1.25rem;
+            display: none;
+            z-index: 9999;
+            box-shadow: 0 4px 18px rgba(10, 65, 68, 0.12);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-shiift">
+        <div class="container">
+            <a class="navbar-brand-shiift" href="{{ url_for('facility_dashboard') }}">SHIIFT</a>
+            <div class="ms-auto d-flex align-items-center gap-3">
+                <a href="{{ url_for('facility_dashboard') }}" class="navbar-link">Dashboard</a>
+                <a href="{{ url_for('manage_shifts') }}" class="navbar-link">Shifts</a>
+                <a href="#" class="navbar-link">Bookings</a>
+                <a href="#" class="navbar-link">Payments</a>
+                <span class="navbar-facility-label">Lagoon Hospital</span>
+                <span class="navbar-status-badge">Pro</span>
+                <a href="{{ url_for('facility_logout') }}" class="navbar-link">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div style="max-width: 1200px; margin: 16px auto 0; padding: 0 16px;">
+  {% for category, message in messages %}
+  <div style="padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem; {{ 'background:#FDECEC; color:#B42318; border:1px solid #F5C2C2;' if category == 'errormsg' else 'background:#E8F5E9; color:#1B5E20; border:1px solid #B7DFB9;' }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+        <div class="row g-4">
+
+            <!-- LEFT: Form -->
+            <div class="col-lg-8">
+
+                <p class="section-eyebrow">New Shift</p>
+                <div class="shiift-card">
+                    <div class="shiift-card-header">
+                        <p class="shiift-card-header-title">Shift Details</p>
+                    </div>
+                    <div class="p-4">
+                        <form id="postShiftForm" method="post" action="{{ url_for('post_shift') }}" novalidate>
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                            <!-- Role -->
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="roleNeeded">Role Needed</label>
+                                    <select class="form-select" id="roleNeeded" name="role_needed" required>
+                                        <option value="" selected disabled>Select Role</option>
+                                        {% for prof in professions %}
+                                        <option value="{{ prof.profession_id }}">{{ prof.profession_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Date & Time -->
+                            <p class="section-divider mt-4">Date & Time</p>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label" for="shiftDate">Shift Date</label>
+                                    <input type="date" class="form-control" id="shiftDate" name="shift_date" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label" for="startTime">Start Time</label>
+                                    <input type="time" class="form-control" id="startTime" name="start_time" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label" for="endTime">End Time</label>
+                                    <input type="time" class="form-control" id="endTime" name="end_time" required>
+                                </div>
+                            </div>
+
+                            <!-- Duration display -->
+                            <div class="form-text mt-2" id="durationDisplay"></div>
+
+                            <!-- Pay -->
+                            <p class="section-divider mt-4">Compensation</p>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="payRate">Pay Rate (per hour)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">&#8358;</span>
+                                        <input type="number" class="form-control" id="payRate" name="pay_rate" min="500" placeholder="e.g. 4000" required>
+                                    </div>
+                                    <div class="form-text mt-1">Minimum &#8358;500 / hr. Workers see this before booking.</div>
+                                </div>
+                            </div>
+
+
+                            <div class="d-flex gap-2 mt-4">
+                                <button type="submit" class="btn-shiift-primary" id="submitBtn">Post Shift</button>
+                                <a href="{{ url_for('manage_shifts') }}" class="btn-shiift-outline">Cancel</a>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT: Live Preview -->
+            <div class="col-lg-4">
+                <p class="section-eyebrow">Live Preview</p>
+                <div class="preview-card">
+                    <p class="preview-label">How workers will see this shift</p>
+
+                    <div class="d-flex justify-content-between align-items-start mb-1">
+                        <p class="preview-role" id="previewRole">Role Needed</p>
+                        <span class="badge-rate-preview" id="previewRate">&#8358;0 / hr</span>
+                    </div>
+                    <p class="preview-facility">Lagoon Hospital &bull; Ikoyi, Lagos</p>
+
+                    <hr class="preview-divider">
+
+                    <div class="preview-meta">
+                        <strong>Date:</strong> <span id="previewDate">—</span><br>
+                        <strong>Time:</strong> <span id="previewTime">—</span><br>
+                        <strong>Duration:</strong> <span id="previewDuration">—</span>
+                    </div>
+
+                    <!-- Payout estimate -->
+                    <div class="payout-estimate">
+                        <p class="payout-estimate-label">Estimated Total Payout</p>
+                        <p class="payout-estimate-value" id="previewPayout">&#8358;0</p>
+                        <p class="payout-note">Per worker. Platform commission applies.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="shiift-toast" id="shiiftToast"></div>
+
+    <script src="/static/js/jquery-4.0.0.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            function showToast(msg) {
+                $('#shiiftToast').text(msg).fadeIn(200);
+                setTimeout(function () { $('#shiiftToast').fadeOut(300); }, 3000);
+            }
+
+            function formatNaira(amount) {
+                return '&#8358;' + Number(amount).toLocaleString('en-NG');
+            }
+
+            function formatDate(dateStr) {
+                if (!dateStr) return '—';
+                var d = new Date(dateStr);
+                return d.toLocaleDateString('en-NG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            }
+
+            function formatTime(timeStr) {
+                if (!timeStr) return '—';
+                var parts = timeStr.split(':');
+                var h = parseInt(parts[0]);
+                var m = parts[1];
+                var ampm = h >= 12 ? 'PM' : 'AM';
+                h = h % 12 || 12;
+                return h + ':' + m + ' ' + ampm;
+            }
+
+            function calcDuration(start, end) {
+                if (!start || !end) return null;
+                var startParts = start.split(':');
+                var endParts = end.split(':');
+                var startMins = parseInt(startParts[0]) * 60 + parseInt(startParts[1]);
+                var endMins = parseInt(endParts[0]) * 60 + parseInt(endParts[1]);
+                if (endMins <= startMins) endMins += 24 * 60; // overnight
+                var diff = (endMins - startMins) / 60;
+                return diff;
+            }
+
+            function updatePreview() {
+                var role = $('#roleNeeded').val() || 'Role Needed';
+                var rate = parseFloat($('#payRate').val()) || 0;
+                var date = $('#shiftDate').val();
+                var start = $('#startTime').val();
+                var end = $('#endTime').val();
+                var hours = calcDuration(start, end);
+
+                // Update preview
+                $('#previewRole').text(role);
+                $('#previewRate').html(formatNaira(rate) + ' / hr');
+                $('#previewDate').text(formatDate(date));
+
+                if (start && end) {
+                    var timeStr = formatTime(start) + ' – ' + formatTime(end);
+                    if (hours) timeStr += ' (' + hours + ' hr' + (hours !== 1 ? 's' : '') + ')';
+                    $('#previewTime').text(timeStr);
+                    $('#previewDuration').text(hours ? hours + ' hour' + (hours !== 1 ? 's' : '') : '—');
+                    $('#durationDisplay').text('Duration: ' + (hours ? hours + ' hours' : 'Invalid time range'));
+                } else {
+                    $('#previewTime').text('—');
+                    $('#previewDuration').text('—');
+                }
+
+                // Payout estimate
+                if (rate && hours) {
+                    var payout = rate * hours;
+                    $('#previewPayout').html(formatNaira(payout));
+                } else {
+                    $('#previewPayout').html('&#8358;0');
+                }
+            }
+
+            // Live preview updates
+            $('#roleNeeded, #payRate, #shiftDate, #startTime, #endTime').on('input change', updatePreview);
+
+            // Form submit
+            $('#postShiftForm').on('submit', function (e) {
+                e.preventDefault();
+
+                var role = $('#roleNeeded').val();
+                var date = $('#shiftDate').val();
+                var start = $('#startTime').val();
+                var end = $('#endTime').val();
+                var rate = $('#payRate').val();
+                var valid = true;
+
+                if (!role || !date || !start || !end || !rate) {
+                    showToast('Please fill in all required fields.');
+                    valid = false;
+                }
+
+                if (parseFloat(rate) < 500) {
+                    $('#payRate').addClass('is-invalid');
+                    showToast('Pay rate must be at least ₦500 per hour.');
+                    valid = false;
+                }
+
+                var hours = calcDuration(start, end);
+                if (!hours || hours <= 0) {
+                    showToast('End time must be after start time.');
+                    valid = false;
+                }
+
+                if (!valid) return;
+
+                var btn = $('#submitBtn');
+                btn.text('Posting...').prop('disabled', true);
+
+                // Validation passed, now actually hit the Flask route
+                e.target.submit();
+            });
+
+        });
+    </script>
+</body>
+</html>
