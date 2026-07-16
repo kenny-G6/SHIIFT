@@ -62,8 +62,6 @@ shiift/
 
 ## Screenshots
 
-*(Add screenshots here — worker dashboard, facility shift posting, admin panel, etc. Even 3–4 images make the repo far easier for a reviewer to evaluate at a glance.)*
-
 | Worker Portal | Facility Portal | Admin Panel |
 |---|---|---|
 | _screenshot_ | _screenshot_ | _screenshot_ |
@@ -72,9 +70,9 @@ shiift/
 
 ## Demo
 
-A full walkthrough video is available here: **[add your video link once recorded]**
+A full walkthrough video will be  available here soon: **[add your video link once recorded]**
 
-The video covers the worker, facility, and admin flows end-to-end, since the app isn't deployed yet.
+The video will cover the worker, facility, and admin flows end-to-end, since the app isn't deployed yet.
 
 ---
 
