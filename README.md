@@ -1,6 +1,6 @@
 # Shiift — On-Demand Healthcare Staffing Marketplace
 
-Shiift is a two-sided marketplace web application connecting healthcare **facilities** with on-demand healthcare **workers** across Nigeria — conceptually similar to platforms like Clipboard Health.
+Shiift is a two-sided marketplace web application connecting healthcare **facilities** with on-demand healthcare **workers** across Nigeria — conceptually similar to platforms like Clipboard Health, Instawork, and Care.com, but hyperlocal and purpose-built for the Nigerian healthcare ecosystem.
 
 > ⚠️ **Status:** In active development. Not yet deployed — see [Running Locally](#running-locally) below to try it, or the [demo walkthrough video](#demo) for a full tour without needing to set up locally.
 
@@ -63,24 +63,28 @@ shiift/
 ## Screenshots
 
 ### Homepage — Landing Page & Sign In
-![Shiift Homepage](./screenshots/00-homepage.png)
-The landing page showcases Shiift's value proposition with a hero section, key features (Post Vacancies, Instant Claims, Verified Credentials, Secure Escrow), and a login modal for existing users. The page highlights how Shift connects healthcare workers to open shifts instantly across Nigeria.
+![Shiift Homepage](./Home_page.png)
+The landing page showcases Shiift's value proposition with a hero section, key features (Post Vacancies, Instant Claims, Verified Credentials, Secure Escrow), and a login modal for existing users.
 
 ### Worker Portal — Browse & Book Shifts
-![Worker Portal](./screenshots/01-worker-dashboard.png)
+![Worker Portal](./Workers_dashboard.png)
 Workers can browse available shifts in their area, view their booking history, track payouts, and manage their schedule.
 
+### Worker Booking — Claim Open Shifts
+![Worker Booking](./Workers_booking.png)
+Workers seamlessly claim open shifts that match their availability and qualifications.
+
 ### Facility Portal — Post & Manage Shifts
-![Facility Portal](./screenshots/02-facility-dashboard.png)
+![Facility Portal](./facility_dashboard.png)
 Facilities get an overview of open and filled shifts, post new shifts, and manage applicants and bookings.
 
-### Admin Panel — Central Operations
-![Admin Dashboard](./screenshots/03-admin-dashboard.png)
+### Admin Dashboard — Central Operations
+![Admin Dashboard](./Admin_dashboard.png)
 Admins oversee pending verifications, manage the escrow ledger, track worker payouts, and monitor platform activity.
 
-### Admin Login — Role-Based Access
-![Admin Login](./screenshots/04-admin-login.png)
-Secure login page for admin control panel with role-based access and monitoring.
+### Admin Panel — Role-Based Access
+![Admin Panel](./Admin_panel.png)
+Secure admin control panel with role-based access and comprehensive monitoring capabilities.
 
 ---
 
