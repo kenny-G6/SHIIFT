@@ -1,8 +1,8 @@
 # Shiift — On-Demand Healthcare Staffing Marketplace
 
-Shiift is a two-sided marketplace web application connecting healthcare **facilities** with on-demand healthcare **workers** across Nigeria — conceptually similar to platforms like Clipboard Health, built for the Nigerian healthcare staffing market.
+Shiift is a two-sided marketplace web application connecting healthcare **facilities** with on-demand healthcare **workers** across Nigeria — conceptually similar to platforms like Clipboard Health.
 
-> ⚠️ **Status:** In active development. Not yet deployed — see [Running Locally](#running-locally) below to try it, or the [demo walkthrough video](#demo) for a full tour without needing to set anything up.
+> ⚠️ **Status:** In active development. Not yet deployed — see [Running Locally](#running-locally) below to try it, or the [demo walkthrough video](#demo) for a full tour without needing to set up locally.
 
 ---
 
@@ -62,15 +62,27 @@ shiift/
 
 ## Screenshots
 
-| Worker Portal | Facility Portal | Admin Panel |
-|---|---|---|
-| _screenshot_ | _screenshot_ | _screenshot_ |
+### Worker Portal — Browse & Book Shifts
+![Worker Portal](./screenshots/01-worker-dashboard.png)
+Workers can browse available shifts in their area, view their booking history, track payouts, and manage their schedule.
+
+### Facility Portal — Post & Manage Shifts
+![Facility Portal](./screenshots/02-facility-dashboard.png)
+Facilities get an overview of open and filled shifts, post new shifts, and manage applicants and bookings.
+
+### Admin Panel — Central Operations
+![Admin Dashboard](./screenshots/03-admin-dashboard.png)
+Admins oversee pending verifications, manage the escrow ledger, track worker payouts, and monitor platform activity.
+
+### Admin Login — Role-Based Access
+![Admin Login](./screenshots/04-admin-login.png)
+Secure login page for admin control panel with role-based access and monitoring.
 
 ---
 
 ## Demo
 
-A full walkthrough video will be  available here soon: **[add your video link once recorded]**
+A full walkthrough video will be available here soon: **[add your video link once recorded]**
 
 The video will cover the worker, facility, and admin flows end-to-end, since the app isn't deployed yet.
 
