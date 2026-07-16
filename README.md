@@ -62,6 +62,10 @@ shiift/
 
 ## Screenshots
 
+### Homepage — Landing Page & Sign In
+![Shiift Homepage](./screenshots/00-homepage.png)
+The landing page showcases Shiift's value proposition with a hero section, key features (Post Vacancies, Instant Claims, Verified Credentials, Secure Escrow), and a login modal for existing users. The page highlights how Shift connects healthcare workers to open shifts instantly across Nigeria.
+
 ### Worker Portal — Browse & Book Shifts
 ![Worker Portal](./screenshots/01-worker-dashboard.png)
 Workers can browse available shifts in their area, view their booking history, track payouts, and manage their schedule.
